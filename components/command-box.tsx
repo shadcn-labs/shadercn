@@ -14,6 +14,10 @@ import { usePackageManager } from "@/hooks/use-package-manager";
 import { cn } from "@/lib/utils";
 import registry from "@/registry.json";
 
+interface RegistryItem {
+  name: string;
+}
+
 const pmCommands = {
   bun: "bunx --bun",
   npm: "npx",
@@ -21,7 +25,7 @@ const pmCommands = {
   yarn: "yarn",
 };
 
-const registryItemNames = registry.items
+const registryItemNames = (registry.items as RegistryItem[])
   .map((item) => item.name)
   .toSorted((a, b) =>
     a.localeCompare(b, "en", {

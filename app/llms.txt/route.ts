@@ -34,6 +34,7 @@ ${documentationIndex(base)}
 - [OpenAPI description](${base}${ROUTES.OPENAPI})
 - [API catalog](${base}${ROUTES.API_CATALOG})
 - [Agent skill](${base}${ROUTES.AGENT_SKILLS_SITE_SKILL})
+- [vgpu documentation](${ROUTES.VGPU_DOCS})
 - [shadcn MCP server documentation](${LINK.SHADCN_MCP_DOCS})
 `;
 };

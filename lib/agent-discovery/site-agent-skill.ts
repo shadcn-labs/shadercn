@@ -8,12 +8,16 @@ export const SITE_AGENT_SKILL_MD = `# ${SITE.NAME}
 
 ## Summary
 
-Help users discover, inspect, and install components from this public shadcn registry starter and its documentation site.
+Help users discover, inspect, and install GPU-powered shader components from this public shadcn registry and its documentation site.
 
 ## Registry
 
 - Registry JSON: \`${ROUTES.REGISTRY}\`
 - Docs: ${ROUTES.DOCS}
+
+## Built On
+
+This registry is built on [vgpu](https://vgpu.labs.vercel.dev/) — a modular cross-runtime WebGPU library for shaders.
 
 ## MCP
 
@@ -22,7 +26,7 @@ This site is a shadcn-compatible registry. For MCP workflows, use the maintained
 ## Install
 
 \`\`\`bash
-npx shadcn@latest add ${SITE.URL}/r/your-component.json
+npx shadcn@latest add ${SITE.REGISTRY}/component-name.json
 \`\`\`
 
 Prefer following the on-site installation guide: ${ROUTES.DOCS_INSTALLATION}

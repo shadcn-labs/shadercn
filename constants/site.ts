@@ -1,4 +1,4 @@
-export const FALLBACK_SITE_ORIGIN = "https://startercn.vercel.app" as const;
+export const FALLBACK_SITE_ORIGIN = "https://shadercn.vercel.app" as const;
 
 const getBaseUrl = () => {
   if (process.env.NODE_ENV !== "production") {
@@ -20,21 +20,23 @@ export const SITE = {
     TWITTER: "@alaymanguy",
   },
   DESCRIPTION: {
-    LONG: "A starter kit for building and publishing your own shadcn registry components.",
-    SHORT: "Build your own shadcn registry",
+    LONG: "A shadcn registry of GPU-powered shader components for React. Built on vgpu. Copy, paste, and ship.",
+    SHORT: "GPU shader components for React",
   },
   KEYWORDS: [
     "shadcn",
     "shadcn registry",
-    "component registry",
-    "shadcn components",
-    "next.js",
-    "tailwindcss",
+    "shader components",
+    "gpu",
+    "webgpu",
+    "wgsl",
+    "vgpu",
+    "react",
     "npx shadcn add",
   ] as const,
-  NAME: "startercn",
-  OG_IMAGE: `${baseUrl}/og`,
-  REGISTRY: baseUrl,
+  NAME: "shadercn",
+  OG_IMAGE: `${baseUrl}/og.png`,
+  REGISTRY: "@shadercn",
   URL: baseUrl,
 };
 

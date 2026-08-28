@@ -12,11 +12,12 @@ export const ROUTES = {
   LLMS_MD: "/llms.md",
   MANIFEST: "/manifest.webmanifest",
   MCP: "/mcp",
-  OG: "/og",
   OPENAPI: "/openapi.json",
   REGISTRY: "/r/registry.json",
   ROBOTS: "/robots.txt",
   RSS: "/rss.xml",
   SITEMAP: "/sitemap.xml",
   SPONSOR: "/sponsor",
+  VGPU_DOCS: "https://vgpu.labs.vercel.dev/docs",
+  VGPU_GITHUB: "https://github.com/vercel-labs/vgpu",
 } as const;

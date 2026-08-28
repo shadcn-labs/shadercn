@@ -1,44 +1,36 @@
 ---
 title: Introduction
-description: A template for building and publishing your own shadcn registry components.
+description: A shadcn registry of GPU-powered shader components for React, built on vgpu.
 ---
 
-A **ready-to-use template** for creating and publishing custom components to the [shadcn registry](https://ui.shadcn.com/docs/registry).
+A **shadcn registry** of GPU-powered shader components for React. Built on [vgpu](https://vgpu.labs.vercel.dev/), the modular cross-runtime WebGPU library.
 
-## What You Get
+## What Is shadercn?
 
-- 📦 **Simple structure** - One component file + one config file
-- 📚 **Documentation site** - Powered by Fumadocs
-- 🎨 **Registry compatible** - Works with `npx shadcn add`
-- 🤖 **[Agent ready](https://www.mintlify.com/score/startercn)** - Ships with `llms.txt`, `llms-full.txt`, API catalog routes, and agent skill discovery endpoints
-- 🔊 **[Web audio feedback](https://audio.raphaelsalaja.com/)** - Built-in interaction sounds powered by `@web-kits/audio`
-- 📳 **[Web haptics](https://haptics.lochie.me/)** - Optional haptic feedback for supported devices via `web-haptics`
-- ✨ **[Motion animations](https://motion.dev/)** - Uses `motion` for animated UI states and transitions
-- 🎯 **[Animated icons](https://lucide-animated.com/)** - Includes reusable animated icons for buttons, sharing, and navigation
-- 🔄 **[View transitions](https://nextjs.org/docs/app/api-reference/config/next-config-js/viewTransition)** - Uses Next.js view transitions for smoother page changes
-- 🚀 **Deploy ready** - Deploy anywhere
+shadercn provides shader effects as React components. Instead of writing WGSL directly, you work with GPU effects as components that you can drop into your app, pass props to, and compose together.
+
+- **Fragment shaders as components** — Each shader is a React component with typed props
+- **GPU-accelerated** — Runs on the GPU via WebGPU for smooth 60fps performance
+- **Copy-paste** — Install via `npx shadcn add`, own the code forever
+- **Customizable** — Every visual parameter is exposed as a prop
 
 ## Tech Stack
 
+- [vgpu](https://vgpu.labs.vercel.dev/) — WebGPU shader runtime
 - `Next.js 16` + App Router
 - `React 19`
 - `Tailwind CSS 4`
-- `Fumadocs`
-- `motion`
-- `@web-kits/audio`
-- `web-haptics`
-- `shiki` + `rehype-pretty-code`
+- `Fumadocs` for documentation
+- `shadcn/ui` compatible registry
 
 ## How It Works
 
-1. Edit your component at `registry/new-york/your-component.tsx`
-2. Update `registry.json` with your component name and details
-3. Run `pnpm registry:build`
-
-That's it. Deploy your app and users can install your component:
+1. Browse the available shader components
+2. Install with the shadcn CLI
+3. Import and use in your React app
 
 ```bash
-npx shadcn@latest add https://your-site.com/r/your-component.json
+npx shadcn@latest add https://shadercn.vercel.app/r/component-name.json
 ```
 
 ## FAQ
@@ -47,11 +39,11 @@ npx shadcn@latest add https://your-site.com/r/your-component.json
 
 <AccordionItem value="faq-1">
 <AccordionTrigger>
-Why copy/paste instead of npm packages?
+What is vgpu?
 </AccordionTrigger>
 <AccordionContent>
 
-The shadcn philosophy gives you **ownership** of the code. You can customize components to your exact needs without fighting library constraints.
+[vgpu](https://vgpu.labs.vercel.dev/) is a modular cross-runtime WebGPU library for shaders, 3D scenes, GPU tensors, neural networks, and math viz. It provides typed WGSL imports, a tiny gpu-first API, and the same code running in the browser, headless Node, and test suites.
 
 </AccordionContent>
 </AccordionItem>
@@ -69,11 +61,11 @@ Any React framework: Next.js, Remix, Astro, Gatsby, Vite, etc.
 
 <AccordionItem value="faq-3">
 <AccordionTrigger>
-Can I publish multiple components?
+Do shaders work without WebGPU?
 </AccordionTrigger>
 <AccordionContent>
 
-Yes! Add more files to `registry/new-york/` and list them in `registry.json`.
+vgpu includes a mock adapter (`vgpu/mock`) for testing. For browsers without WebGPU support, you should provide a fallback. Check [vgpu docs](https://vgpu.labs.vercel.dev/docs) for details.
 
 </AccordionContent>
 </AccordionItem>

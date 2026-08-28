@@ -50,7 +50,7 @@ export const SoftwareSourceCodeJsonLd = () => (
         price: "0",
         priceCurrency: "USD",
       },
-      programmingLanguage: ["TypeScript", "React", "Next.js"],
+      programmingLanguage: ["TypeScript", "React", "WebGPU", "WGSL"],
       runtimePlatform: "Node.js",
       url: SITE.URL,
     }}

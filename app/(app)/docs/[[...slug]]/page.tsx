@@ -37,7 +37,7 @@ export const generateMetadata = async (props: {
   }
 
   const doc = page.data;
-  const ogImage = getPageImage(page).url;
+  const ogImage = getPageImage().url;
 
   return createPageMetadata({
     description: doc.description,
