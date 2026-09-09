@@ -3,8 +3,8 @@
  * Ported from orbkit (WebGL/GLSL) to WebGPU/WGSL for shadercn.
  * Original: https://github.com/zzzzshawn/orbkit
  */
-import { ShaderOrb } from './orbkit-core-wgpu';
-import type { OrbVariant, ShaderOrbProps } from './orbkit-core-wgpu';
+import { ShaderOrb } from "./orbkit-core-wgpu";
+import type { OrbVariant, ShaderOrbProps } from "./orbkit-core-wgpu";
 
 const ECLIPTIC_FRAG = `
 const STEPS: i32 = 80;
@@ -171,10 +171,11 @@ fn orbMain(fragCoord: vec2f, uv: vec2f) -> vec4f {
 `;
 
 export const orb03Orb: OrbVariant = {
+  colors: [{ default: "#ffffff", key: "tint", label: "Tint" }],
+  frag: ECLIPTIC_FRAG,
   key: "orb-03",
   label: "ORB-03",
   note: "a turbulent belt of light girdling the ball, contoured in rainbow",
-  frag: ECLIPTIC_FRAG,
   params: [
     {
       default: 0.6,
@@ -311,7 +312,7 @@ export const orb03Orb: OrbVariant = {
       default: 1500,
       key: "stepClamp",
       label: "Step clamp",
-      max: 20000,
+      max: 20_000,
       min: 5,
       step: 25,
     },
@@ -327,7 +328,7 @@ export const orb03Orb: OrbVariant = {
       default: 1500,
       key: "exposure",
       label: "Exposure",
-      max: 100000,
+      max: 100_000,
       min: 20,
       step: 50,
     },
@@ -372,22 +373,20 @@ export const orb03Orb: OrbVariant = {
       step: 0.015,
     },
   ],
-  colors: [{ default: "#ffffff", key: "tint", label: "Tint" }],
+  // the contour ramp supplies the colour, so the tint only shifts its
+  // temperature: neutral at rest, cooled while searching, warmed while
+  // answering
+  stateColors: {
+    idle: { tint: "#ffffff" },
+    speaking: { tint: "#ffc492" },
+    thinking: { tint: "#9db8ff" },
+  },
   /*
     Staged on BELT TIGHTNESS, which is the only control that changes what
     the object is: high and the light is a single girdle, low and it opens
     out into the whole shell. Warp and belt width carry the rest.
   */
   statePresets: {
-    /*
-      at rest: a hairline thread on a small, thin shell. The belt is left
-      loose — a twentieth of the way to thinking's wire — so it is the WARP,
-      more than double what searching carries and the highest steady value of
-      the three, that gives the light its shape rather than the plane
-      confining it. Hue is pushed warm and the
-      envelope opened to its ceiling, which is what lets so fine a line still
-      read as a body.
-    */
     idle: {
       alphaGain: 2,
       envCore: 1.02,
@@ -405,18 +404,22 @@ export const orb03Orb: OrbVariant = {
       wander: 0.3,
       width: 0.001,
     },
-    /*
-      searching: the belt BREATHES. Width is on `pulse` at full depth, so the
-      band swells from nothing to fifty times the resting belt and closes
-      again every few seconds — the state's whole tell, and the reason warp
-      drops to under half of idle's: the shape comes from the breathing now,
-      not from the plane confining it.
-
-      Under it the belt is also four times tighter than at rest and hunting
-      hard — the tilt three times as fast, the axis feedback near quadrupled
-      — on a shell pulled small and thin inside a much wider envelope, so
-      what pulses is a broad band on a small ball rather than a girdle.
-    */
+    speaking: {
+      alphaGain: 2.7,
+      envRadius: 3.4,
+      exposure: 650,
+      feedback: 0.3,
+      plane: 0.1,
+      scatter: 0.0003,
+      shellR: 1.8,
+      shellW: 0.19,
+      speed: 0.9,
+      spread: 1.04,
+      surge: 1,
+      turb: 0.14,
+      wander: 0.84,
+      width: 0.018,
+    },
     thinking: {
       alphaGain: 2,
       envCore: 0.84,
@@ -436,53 +439,13 @@ export const orb03Orb: OrbVariant = {
       wander: 1.1,
       width: 0.048,
     },
-    /*
-      answering: the belt SURGES. Tightness and warp are both on the surge at
-      full depth, sweeping 0.1 to 0.3 and 0.5 to 1.6 together about every
-      second and a half — from a loose, lightly warped band to a tight warped
-      girdle and back. Where thinking pulses one control, this one swings the
-      two that decide what the object is, which is why it reads as the
-      loudest of the three.
-
-      Tightness starts the sweep at exactly what is dialled here, so the
-      preset value is the loose end of the swing; warp does not, and its 0.14
-      is only what you would see with the surge turned off. What the preset
-      carries either way is the body under them — a broad shell, tilt
-      drifting near three times idle's, the axis feedback almost off — plus
-      eighteen times the resting belt width to keep the girdle solid at the
-      tight end.
-    */
-    speaking: {
-      alphaGain: 2.7,
-      envRadius: 3.4,
-      exposure: 650,
-      feedback: 0.3,
-      plane: 0.1,
-      scatter: 0.0003,
-      shellR: 1.8,
-      shellW: 0.19,
-      speed: 0.9,
-      spread: 1.04,
-      surge: 1,
-      turb: 0.14,
-      wander: 0.84,
-      width: 0.018,
-    },
-  },
-  // the contour ramp supplies the colour, so the tint only shifts its
-  // temperature: neutral at rest, cooled while searching, warmed while
-  // answering
-  stateColors: {
-    idle: { tint: "#ffffff" },
-    speaking: { tint: "#ffc492" },
-    thinking: { tint: "#9db8ff" },
   },
 };
 
 export type Orb03Props = Omit<ShaderOrbProps, "variant">;
 
-export function Orb03({ size = 280, ...rest }: Orb03Props) {
-  return <ShaderOrb variant={orb03Orb} size={size} {...rest} />;
-}
+export const Orb03 = ({ size = 280, ...rest }: Orb03Props) => (
+  <ShaderOrb variant={orb03Orb} size={size} {...rest} />
+);
 
 export default Orb03;

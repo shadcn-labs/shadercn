@@ -3,8 +3,8 @@
  * Ported from orbkit (WebGL/GLSL) to WebGPU/WGSL for shadercn.
  * Original: https://github.com/zzzzshawn/orbkit
  */
-import { ShaderOrb } from './orbkit-core-wgpu';
-import type { OrbVariant, ShaderOrbProps } from './orbkit-core-wgpu';
+import { ShaderOrb } from "./orbkit-core-wgpu";
+import type { OrbVariant, ShaderOrbProps } from "./orbkit-core-wgpu";
 
 const PHOSPHOR_FRAG = `
 fn orbMain(fragCoord: vec2f, uv: vec2f) -> vec4f {
@@ -103,10 +103,14 @@ fn orbMain(fragCoord: vec2f, uv: vec2f) -> vec4f {
 `;
 
 export const orb23Orb: OrbVariant = {
+  colors: [
+    { default: "#57ffc9", key: "glow", label: "Glow" },
+    { default: "#0b3b2d", key: "deep", label: "Deep" },
+  ],
+  frag: PHOSPHOR_FRAG,
   key: "orb-23",
   label: "ORB-23",
   note: "an ASCII glyph matrix in CRT green, wrapped on the ball",
-  frag: PHOSPHOR_FRAG,
   params: [
     {
       default: 0.55,
@@ -225,10 +229,12 @@ export const orb23Orb: OrbVariant = {
       step: 0.05,
     },
   ],
-  colors: [
-    { default: "#57ffc9", key: "glow", label: "Glow" },
-    { default: "#0b3b2d", key: "deep", label: "Deep" },
-  ],
+  // violet at rest, aqua while searching, red while answering
+  stateColors: {
+    idle: { glow: "#6a57ff" },
+    speaking: { glow: "#ff5757" },
+    thinking: { glow: "#57ffe3" },
+  },
   /*
     Each state ANIMATES differently — its own kind of motion, not just its
     own speed — and each has its own phosphor colour. Every motion has its own integrated clock, so a rate gliding to zero
@@ -236,13 +242,6 @@ export const orb23Orb: OrbVariant = {
     an amplitude.
   */
   statePresets: {
-    /*
-      idle DRIFTS: slow diagonal lava-flow, lazy roll — on a far finer,
-      sparser screen than the working states. The glyph grid is nearly
-      doubled and the field scale tripled, with the density down by a third
-      and half the dropout, so the matrix reads as a fine violet mesh under
-      a strong key light and a bright rim, slightly dimmed.
-    */
     idle: {
       cells: 68,
       density: 0.31,
@@ -257,35 +256,6 @@ export const orb23Orb: OrbVariant = {
       speed: 0.52,
       spin: 0.12,
     },
-    /*
-      thinking STREAMS: the drift runs at six times idle with a steady
-      vertical scroll under it and a pulse near speaking depth, on a dome
-      almost stopped — the matrix pours across the ball rather than paging.
-      The finest grid of the three and the least dropout, so the field is
-      nearly solid, on idle's field scale with a touch more contrast.
-    */
-    thinking: {
-      cells: 86,
-      contrast: 1.3,
-      density: 0.33,
-      drift: 3.05,
-      dropout: 0.13,
-      gain: 0.95,
-      light: 0.855,
-      pulse: 0.58,
-      rim: 0.51,
-      scroll: 0.65,
-      speed: 0.45,
-      spin: 0.04,
-    },
-    /*
-      speaking PULSES, hard: radial waves at more than double the thinking
-      depth, driven at five times its rate, radiate through the glyphs while
-      the dome rolls at nearly a full spin. The grid goes to its finest and
-      the field scale past idle's, with the densest glyphs and the heaviest
-      dropout of the three — a coarse, flickering red screen — under a dim
-      key light with the phosphor gain tripled.
-    */
     speaking: {
       cells: 120,
       density: 0.56,
@@ -300,19 +270,27 @@ export const orb23Orb: OrbVariant = {
       speed: 2.85,
       spin: 1.05,
     },
-  },
-  // violet at rest, aqua while searching, red while answering
-  stateColors: {
-    idle: { glow: "#6a57ff" },
-    speaking: { glow: "#ff5757" },
-    thinking: { glow: "#57ffe3" },
+    thinking: {
+      cells: 86,
+      contrast: 1.3,
+      density: 0.33,
+      drift: 3.05,
+      dropout: 0.13,
+      gain: 0.95,
+      light: 0.855,
+      pulse: 0.58,
+      rim: 0.51,
+      scroll: 0.65,
+      speed: 0.45,
+      spin: 0.04,
+    },
   },
 };
 
 export type Orb23Props = Omit<ShaderOrbProps, "variant">;
 
-export function Orb23({ size = 280, ...rest }: Orb23Props) {
-  return <ShaderOrb variant={orb23Orb} size={size} {...rest} />;
-}
+export const Orb23 = ({ size = 280, ...rest }: Orb23Props) => (
+  <ShaderOrb variant={orb23Orb} size={size} {...rest} />
+);
 
 export default Orb23;

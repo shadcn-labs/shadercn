@@ -3,8 +3,8 @@
  * Ported from orbkit (WebGL/GLSL) to WebGPU/WGSL for shadercn.
  * Original: https://github.com/zzzzshawn/orbkit
  */
-import { ShaderOrb } from './orbkit-core-wgpu';
-import type { OrbVariant, ShaderOrbProps } from './orbkit-core-wgpu';
+import { ShaderOrb } from "./orbkit-core-wgpu";
+import type { OrbVariant, ShaderOrbProps } from "./orbkit-core-wgpu";
 
 const TORSION_FRAG = `
 const STEPS: i32 = 50;
@@ -163,191 +163,191 @@ fn orbMain(fragCoord: vec2f, uv: vec2f) -> vec4f {
 `;
 
 export const orb07Orb: OrbVariant = {
-  colors: [{ key: "tint", label: "Tint", default: "#ffffff" }],
+  colors: [{ default: "#ffffff", key: "tint", label: "Tint" }],
   frag: TORSION_FRAG,
   key: "orb-07",
   label: "ORB-07",
   note: "a twist wave travelling out through the ball around a lit column",
   params: [
     {
-      key: "speed",
-      label: "Cell shimmer",
-      min: 0.015,
-      max: 10,
-      step: 0.05,
       default: 0.5,
       integrate: true,
+      key: "speed",
+      label: "Cell shimmer",
+      max: 10,
+      min: 0.015,
+      step: 0.05,
     },
     {
-      key: "wave",
-      label: "Wave speed",
-      min: 0,
-      max: 8,
-      step: 0.03,
       default: 0.7,
       integrate: true,
-    },
-    { key: "twist", label: "Twist", min: 0, max: 8, step: 0.02, default: 1 },
-    {
-      key: "spin",
-      label: "Roll",
+      key: "wave",
+      label: "Wave speed",
+      max: 8,
       min: 0,
-      max: 3,
-      step: 0.015,
+      step: 0.03,
+    },
+    { default: 1, key: "twist", label: "Twist", max: 8, min: 0, step: 0.02 },
+    {
       default: 0.1,
       integrate: true,
+      key: "spin",
+      label: "Roll",
+      max: 3,
+      min: 0,
+      step: 0.015,
     },
     {
+      default: 0.3,
       key: "tilt",
       label: "Axis lean",
-      min: -1.5,
       max: 1.5,
+      min: -1.5,
       step: 0.015,
-      default: 0.3,
     },
     {
+      default: 7,
       key: "camDist",
       label: "Camera distance",
-      min: 1,
       max: 50,
+      min: 1,
       step: 0.3,
-      default: 7,
     },
     {
+      default: 2.25,
       key: "focal",
       label: "Lens",
-      min: 0.15,
       max: 15,
+      min: 0.15,
       step: 0.1,
-      default: 2.25,
     },
     {
+      default: 1,
       key: "turb",
       label: "Cell turbulence",
-      min: 0,
       max: 5,
+      min: 0,
       step: 0.03,
-      default: 1,
     },
     {
+      default: 0,
       key: "column",
       label: "Column release",
-      min: 0,
       max: 1,
+      min: 0,
       step: 0.01,
-      default: 0,
     },
     {
+      default: 0.1,
       key: "stepScale",
       label: "Step scale",
-      min: 0.005,
       max: 1.5,
+      min: 0.005,
       step: 0.005,
-      default: 0.1,
     },
     {
+      default: 0.75,
       key: "hueDepth",
       label: "Depth hue",
-      min: 0,
       max: 10,
+      min: 0,
       step: 0.03,
-      default: 0.75,
     },
     {
+      default: 0.45,
       key: "hueStep",
       label: "Step hue",
-      min: 0,
       max: 10,
+      min: 0,
       step: 0.03,
-      default: 0.45,
     },
     {
+      default: 2.6,
       key: "envRadius",
       label: "Envelope radius",
-      min: 0.15,
       max: 15,
+      min: 0.15,
       step: 0.1,
-      default: 2.6,
     },
     {
+      default: 0.88,
       key: "envCore",
       label: "Envelope core",
-      min: 0.3,
       max: 1.02,
+      min: 0.3,
       step: 0.01,
-      default: 0.88,
     },
     {
+      default: 0.15,
       key: "fill",
       label: "Body fill",
-      min: 0,
       max: 100,
+      min: 0,
       step: 0.3,
-      default: 0.15,
     },
     {
+      default: 400,
       key: "stepClamp",
       label: "Step clamp",
-      min: 3,
       max: 5000,
+      min: 3,
       step: 10,
-      default: 400,
     },
     {
+      default: 0.01,
       key: "scatter",
       label: "Diffusion",
-      min: 0,
       max: 0.5,
+      min: 0,
       step: 0.003,
-      default: 0.01,
     },
     {
+      default: 60,
       key: "exposure",
       label: "Exposure",
-      min: 1.5,
       max: 5000,
+      min: 1.5,
       step: 5,
-      default: 60,
     },
     {
+      default: 1.3,
       key: "contrast",
       label: "Contrast",
-      min: 0.15,
       max: 15,
+      min: 0.15,
       step: 0.1,
-      default: 1.3,
     },
     {
+      default: 1.15,
       key: "saturation",
       label: "Saturation",
-      min: 0,
       max: 4,
+      min: 0,
       step: 0.02,
-      default: 1.15,
     },
     {
+      default: 2,
       key: "alphaGain",
       label: "Alpha gain",
-      min: 0.05,
       max: 15,
+      min: 0.05,
       step: 0.1,
-      default: 2,
     },
     {
+      default: 1,
       key: "edge",
       label: "Edge sharpness",
-      min: 0,
       max: 1,
+      min: 0,
       step: 0.01,
-      default: 1,
     },
     {
+      default: 0.98,
       key: "edgeFade",
       label: "Halo falloff",
-      min: 0.1,
       max: 3,
+      min: 0.1,
       step: 0.015,
-      default: 0.98,
     },
   ],
   stateColors: {
@@ -355,6 +355,7 @@ export const orb07Orb: OrbVariant = {
     speaking: { tint: "#ffc492" },
     thinking: { tint: "#9db8ff" },
   },
+
   statePresets: {
     idle: {
       alphaGain: 2,
@@ -391,8 +392,8 @@ export const orb07Orb: OrbVariant = {
 
 export type Orb07Props = Omit<ShaderOrbProps, "variant">;
 
-export function Orb07({ size = 280, ...rest }: Orb07Props) {
-  return <ShaderOrb variant={orb07Orb} size={size} {...rest} />;
-}
+export const Orb07 = ({ size = 280, ...rest }: Orb07Props) => (
+  <ShaderOrb variant={orb07Orb} size={size} {...rest} />
+);
 
 export default Orb07;

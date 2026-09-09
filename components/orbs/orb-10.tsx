@@ -3,8 +3,8 @@
  * Ported from orbkit (WebGL/GLSL) to WebGPU/WGSL for shadercn.
  * Original: https://github.com/zzzzshawn/orbkit
  */
-import { ShaderOrb } from './orbkit-core-wgpu';
-import type { OrbVariant, ShaderOrbProps } from './orbkit-core-wgpu';
+import { ShaderOrb } from "./orbkit-core-wgpu";
+import type { OrbVariant, ShaderOrbProps } from "./orbkit-core-wgpu";
 
 const WEAVE_FRAG = `
 const STEPS: i32 = 40;
@@ -135,191 +135,191 @@ fn orbMain(fragCoord: vec2f, uv: vec2f) -> vec4f {
 `;
 
 export const orb10Orb: OrbVariant = {
-  colors: [{ key: "tint", label: "Tint", default: "#ffffff" }],
+  colors: [{ default: "#ffffff", key: "tint", label: "Tint" }],
   frag: WEAVE_FRAG,
   key: "orb-10",
   label: "ORB-10",
   note: "a lattice of light knitted into the ball's own skin",
   params: [
     {
-      key: "speed",
-      label: "Anim speed",
-      min: 0.015,
-      max: 10,
-      step: 0.05,
       default: 0.6,
       integrate: true,
+      key: "speed",
+      label: "Anim speed",
+      max: 10,
+      min: 0.015,
+      step: 0.05,
     },
     {
-      key: "scroll",
-      label: "Climb",
-      min: 0,
-      max: 8,
-      step: 0.03,
       default: 1.2,
       integrate: true,
+      key: "scroll",
+      label: "Climb",
+      max: 8,
+      min: 0,
+      step: 0.03,
     },
     {
+      default: 7,
       key: "camDist",
       label: "Camera distance",
-      min: 1,
       max: 50,
+      min: 1,
       step: 0.3,
-      default: 7,
     },
-    { key: "focal", label: "Lens", min: 0.15, max: 15, step: 0.05, default: 2 },
+    { default: 2, key: "focal", label: "Lens", max: 15, min: 0.15, step: 0.05 },
     {
+      default: 2.6,
       key: "shellR",
       label: "Shell radius",
-      min: 0.2,
       max: 20,
+      min: 0.2,
       step: 0.1,
-      default: 2.6,
     },
     {
+      default: 8,
       key: "wrap",
       label: "Wraps around",
-      min: 1,
       max: 14,
+      min: 1,
       step: 1,
-      default: 8,
     },
     {
+      default: 4,
       key: "climb",
       label: "Band spacing",
-      min: 0.05,
       max: 12,
+      min: 0.05,
       step: 0.05,
-      default: 4,
     },
-    { key: "turb", label: "Warp", min: 0, max: 3, step: 0.02, default: 0.35 },
+    { default: 0.35, key: "turb", label: "Warp", max: 3, min: 0, step: 0.02 },
     {
+      default: 0.5,
       key: "layer",
       label: "Layer offset",
-      min: 0,
       max: 2,
+      min: 0,
       step: 0.01,
-      default: 0.5,
     },
     {
+      default: 0.45,
       key: "cell",
       label: "Lattice weight",
-      min: 0,
       max: 2,
+      min: 0,
       step: 0.01,
-      default: 0.45,
     },
     {
+      default: 0.15,
       key: "stepScale",
       label: "Step scale",
-      min: 0.02,
       max: 3,
+      min: 0.02,
       step: 0.005,
-      default: 0.15,
     },
     {
+      default: 0.4,
       key: "hueStep",
       label: "Layer hue",
-      min: 0,
       max: 3,
+      min: 0,
       step: 0.01,
-      default: 0.4,
     },
     {
+      default: 1,
       key: "spread",
       label: "Colour spread",
-      min: 0,
       max: 3,
+      min: 0,
       step: 0.02,
-      default: 1,
     },
     {
+      default: 2.9,
       key: "envRadius",
       label: "Envelope radius",
-      min: 0.15,
       max: 20,
+      min: 0.15,
       step: 0.1,
-      default: 2.9,
     },
     {
+      default: 0.92,
       key: "envCore",
       label: "Envelope core",
-      min: 0.3,
       max: 1.02,
+      min: 0.3,
       step: 0.01,
-      default: 0.92,
     },
     {
+      default: 0.1,
       key: "fill",
       label: "Body fill",
-      min: 0,
       max: 40,
+      min: 0,
       step: 0.05,
-      default: 0.1,
     },
     {
+      default: 300,
       key: "stepClamp",
       label: "Step clamp",
-      min: 5,
       max: 5000,
+      min: 5,
       step: 5,
-      default: 300,
     },
     {
+      default: 0.004,
       key: "scatter",
       label: "Diffusion",
-      min: 0,
       max: 0.2,
+      min: 0,
       step: 0.0005,
-      default: 0.004,
     },
     {
+      default: 30,
       key: "exposure",
       label: "Exposure",
-      min: 0.05,
       max: 500,
+      min: 0.05,
       step: 0.5,
-      default: 30,
     },
     {
+      default: 1.15,
       key: "contrast",
       label: "Contrast",
-      min: 0.15,
       max: 15,
+      min: 0.15,
       step: 0.05,
-      default: 1.15,
     },
     {
+      default: 1.2,
       key: "saturation",
       label: "Saturation",
-      min: 0,
       max: 4,
+      min: 0,
       step: 0.02,
-      default: 1.2,
     },
     {
+      default: 2,
       key: "alphaGain",
       label: "Alpha gain",
-      min: 0.05,
       max: 15,
+      min: 0.05,
       step: 0.1,
-      default: 2,
     },
     {
+      default: 1,
       key: "edge",
       label: "Edge sharpness",
-      min: 0,
       max: 1,
+      min: 0,
       step: 0.01,
-      default: 1,
     },
     {
+      default: 0.98,
       key: "edgeFade",
       label: "Halo falloff",
-      min: 0.1,
       max: 3,
+      min: 0.1,
       step: 0.015,
-      default: 0.98,
     },
   ],
   stateColors: {
@@ -327,6 +327,7 @@ export const orb10Orb: OrbVariant = {
     speaking: { tint: "#ffc492" },
     thinking: { tint: "#e8f4ff" },
   },
+
   statePresets: {
     idle: {
       alphaGain: 2,
@@ -368,8 +369,8 @@ export const orb10Orb: OrbVariant = {
 
 export type Orb10Props = Omit<ShaderOrbProps, "variant">;
 
-export function Orb10({ size = 280, ...rest }: Orb10Props) {
-  return <ShaderOrb variant={orb10Orb} size={size} {...rest} />;
-}
+export const Orb10 = ({ size = 280, ...rest }: Orb10Props) => (
+  <ShaderOrb variant={orb10Orb} size={size} {...rest} />
+);
 
 export default Orb10;

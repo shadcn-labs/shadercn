@@ -3,8 +3,8 @@
  * Ported from orbkit (WebGL/GLSL) to WebGPU/WGSL for shadercn.
  * Original: https://github.com/zzzzshawn/orbkit
  */
-import { ShaderOrb } from './orbkit-core-wgpu';
-import type { OrbVariant, ShaderOrbProps } from './orbkit-core-wgpu';
+import { ShaderOrb } from "./orbkit-core-wgpu";
+import type { OrbVariant, ShaderOrbProps } from "./orbkit-core-wgpu";
 
 const ROCAILLE_FRAG = `
 const LAYERS: i32 = 10;
@@ -85,10 +85,11 @@ fn orbMain(fragCoord: vec2f, uv: vec2f) -> vec4f {
 `;
 
 export const orb02Orb: OrbVariant = {
+  colors: [],
+  frag: ROCAILLE_FRAG,
   key: "orb-02",
   label: "ORB-02",
   note: "ornate scrollwork on a rolling dome",
-  frag: ROCAILLE_FRAG,
   params: [
     {
       default: 0.5,
@@ -212,7 +213,6 @@ export const orb02Orb: OrbVariant = {
       step: 0.01,
     },
   ],
-  colors: [],
   /*
    * No dome rotation in any state — see the projection note in the shader. The
    * states differ by how fast the scrollwork evolves and how dense it is.
@@ -224,7 +224,6 @@ export const orb02Orb: OrbVariant = {
    * state change only retimes the scrollwork.
    */
   statePresets: {
-    // calm: slow evolution, open scrollwork
     idle: {
       alphaGain: 2.4,
       coreClamp: 0.12,
@@ -233,6 +232,16 @@ export const orb02Orb: OrbVariant = {
       rim: 0.12,
       speed: 0.5,
       warpFreq: 1.5,
+      zoom: 4.4,
+    },
+    speaking: {
+      alphaGain: 3,
+      coreClamp: 0.07,
+      falloff: 1.1,
+      gain: 0.85,
+      rim: 0.2,
+      speed: 3,
+      warpFreq: 1.2,
       zoom: 4.4,
     },
     thinking: {
@@ -245,35 +254,13 @@ export const orb02Orb: OrbVariant = {
       warpFreq: 1.6,
       zoom: 4.6,
     },
-    /*
-      speaking is SPEED-led, like hydrogen's: the scrollwork keeps the idle
-      structure but reforms itself several times faster, with hotter knots and
-      MORE contrast (falloff above 1), so it reads as the same orb answering
-      at speed. Densifying the pattern here (higher zoom/warpFreq) is what
-      used to make speaking look like a blurry mesh: more detail per pixel and
-      a flatter falloff wash the filigree into fog.
-
-      warpFreq 1.2 is deliberate: the shader scales it by the input volume,
-      and speaking synthesizes input around 0.65, so the EFFECTIVE frequency
-      lands back at the crisp ~1.5 that idle shows at zero input.
-    */
-    speaking: {
-      alphaGain: 3,
-      coreClamp: 0.07,
-      falloff: 1.1,
-      gain: 0.85,
-      rim: 0.2,
-      speed: 3,
-      warpFreq: 1.2,
-      zoom: 4.4,
-    },
   },
 };
 
 export type Orb02Props = Omit<ShaderOrbProps, "variant">;
 
-export function Orb02({ size = 280, ...rest }: Orb02Props) {
-  return <ShaderOrb variant={orb02Orb} size={size} {...rest} />;
-}
+export const Orb02 = ({ size = 280, ...rest }: Orb02Props) => (
+  <ShaderOrb variant={orb02Orb} size={size} {...rest} />
+);
 
 export default Orb02;

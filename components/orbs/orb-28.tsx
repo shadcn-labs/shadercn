@@ -3,8 +3,8 @@
  * Ported from orbkit (WebGL/GLSL) to WebGPU/WGSL for shadercn.
  * Original: https://github.com/zzzzshawn/orbkit
  */
-import { ShaderOrb } from './orbkit-core-wgpu';
-import type { OrbVariant, ShaderOrbProps } from './orbkit-core-wgpu';
+import { ShaderOrb } from "./orbkit-core-wgpu";
+import type { OrbVariant, ShaderOrbProps } from "./orbkit-core-wgpu";
 
 const BITDUMB_FRAG = `
 const LEVELS: i32 = 20;
@@ -109,10 +109,16 @@ fn orbMain(fragCoord: vec2f, uv: vec2f) -> vec4f {
 `;
 
 export const orb28Orb: OrbVariant = {
+  colors: [
+    { default: "#ff5a4d", key: "lineA", label: "X lines" },
+    { default: "#59d8ff", key: "lineB", label: "Y lines" },
+    { default: "#101528", key: "base", label: "Body" },
+    { default: "#bcd8ff", key: "rim", label: "Rim" },
+  ],
+  frag: BITDUMB_FRAG,
   key: "orb-28",
   label: "ORB-28",
   note: "nested binary grids shuttering on a tumbling bit-sphere",
-  frag: BITDUMB_FRAG,
   params: [
     {
       default: 0.5,
@@ -233,75 +239,6 @@ export const orb28Orb: OrbVariant = {
       step: 0.015,
     },
   ],
-  colors: [
-    { default: "#ff5a4d", key: "lineA", label: "X lines" },
-    { default: "#59d8ff", key: "lineB", label: "Y lines" },
-    { default: "#101528", key: "base", label: "Body" },
-    { default: "#bcd8ff", key: "rim", label: "Rim" },
-  ],
-  /*
-    The states are staged on the two integrated clocks: thinking runs the
-    shutter cascade hot AND sets the sphere tumbling — the bits computing
-    furiously while the orb turns them over — and speaking tumbles harder
-    still while the flicker stays moderate: the orb turning to answer. Both
-    clocks integrate, so every rate change glides without a phase jump.
-  */
-  statePresets: {
-    /*
-      calm: a steady flicker at double the old rate, lazy tumble. Two bits
-      shallower and the lines a quarter wider, so the grid reads bolder
-      and coarser; the body glow eased down and the rim pulled tight —
-      red and white lines on black, no halo.
-    */
-    idle: {
-      body: 0.9,
-      contrast: 1.2,
-      gain: 1,
-      levels: 10,
-      lineW: 2.5,
-      rim: 0.6,
-      rimPow: 5.2,
-      shutter: 1.02,
-      speed: 1,
-      spin: 0.1,
-    },
-    // computing: the shutter cascade races (2.4x idle) and the tumble goes
-    // with it, eight times idle, on wider lines and a lifted gain; the body
-    // dims so the flickering cells carry the light
-    thinking: {
-      body: 0.85,
-      gain: 1.2,
-      lineW: 2.9,
-      rim: 0.7,
-      shutter: 0.94,
-      speed: 2.4,
-      spin: 0.81,
-    },
-    /*
-      answering: hard fast tumble on a grid five times finer and seven bits
-      deeper, so the sphere goes dense with cells; the body is all but cut
-      and the rim brought up hard and pulled tight, so the light sits on
-      the limb and the circuitry, not the ball.
-
-      gain stays LOW on purpose: the shader multiplies it by (1 + 0.6 *
-      input volume), and speaking synthesizes input around 0.65 — a 1.35
-      preset lands near x1.9 effective, which clamps the lines to white
-      and reads as a pale wash. 0.95 keeps the effective gain near 1.3,
-      where the red survives.
-    */
-    speaking: {
-      body: 0.27,
-      contrast: 1.45,
-      gain: 0.95,
-      gridScale: 10.3,
-      levels: 17,
-      rim: 1.53,
-      rimPow: 10,
-      shutter: 1.2,
-      speed: 3,
-      spin: 1.1,
-    },
-  },
   /*
     Four stageable colours, and one palette across all three states: red
     and white circuitry on pure black. The states are told apart by the
@@ -327,12 +264,54 @@ export const orb28Orb: OrbVariant = {
       rim: "#000000",
     },
   },
+  /*
+    The states are staged on the two integrated clocks: thinking runs the
+    shutter cascade hot AND sets the sphere tumbling — the bits computing
+    furiously while the orb turns them over — and speaking tumbles harder
+    still while the flicker stays moderate: the orb turning to answer. Both
+    clocks integrate, so every rate change glides without a phase jump.
+  */
+  statePresets: {
+    idle: {
+      body: 0.9,
+      contrast: 1.2,
+      gain: 1,
+      levels: 10,
+      lineW: 2.5,
+      rim: 0.6,
+      rimPow: 5.2,
+      shutter: 1.02,
+      speed: 1,
+      spin: 0.1,
+    },
+    speaking: {
+      body: 0.27,
+      contrast: 1.45,
+      gain: 0.95,
+      gridScale: 10.3,
+      levels: 17,
+      rim: 1.53,
+      rimPow: 10,
+      shutter: 1.2,
+      speed: 3,
+      spin: 1.1,
+    },
+    thinking: {
+      body: 0.85,
+      gain: 1.2,
+      lineW: 2.9,
+      rim: 0.7,
+      shutter: 0.94,
+      speed: 2.4,
+      spin: 0.81,
+    },
+  },
 };
 
 export type Orb28Props = Omit<ShaderOrbProps, "variant">;
 
-export function Orb28({ size = 280, ...rest }: Orb28Props) {
-  return <ShaderOrb variant={orb28Orb} size={size} {...rest} />;
-}
+export const Orb28 = ({ size = 280, ...rest }: Orb28Props) => (
+  <ShaderOrb variant={orb28Orb} size={size} {...rest} />
+);
 
 export default Orb28;

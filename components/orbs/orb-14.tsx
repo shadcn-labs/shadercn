@@ -3,8 +3,8 @@
  * Ported from orbkit (WebGL/GLSL) to WebGPU/WGSL for shadercn.
  * Original: https://github.com/zzzzshawn/orbkit
  */
-import { ShaderOrb } from './orbkit-core-wgpu';
-import type { OrbVariant, ShaderOrbProps } from './orbkit-core-wgpu';
+import { ShaderOrb } from "./orbkit-core-wgpu";
+import type { OrbVariant, ShaderOrbProps } from "./orbkit-core-wgpu";
 
 const DITHER_FRAG = `
 // 2x2 Bayer base: floor/fract only. (0,0)=0, (1,0)=.5, (0,1)=.75, (1,1)=.25
@@ -98,10 +98,14 @@ fn orbMain(fragCoord: vec2f, uv: vec2f) -> vec4f {
 `;
 
 export const orb14Orb: OrbVariant = {
+  colors: [
+    { default: "#101426", key: "ink", label: "Ink" },
+    { default: "#cfe6ff", key: "paper", label: "Paper" },
+  ],
+  frag: DITHER_FRAG,
   key: "orb-14",
   label: "ORB-14",
   note: "a lit plasma dome quantized to chunky two-tone pixels",
-  frag: DITHER_FRAG,
   params: [
     {
       default: 0.5,
@@ -187,43 +191,6 @@ export const orb14Orb: OrbVariant = {
       step: 0.05,
     },
   ],
-  colors: [
-    { default: "#101426", key: "ink", label: "Ink" },
-    { default: "#cfe6ff", key: "paper", label: "Paper" },
-  ],
-  /*
-    Staged in the family language: thinking churns the plasma in place while
-    the light freezes, speaking sweeps the light fast and brightens the
-    ladder. `pixel` and `levels` never move between states — both quantize,
-    and a gliding quantizer pops instead of fading.
-  */
-  statePresets: {
-    // calm: waves rolling slowly, dome barely turning
-    idle: {
-      contrast: 1.1,
-      gain: 1,
-      plasma: 0.9,
-      speed: 0.5,
-      spin: 0.15,
-    },
-    // computing: the interference races IN PLACE — wave clock at three
-    // times idle, deeper waves — while the dome stops turning
-    thinking: {
-      contrast: 1.15,
-      gain: 0.95,
-      plasma: 1.15,
-      speed: 1.6,
-      spin: 0.05,
-    },
-    // answering: the whole dome rolls fast and the tones bloom bright
-    speaking: {
-      contrast: 1.05,
-      gain: 1.3,
-      plasma: 1,
-      speed: 1.3,
-      spin: 0.8,
-    },
-  },
   // ink/paper carry the at-a-glance read: cool print at rest, violet-blue
   // while computing, warm amber while answering
   stateColors: {
@@ -231,12 +198,41 @@ export const orb14Orb: OrbVariant = {
     speaking: { ink: "#2a1410", paper: "#ffd9a4" },
     thinking: { ink: "#140f38", paper: "#a9b9ff" },
   },
+  /*
+    Staged in the family language: thinking churns the plasma in place while
+    the light freezes, speaking sweeps the light fast and brightens the
+    ladder. `pixel` and `levels` never move between states — both quantize,
+    and a gliding quantizer pops instead of fading.
+  */
+  statePresets: {
+    idle: {
+      contrast: 1.1,
+      gain: 1,
+      plasma: 0.9,
+      speed: 0.5,
+      spin: 0.15,
+    },
+    speaking: {
+      contrast: 1.05,
+      gain: 1.3,
+      plasma: 1,
+      speed: 1.3,
+      spin: 0.8,
+    },
+    thinking: {
+      contrast: 1.15,
+      gain: 0.95,
+      plasma: 1.15,
+      speed: 1.6,
+      spin: 0.05,
+    },
+  },
 };
 
 export type Orb14Props = Omit<ShaderOrbProps, "variant">;
 
-export function Orb14({ size = 280, ...rest }: Orb14Props) {
-  return <ShaderOrb variant={orb14Orb} size={size} {...rest} />;
-}
+export const Orb14 = ({ size = 280, ...rest }: Orb14Props) => (
+  <ShaderOrb variant={orb14Orb} size={size} {...rest} />
+);
 
 export default Orb14;

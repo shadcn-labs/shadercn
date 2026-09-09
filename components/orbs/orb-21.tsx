@@ -3,8 +3,8 @@
  * Ported from orbkit (WebGL/GLSL) to WebGPU/WGSL for shadercn.
  * Original: https://github.com/zzzzshawn/orbkit
  */
-import { ShaderOrb } from './orbkit-core-wgpu';
-import type { OrbVariant, ShaderOrbProps } from './orbkit-core-wgpu';
+import { ShaderOrb } from "./orbkit-core-wgpu";
+import type { OrbVariant, ShaderOrbProps } from "./orbkit-core-wgpu";
 
 const NIMBUS_FRAG = `
 const STEPS: i32 = 56;
@@ -156,10 +156,19 @@ fn orbMain(fragCoord: vec2f, uv: vec2f) -> vec4f {
 `;
 
 export const orb21Orb: OrbVariant = {
+  /*
+   * The engine uploads these as uC_<key> vec3 uniforms. Warm light against a
+   * cool shadow is what reads as depth — a single-hue cloud looks flat however
+   * well it is shadowed.
+   */
+  colors: [
+    { default: "#ffd7a3", key: "light", label: "Light" },
+    { default: "#3a4a8c", key: "shadow", label: "Shadow" },
+  ],
+  frag: NIMBUS_FRAG,
   key: "orb-21",
   label: "ORB-21",
   note: "light diffusing through a cloud",
-  frag: NIMBUS_FRAG,
   params: [
     {
       default: 10,
@@ -294,21 +303,16 @@ export const orb21Orb: OrbVariant = {
     },
   ],
   /*
-   * The engine uploads these as uC_<key> vec3 uniforms. Warm light against a
-   * cool shadow is what reads as depth — a single-hue cloud looks flat however
-   * well it is shadowed.
-   */
-  colors: [
-    { default: "#ffd7a3", key: "light", label: "Light" },
-    { default: "#3a4a8c", key: "shadow", label: "Shadow" },
-  ],
+    The palette carries the rest of the state read: a warm lamp over cool
+    shadow at rest, shifting violet while it thinks, and burning hot while
+    speaking.
+  */
+  stateColors: {
+    idle: { light: "#ffd7a3", shadow: "#3a4a8c" },
+    speaking: { light: "#ffb066", shadow: "#7a2f6e" },
+    thinking: { light: "#e6d4ff", shadow: "#3b3f96" },
+  },
   statePresets: {
-    /*
-      Every state shares the same speed, geometry and cloud shape — only the
-      AMBIENCE and the palette move, so switching state relights the cloud
-      instead of restaging it. The engine glides params and cross-fades
-      colours on one shared easing, so the change reads as a mood shift.
-    */
     idle: {
       ambient: 0.12,
       power: 1.9,
@@ -325,22 +329,12 @@ export const orb21Orb: OrbVariant = {
       shadowLift: 0.65,
     },
   },
-  /*
-    The palette carries the rest of the state read: a warm lamp over cool
-    shadow at rest, shifting violet while it thinks, and burning hot while
-    speaking.
-  */
-  stateColors: {
-    idle: { light: "#ffd7a3", shadow: "#3a4a8c" },
-    speaking: { light: "#ffb066", shadow: "#7a2f6e" },
-    thinking: { light: "#e6d4ff", shadow: "#3b3f96" },
-  },
 };
 
 export type Orb21Props = Omit<ShaderOrbProps, "variant">;
 
-export function Orb21({ size = 280, ...rest }: Orb21Props) {
-  return <ShaderOrb variant={orb21Orb} size={size} {...rest} />;
-}
+export const Orb21 = ({ size = 280, ...rest }: Orb21Props) => (
+  <ShaderOrb variant={orb21Orb} size={size} {...rest} />
+);
 
 export default Orb21;

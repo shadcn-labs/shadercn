@@ -3,8 +3,8 @@
  * Ported from orbkit (WebGL/GLSL) to WebGPU/WGSL for shadercn.
  * Original: https://github.com/zzzzshawn/orbkit
  */
-import { ShaderOrb } from './orbkit-core-wgpu';
-import type { OrbVariant, ShaderOrbProps } from './orbkit-core-wgpu';
+import { ShaderOrb } from "./orbkit-core-wgpu";
+import type { OrbVariant, ShaderOrbProps } from "./orbkit-core-wgpu";
 
 const MOSAIC_FRAG = `
 fn orbMain(fragCoord: vec2f, uv: vec2f) -> vec4f {
@@ -111,10 +111,14 @@ fn orbMain(fragCoord: vec2f, uv: vec2f) -> vec4f {
 `;
 
 export const orb29Orb: OrbVariant = {
+  colors: [
+    { default: "#fff2dd", key: "lit", label: "Lit tile" },
+    { default: "#161616", key: "wall", label: "Wall" },
+  ],
+  frag: MOSAIC_FRAG,
   key: "orb-29",
   label: "ORB-29",
   note: "an LED tile wall lighting up in flowing blobs, wrapped on the ball",
-  frag: MOSAIC_FRAG,
   params: [
     {
       default: 0.45,
@@ -233,10 +237,6 @@ export const orb29Orb: OrbVariant = {
       step: 0.05,
     },
   ],
-  colors: [
-    { default: "#fff2dd", key: "lit", label: "Lit tile" },
-    { default: "#161616", key: "wall", label: "Wall" },
-  ],
   /*
     Each state animates DIFFERENTLY — its own motion, same palette and
     composition throughout (no stateColors on purpose).
@@ -248,7 +248,6 @@ export const orb29Orb: OrbVariant = {
     voids, so every state keeps them.
   */
   statePresets: {
-    // idle FLOWS: blobs streaming and curling slowly, lava-lamp pace
     idle: {
       churn: 0.5,
       coverage: 0.52,
@@ -258,19 +257,6 @@ export const orb29Orb: OrbVariant = {
       shuffle: 0.6,
       spin: 0.1,
     },
-    // thinking BOILS: the stream stops but the fluid warp churns hard in
-    // place while the confetti races — blobs kneading among the voids
-    thinking: {
-      churn: 1.9,
-      coverage: 0.42,
-      drift: 0.1,
-      gain: 0.95,
-      pulse: 0,
-      shuffle: 5,
-      spin: 0.03,
-    },
-    // speaking PULSES: rings radiate through the flowing wall as the dome
-    // rolls — the rings carve dark bands as much as they light bright ones
     speaking: {
       churn: 0.9,
       coverage: 0.44,
@@ -280,13 +266,22 @@ export const orb29Orb: OrbVariant = {
       shuffle: 1.2,
       spin: 0.45,
     },
+    thinking: {
+      churn: 1.9,
+      coverage: 0.42,
+      drift: 0.1,
+      gain: 0.95,
+      pulse: 0,
+      shuffle: 5,
+      spin: 0.03,
+    },
   },
 };
 
 export type Orb29Props = Omit<ShaderOrbProps, "variant">;
 
-export function Orb29({ size = 280, ...rest }: Orb29Props) {
-  return <ShaderOrb variant={orb29Orb} size={size} {...rest} />;
-}
+export const Orb29 = ({ size = 280, ...rest }: Orb29Props) => (
+  <ShaderOrb variant={orb29Orb} size={size} {...rest} />
+);
 
 export default Orb29;

@@ -51,10 +51,12 @@ export interface OrbDrive {
   paused?: boolean;
 }
 
-export function defaultValuesFor(variant: OrbVariant): {
+export const defaultValuesFor = (
+  variant: OrbVariant
+): {
   params: Record<string, number>;
   colors: Record<string, string>;
-} {
+} => {
   const params: Record<string, number> = {};
   for (const p of variant.params) {
     params[p.key] = p.default;
@@ -66,9 +68,9 @@ export function defaultValuesFor(variant: OrbVariant): {
   }
 
   return { colors, params };
-}
+};
 
-export function hexToRgb(hex: string): [number, number, number] {
+export const hexToRgb = (hex: string): [number, number, number] => {
   let h = hex.replace("#", "").trim();
   if (h.length === 3) {
     h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2];
@@ -78,13 +80,20 @@ export function hexToRgb(hex: string): [number, number, number] {
     return [1, 1, 1];
   }
 
-  return [((n >> 16) & 255) / 255, ((n >> 8) & 255) / 255, (n & 255) / 255];
-}
+  return [
+    Math.floor(n / 0x1_00_00) / 255,
+    (Math.floor(n / 0x1_00) % 256) / 255,
+    (n % 256) / 255,
+  ];
+};
 
 /* -------------------------------- WGSL module ------------------------------- */
 
-/** Noise, fbm, tanh, and screen-space helpers prepended to every orb shader. */
-export const ORB_WGSL_HELPERS = /* wgsl */ `
+/**
+ * Noise, fbm, tanh, and screen-space helpers prepended to every orb shader.
+ */
+// biome-ignore lint: wgsl tagged template
+export const ORB_WGSL_HELPERS = `
 fn hash(p: vec2f) -> f32 {
   return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);
 }
@@ -161,7 +170,7 @@ const BASE_STRUCT_FIELDS = [
  * helpers, the variant body, and the fragment entry point. `effect()` generates the
  * fullscreen vertex stage.
  */
-export function buildOrbShaderSource(variant: OrbVariant): string {
+export const buildOrbShaderSource = (variant: OrbVariant): string => {
   // Param and color keys share one variant namespace but not the struct's:
   // `p_`/`c_` prefixes keep a param and a color of the same name apart.
   const fields: Record<string, string> = { ...FIXED_UNIFORM_FIELDS };
@@ -199,13 +208,13 @@ fn fs_main(@location(0) screenUV: vec2f) -> @location(0) vec4f {
   return orbMain(gFragCoord, orbUV());
 }
 `;
-}
+};
 
 /** Initial uniform values for a variant: defaults, resting volumes, and target size. */
-export function orbInitialUniforms(
+export const orbInitialUniforms = (
   variant: OrbVariant,
   res: readonly [number, number]
-): Record<string, unknown> {
+): Record<string, unknown> => {
   const values: Record<string, unknown> = {
     anim: 0,
     inputVol: 0,
@@ -222,7 +231,7 @@ export function orbInitialUniforms(
   }
 
   return values;
-}
+};
 
 /* ---------------------------------- drive ---------------------------------- */
 
@@ -233,7 +242,7 @@ const MAX_STEP = 0.05;
 const clamp01 = (n: number) => Math.min(1, Math.max(0, n));
 
 /** Where a state's synthesized [input, output] volumes sit at `t` seconds. */
-function targetVolumes(state: OrbState, t: number): [number, number] {
+const targetVolumes = (state: OrbState, t: number): [number, number] => {
   if (state === "speaking") {
     return [
       clamp01(0.65 + Math.sin(t * 4.8) * 0.22),
@@ -251,21 +260,21 @@ function targetVolumes(state: OrbState, t: number): [number, number] {
   }
 
   return [0, 0.3];
-}
+};
 
 /**
  * Semi-implicit spring step. Both outputs land in this shared cell rather than a
  * fresh object: it runs once per param per frame.
  */
 const springOut = { v: 0, x: 0 };
-function springStep(x: number, v: number, target: number, dt: number) {
+const springStep = (x: number, v: number, target: number, dt: number) => {
   const f = 1 + 2 * dt * PARAM_EASE;
   const hoo = dt * PARAM_EASE * PARAM_EASE;
   const hhoo = dt * hoo;
   const detInv = 1 / (f + hhoo);
   springOut.x = (f * x + dt * v + hhoo * target) * detInv;
   springOut.v = (v + hoo * (target - x)) * detInv;
-}
+};
 
 /* ---------------------------------- scene ---------------------------------- */
 
@@ -280,12 +289,12 @@ export interface OrbScene {
  * One orb: its compiled effect plus the eased snapshot of every param and colour.
  * Swapping states retargets the springs, so transitions are continuous.
  */
-export function createOrbScene(
+export const createOrbScene = (
   gpu: Gpu,
   variant: OrbVariant,
   output: Surface,
   drive: OrbDrive
-): OrbScene {
+): OrbScene => {
   const shader = effect(gpu, buildOrbShaderSource(variant), {
     label: variant.key,
     set: { params: orbInitialUniforms(variant, output.size) },
@@ -398,7 +407,7 @@ export function createOrbScene(
     },
     shader,
   };
-}
+};
 
 /* --------------------------------- renderer -------------------------------- */
 
@@ -417,14 +426,14 @@ export interface OrbRendererOptions {
  * Owns one WebGPU device for one canvas: surface, scene, and frame loop. `ready`
  * rejects when initialization fails; `dispose` is idempotent and safe mid-init.
  */
-export function createOrbRenderer({
+export const createOrbRenderer = ({
   canvas,
   variant,
   drive,
   maxDpr = 2,
   pauseOffscreen = true,
   onFirstFrame,
-}: OrbRendererOptions) {
+}: OrbRendererOptions) => {
   let disposed = false;
   let gpu: Gpu | undefined;
   let loop: { stop(): void } | undefined;
@@ -486,4 +495,4 @@ export function createOrbRenderer({
   })();
 
   return { dispose, ready };
-}
+};

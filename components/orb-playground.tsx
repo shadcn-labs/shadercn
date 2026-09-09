@@ -266,7 +266,7 @@ export const OrbPlayground = ({
           </Button>
         </div>
 
-        <label className="flex flex-col gap-2 text-xs">
+        <div className="flex flex-col gap-2 text-xs">
           <span className="flex items-center justify-between">
             <span className="text-muted-foreground">Size</span>
             <span className="tabular-nums">{size}px</span>
@@ -278,7 +278,7 @@ export const OrbPlayground = ({
             step={10}
             value={[size]}
           />
-        </label>
+        </div>
 
         {variant.colors.length > 0 && (
           <div className="flex flex-col gap-3">
@@ -319,7 +319,7 @@ export const OrbPlayground = ({
           </Button>
           {!draft.autoDrive && (
             <>
-              <label className="flex flex-col gap-2 text-xs">
+              <div className="flex flex-col gap-2 text-xs">
                 <span className="flex items-center justify-between">
                   <span>Input</span>
                   <span className="tabular-nums">
@@ -333,8 +333,8 @@ export const OrbPlayground = ({
                   step={0.01}
                   value={[draft.input]}
                 />
-              </label>
-              <label className="flex flex-col gap-2 text-xs">
+              </div>
+              <div className="flex flex-col gap-2 text-xs">
                 <span className="flex items-center justify-between">
                   <span>Output</span>
                   <span className="tabular-nums">
@@ -348,7 +348,7 @@ export const OrbPlayground = ({
                   step={0.01}
                   value={[draft.output]}
                 />
-              </label>
+              </div>
             </>
           )}
         </div>
@@ -356,7 +356,7 @@ export const OrbPlayground = ({
         <div className="flex flex-col gap-3">
           <span className="text-muted-foreground text-xs">Params</span>
           {variant.params.map((p) => (
-            <label className="flex flex-col gap-2 text-xs" key={p.key}>
+            <div className="flex flex-col gap-2 text-xs" key={p.key}>
               <span className="flex items-center justify-between">
                 <span>{p.label}</span>
                 <span className="tabular-nums">
@@ -374,7 +374,7 @@ export const OrbPlayground = ({
                 step={p.step}
                 value={[draft.params[p.key]]}
               />
-            </label>
+            </div>
           ))}
         </div>
       </aside>

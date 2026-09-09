@@ -3,8 +3,8 @@
  * Ported from orbkit (WebGL/GLSL) to WebGPU/WGSL for shadercn.
  * Original: https://github.com/zzzzshawn/orbkit
  */
-import { ShaderOrb } from './orbkit-core-wgpu';
-import type { OrbVariant, ShaderOrbProps } from './orbkit-core-wgpu';
+import { ShaderOrb } from "./orbkit-core-wgpu";
+import type { OrbVariant, ShaderOrbProps } from "./orbkit-core-wgpu";
 
 const RADAR_FRAG = `
 const VORTICES: i32 = 6;
@@ -205,10 +205,24 @@ fn orbMain(fragCoord: vec2f, uv: vec2f) -> vec4f {
 `;
 
 export const orb27Orb: OrbVariant = {
+  /*
+   * The paper and the seven classes, quiet to peak: grey, blue, cyan,
+   * green, red, yellow, magenta — the radar legend of the reference.
+   */
+  colors: [
+    { default: "#efe9dc", key: "paper", label: "Paper" },
+    { default: "#a9a9a6", key: "c0", label: "Quiet" },
+    { default: "#2e5df0", key: "c1", label: "Class 1" },
+    { default: "#38d9ec", key: "c2", label: "Class 2" },
+    { default: "#22c35c", key: "c3", label: "Class 3" },
+    { default: "#e8322a", key: "c4", label: "Class 4" },
+    { default: "#f5d020", key: "c5", label: "Class 5" },
+    { default: "#e030c0", key: "c6", label: "Peak" },
+  ],
+  frag: RADAR_FRAG,
   key: "orb-27",
   label: "ORB-27",
   note: "a weather-radar mosaic, fronts of coloured pixels sweeping the ball",
-  frag: RADAR_FRAG,
   params: [
     {
       default: 0.6,
@@ -338,20 +352,13 @@ export const orb27Orb: OrbVariant = {
     },
     { default: 0.35, key: "rim", label: "Rim", max: 1, min: 0, step: 0.01 },
   ],
-  /*
-   * The paper and the seven classes, quiet to peak: grey, blue, cyan,
-   * green, red, yellow, magenta — the radar legend of the reference.
-   */
-  colors: [
-    { default: "#efe9dc", key: "paper", label: "Paper" },
-    { default: "#a9a9a6", key: "c0", label: "Quiet" },
-    { default: "#2e5df0", key: "c1", label: "Class 1" },
-    { default: "#38d9ec", key: "c2", label: "Class 2" },
-    { default: "#22c35c", key: "c3", label: "Class 3" },
-    { default: "#e8322a", key: "c4", label: "Class 4" },
-    { default: "#f5d020", key: "c5", label: "Class 5" },
-    { default: "#e030c0", key: "c6", label: "Peak" },
-  ],
+  // the legend holds; the paper cools while searching and warms while
+  // answering
+  stateColors: {
+    idle: { paper: "#efe9dc" },
+    speaking: { paper: "#f5e6d0" },
+    thinking: { paper: "#e6e9ee" },
+  },
   /*
     Staged on the drift, the swirl, the window and the fill. The grid, the
     zoom and the storm scale all multiply a coordinate or sit inside a
@@ -359,8 +366,6 @@ export const orb27Orb: OrbVariant = {
     bounded, and glides safely.
   */
   statePresets: {
-    // at rest: fronts drifting, the ball rolling at a steady turn, the
-    // quiet areas sparse, a slow twinkle
     idle: {
       curve: 1.4,
       density: 1,
@@ -374,35 +379,6 @@ export const orb27Orb: OrbVariant = {
       twinkle: 3,
       warp: 0.5,
     },
-    /*
-      searching: the storms go FINE and the swirl hard — the storm scale at
-      three times rest, the vortices twisting at nearly three times the
-      rest angle on a doubled bend, the roll doubled — with the window
-      thrown open (quiet threshold at zero, peak at half), so the whole
-      ball is small, tightly wound systems. The storm scale multiplies a
-      coordinate, so the glide into and out of thinking passes through a
-      rescale — chosen deliberately.
-    */
-    thinking: {
-      curve: 1.7,
-      density: 0.9,
-      dither: 0.18,
-      freq: 5.2,
-      hi: 0.545,
-      lo: 0,
-      sparse: 0.22,
-      speed: 2.4,
-      spin: 0.51,
-      swirl: 4,
-      twinkle: 12,
-      warp: 1.06,
-    },
-    /*
-      answering: the weather FILLS IN and RACES. The quiet threshold drops
-      to zero so every cell reads as weather, the fronts widen into red and
-      yellow with magenta peaks, the drift runs at six times rest on the
-      thinking roll, and the paper grain comes up.
-    */
     speaking: {
       curve: 1.3,
       density: 1.15,
@@ -417,20 +393,27 @@ export const orb27Orb: OrbVariant = {
       twinkle: 5,
       warp: 0.45,
     },
-  },
-  // the legend holds; the paper cools while searching and warms while
-  // answering
-  stateColors: {
-    idle: { paper: "#efe9dc" },
-    speaking: { paper: "#f5e6d0" },
-    thinking: { paper: "#e6e9ee" },
+    thinking: {
+      curve: 1.7,
+      density: 0.9,
+      dither: 0.18,
+      freq: 5.2,
+      hi: 0.545,
+      lo: 0,
+      sparse: 0.22,
+      speed: 2.4,
+      spin: 0.51,
+      swirl: 4,
+      twinkle: 12,
+      warp: 1.06,
+    },
   },
 };
 
 export type Orb27Props = Omit<ShaderOrbProps, "variant">;
 
-export function Orb27({ size = 280, ...rest }: Orb27Props) {
-  return <ShaderOrb variant={orb27Orb} size={size} {...rest} />;
-}
+export const Orb27 = ({ size = 280, ...rest }: Orb27Props) => (
+  <ShaderOrb variant={orb27Orb} size={size} {...rest} />
+);
 
 export default Orb27;

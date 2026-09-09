@@ -3,8 +3,8 @@
  * Ported from orbkit (WebGL/GLSL) to WebGPU/WGSL for shadercn.
  * Original: https://github.com/zzzzshawn/orbkit
  */
-import { ShaderOrb } from './orbkit-core-wgpu';
-import type { OrbVariant, ShaderOrbProps } from './orbkit-core-wgpu';
+import { ShaderOrb } from "./orbkit-core-wgpu";
+import type { OrbVariant, ShaderOrbProps } from "./orbkit-core-wgpu";
 
 const TEMPEST_FRAG = `
 const PI: f32 = 3.14159265359;
@@ -128,10 +128,22 @@ fn orbMain(fragCoord: vec2f, uv: vec2f) -> vec4f {
 `;
 
 export const orb17Orb: OrbVariant = {
+  /*
+   * Five stops: four climbing the storm field plus the lightning colour.
+   * The iridescence param multiplies a rainbow over all of them, so the
+   * palette here sets the mood and the shimmer supplies the extra hues.
+   */
+  colors: [
+    { default: "#2a0f4e", key: "deep", label: "Deep" },
+    { default: "#0fd0c3", key: "low", label: "Low pressure" },
+    { default: "#ff5e9d", key: "mid", label: "Mid pressure" },
+    { default: "#ffd166", key: "hot", label: "High pressure" },
+    { default: "#eaf4ff", key: "flash", label: "Lightning" },
+  ],
+  frag: TEMPEST_FRAG,
   key: "orb-17",
   label: "ORB-17",
   note: "a grainy many-coloured storm with band shear and lightning",
-  frag: TEMPEST_FRAG,
   params: [
     {
       default: 0.9,
@@ -266,56 +278,6 @@ export const orb17Orb: OrbVariant = {
       step: 0.015,
     },
   ],
-  /*
-   * Five stops: four climbing the storm field plus the lightning colour.
-   * The iridescence param multiplies a rainbow over all of them, so the
-   * palette here sets the mood and the shimmer supplies the extra hues.
-   */
-  colors: [
-    { default: "#2a0f4e", key: "deep", label: "Deep" },
-    { default: "#0fd0c3", key: "low", label: "Low pressure" },
-    { default: "#ff5e9d", key: "mid", label: "Mid pressure" },
-    { default: "#ffd166", key: "hot", label: "High pressure" },
-    { default: "#eaf4ff", key: "flash", label: "Lightning" },
-  ],
-  /*
-    Staged in the family language. Grain and grain size never move between
-    states — grain is a quantizer, and a gliding quantizer pops instead of
-    fading (same rule as the dither orb's cell grid).
-  */
-  statePresets: {
-    // brooding: bands drifting, the odd distant flicker
-    idle: {
-      churn: 1.4,
-      contrast: 1.35,
-      flash: 0.7,
-      gain: 1.15,
-      shear: 1.1,
-      speed: 0.9,
-      warp: 2.2,
-    },
-    // computing: the storm churns IN PLACE — clock at twice idle, deeper
-    // warp, bands almost stalled, lightning held back
-    thinking: {
-      churn: 2.1,
-      contrast: 1.5,
-      flash: 0.6,
-      gain: 1.05,
-      shear: 0.6,
-      speed: 2.2,
-      warp: 3.4,
-    },
-    // answering: bands race, the field blooms bright, lightning strobes
-    speaking: {
-      churn: 1.6,
-      contrast: 1.2,
-      flash: 2.6,
-      gain: 1.45,
-      shear: 2.2,
-      speed: 1.6,
-      warp: 2.6,
-    },
-  },
   // teal-magenta-amber carnival at rest, cold indigo-cyan while computing,
   // hot magma while answering
   stateColors: {
@@ -341,12 +303,46 @@ export const orb17Orb: OrbVariant = {
       mid: "#9d4ce0",
     },
   },
+  /*
+    Staged in the family language. Grain and grain size never move between
+    states — grain is a quantizer, and a gliding quantizer pops instead of
+    fading (same rule as the dither orb's cell grid).
+  */
+  statePresets: {
+    idle: {
+      churn: 1.4,
+      contrast: 1.35,
+      flash: 0.7,
+      gain: 1.15,
+      shear: 1.1,
+      speed: 0.9,
+      warp: 2.2,
+    },
+    speaking: {
+      churn: 1.6,
+      contrast: 1.2,
+      flash: 2.6,
+      gain: 1.45,
+      shear: 2.2,
+      speed: 1.6,
+      warp: 2.6,
+    },
+    thinking: {
+      churn: 2.1,
+      contrast: 1.5,
+      flash: 0.6,
+      gain: 1.05,
+      shear: 0.6,
+      speed: 2.2,
+      warp: 3.4,
+    },
+  },
 };
 
 export type Orb17Props = Omit<ShaderOrbProps, "variant">;
 
-export function Orb17({ size = 280, ...rest }: Orb17Props) {
-  return <ShaderOrb variant={orb17Orb} size={size} {...rest} />;
-}
+export const Orb17 = ({ size = 280, ...rest }: Orb17Props) => (
+  <ShaderOrb variant={orb17Orb} size={size} {...rest} />
+);
 
 export default Orb17;

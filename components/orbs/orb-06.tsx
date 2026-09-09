@@ -3,8 +3,8 @@
  * Ported from orbkit (WebGL/GLSL) to WebGPU/WGSL for shadercn.
  * Original: https://github.com/zzzzshawn/orbkit
  */
-import { ShaderOrb } from './orbkit-core-wgpu';
-import type { OrbVariant, ShaderOrbProps } from './orbkit-core-wgpu';
+import { ShaderOrb } from "./orbkit-core-wgpu";
+import type { OrbVariant, ShaderOrbProps } from "./orbkit-core-wgpu";
 
 const MOIRE_FRAG = `
 const LAYERS: i32 = 100;
@@ -137,8 +137,8 @@ fn orbMain(fragCoord: vec2f, uv: vec2f) -> vec4f {
 
 export const orb06Orb: OrbVariant = {
   colors: [
-    { key: "tint", label: "Tint", default: "#ffffff" },
-    { key: "sheen", label: "Sheen", default: "#bcd8ff" },
+    { default: "#ffffff", key: "tint", label: "Tint" },
+    { default: "#bcd8ff", key: "sheen", label: "Sheen" },
   ],
   frag: MOIRE_FRAG,
   key: "orb-06",
@@ -146,117 +146,117 @@ export const orb06Orb: OrbVariant = {
   note: "a hundred glowing lattices stacked through the ball, interfering",
   params: [
     {
-      key: "speed",
-      label: "Anim speed",
-      min: 0.015,
-      max: 10,
-      step: 0.05,
       default: 0.5,
       integrate: true,
+      key: "speed",
+      label: "Anim speed",
+      max: 10,
+      min: 0.015,
+      step: 0.05,
     },
     {
+      default: 0.02,
       key: "drift",
       label: "Layer walk",
-      min: 0,
       max: 0.3,
+      min: 0,
       step: 0.002,
-      default: 0.02,
     },
     {
+      default: 0.9,
       key: "radius",
       label: "Radius",
-      min: 0.15,
       max: 3,
+      min: 0.15,
       step: 0.015,
-      default: 0.9,
     },
     {
+      default: 4,
       key: "scale",
       label: "Pattern scale",
-      min: 0.3,
       max: 20,
+      min: 0.3,
       step: 0.1,
-      default: 4,
     },
     {
+      default: 0.3,
       key: "bulge",
       label: "Dome bulge",
-      min: 0,
       max: 4,
+      min: 0,
       step: 0.02,
-      default: 0.3,
     },
     {
+      default: 0.7,
       key: "depth",
       label: "Stack depth",
-      min: 0,
       max: 1.6,
+      min: 0,
       step: 0.01,
-      default: 0.7,
     },
     {
+      default: 0.7,
       key: "freq",
       label: "Lattice spacing",
-      min: 0.05,
       max: 5,
+      min: 0.05,
       step: 0.01,
-      default: 0.7,
     },
     {
+      default: 0.05,
       key: "glowSize",
       label: "Glow size",
-      min: 0.002,
       max: 1,
+      min: 0.002,
       step: 0.002,
-      default: 0.05,
     },
     {
+      default: 0.037,
       key: "hueRate",
       label: "Hue per layer",
-      min: 0,
       max: 0.5,
+      min: 0,
       step: 0.002,
-      default: 0.037,
     },
     {
+      default: 4,
       key: "exposure",
       label: "Exposure",
-      min: 0.05,
       max: 200,
+      min: 0.05,
       step: 0.05,
-      default: 4,
     },
     {
+      default: 1.1,
       key: "contrast",
       label: "Contrast",
-      min: 0.15,
       max: 10,
+      min: 0.15,
       step: 0.05,
-      default: 1.1,
     },
     {
+      default: 1.2,
       key: "saturation",
       label: "Saturation",
-      min: 0,
       max: 4,
+      min: 0,
       step: 0.02,
-      default: 1.2,
     },
     {
+      default: 0.45,
       key: "light",
       label: "Key light",
-      min: 0,
       max: 3,
+      min: 0,
       step: 0.015,
-      default: 0.45,
     },
     {
+      default: 0.4,
       key: "rim",
       label: "Rim sheen",
-      min: 0,
       max: 3,
+      min: 0,
       step: 0.015,
-      default: 0.4,
     },
   ],
   stateColors: {
@@ -299,8 +299,8 @@ export const orb06Orb: OrbVariant = {
 
 export type Orb06Props = Omit<ShaderOrbProps, "variant">;
 
-export function Orb06({ size = 280, ...rest }: Orb06Props) {
-  return <ShaderOrb variant={orb06Orb} size={size} {...rest} />;
-}
+export const Orb06 = ({ size = 280, ...rest }: Orb06Props) => (
+  <ShaderOrb variant={orb06Orb} size={size} {...rest} />
+);
 
 export default Orb06;

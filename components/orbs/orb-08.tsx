@@ -3,8 +3,8 @@
  * Ported from orbkit (WebGL/GLSL) to WebGPU/WGSL for shadercn.
  * Original: https://github.com/zzzzshawn/orbkit
  */
-import { ShaderOrb } from './orbkit-core-wgpu';
-import type { OrbVariant, ShaderOrbProps } from './orbkit-core-wgpu';
+import { ShaderOrb } from "./orbkit-core-wgpu";
+import type { OrbVariant, ShaderOrbProps } from "./orbkit-core-wgpu";
 
 const NACRE_FRAG = `
 const OCTAVES: i32 = 10;
@@ -153,10 +153,10 @@ fn orbMain(fragCoord: vec2f, uv: vec2f) -> vec4f {
 
 export const orb08Orb: OrbVariant = {
   colors: [
-    { key: "deep", label: "Shell body", default: "#0d1430" },
-    { key: "low", label: "Dim layer", default: "#2fb8c6" },
-    { key: "crest", label: "Bright layer", default: "#fff1de" },
-    { key: "sheen", label: "Sheen", default: "#bfe4ff" },
+    { default: "#0d1430", key: "deep", label: "Shell body" },
+    { default: "#2fb8c6", key: "low", label: "Dim layer" },
+    { default: "#fff1de", key: "crest", label: "Bright layer" },
+    { default: "#bfe4ff", key: "sheen", label: "Sheen" },
   ],
   frag: NACRE_FRAG,
   key: "orb-08",
@@ -164,137 +164,137 @@ export const orb08Orb: OrbVariant = {
   note: "mother-of-pearl contour bands, each layer its own hue",
   params: [
     {
-      key: "speed",
-      label: "Boil",
-      min: 0.015,
-      max: 10,
-      step: 0.05,
       default: 0.35,
       integrate: true,
+      key: "speed",
+      label: "Boil",
+      max: 10,
+      min: 0.015,
+      step: 0.05,
     },
     {
-      key: "flow",
-      label: "Band drift",
-      min: 0,
-      max: 5,
-      step: 0.03,
       default: 0.25,
       integrate: true,
+      key: "flow",
+      label: "Band drift",
+      max: 5,
+      min: 0,
+      step: 0.03,
     },
     {
-      key: "swirl",
-      label: "Swirl",
-      min: 0,
-      max: 3,
-      step: 0.015,
       default: 0.06,
       integrate: true,
+      key: "swirl",
+      label: "Swirl",
+      max: 3,
+      min: 0,
+      step: 0.015,
     },
     {
+      default: 0.9,
       key: "radius",
       label: "Radius",
-      min: 0.15,
       max: 3,
+      min: 0.15,
       step: 0.015,
-      default: 0.9,
     },
     {
+      default: 5.5,
       key: "scale",
       label: "Pattern scale",
-      min: 0.3,
       max: 20,
+      min: 0.3,
       step: 0.1,
-      default: 5.5,
     },
     {
+      default: 0.3,
       key: "bulge",
       label: "Dome bulge",
-      min: 0,
       max: 4,
+      min: 0,
       step: 0.02,
-      default: 0.3,
     },
-    { key: "warp", label: "Warp", min: 0, max: 3, step: 0.02, default: 1 },
-    { key: "beat", label: "Warp beat", min: 0, max: 1, step: 0.01, default: 0 },
+    { default: 1, key: "warp", label: "Warp", max: 3, min: 0, step: 0.02 },
+    { default: 0, key: "beat", label: "Warp beat", max: 1, min: 0, step: 0.01 },
     {
+      default: 0.2,
       key: "thick",
       label: "Band width",
-      min: 0.02,
       max: 2,
+      min: 0.02,
       step: 0.01,
-      default: 0.2,
     },
     {
+      default: 0.1,
       key: "split",
       label: "Chromatic split",
-      min: 0,
       max: 1,
+      min: 0,
       step: 0.005,
-      default: 0.1,
     },
     {
+      default: 0.7,
       key: "iris",
       label: "Iridescence",
-      min: 0,
       max: 2,
+      min: 0,
       step: 0.01,
-      default: 0.7,
     },
     {
+      default: 0.315,
       key: "irisScale",
       label: "Iridescence scale",
-      min: 0,
       max: 2,
+      min: 0,
       step: 0.005,
-      default: 0.315,
     },
     {
+      default: 1.34,
       key: "view",
       label: "Angle shift",
-      min: 0,
       max: 3,
+      min: 0,
       step: 0.01,
-      default: 1.34,
     },
     {
+      default: 0.8,
       key: "floor",
       label: "Body fill",
-      min: 0,
       max: 3,
+      min: 0,
       step: 0.01,
-      default: 0.8,
     },
     {
+      default: 1.1,
       key: "gain",
       label: "Brightness",
-      min: 0.05,
       max: 5,
+      min: 0.05,
       step: 0.05,
-      default: 1.1,
     },
     {
+      default: 1.15,
       key: "contrast",
       label: "Contrast",
-      min: 0.15,
       max: 10,
+      min: 0.15,
       step: 0.05,
-      default: 1.15,
     },
     {
+      default: 0.75,
       key: "light",
       label: "Key light",
-      min: 0,
       max: 3,
+      min: 0,
       step: 0.015,
-      default: 0.75,
     },
     {
+      default: 0.5,
       key: "rim",
       label: "Rim sheen",
-      min: 0,
       max: 3,
+      min: 0,
       step: 0.015,
-      default: 0.5,
     },
   ],
   stateColors: {
@@ -317,6 +317,7 @@ export const orb08Orb: OrbVariant = {
       sheen: "#9fd0ff",
     },
   },
+
   statePresets: {
     idle: {
       bulge: 0.8,
@@ -364,8 +365,8 @@ export const orb08Orb: OrbVariant = {
 
 export type Orb08Props = Omit<ShaderOrbProps, "variant">;
 
-export function Orb08({ size = 280, ...rest }: Orb08Props) {
-  return <ShaderOrb variant={orb08Orb} size={size} {...rest} />;
-}
+export const Orb08 = ({ size = 280, ...rest }: Orb08Props) => (
+  <ShaderOrb variant={orb08Orb} size={size} {...rest} />
+);
 
 export default Orb08;

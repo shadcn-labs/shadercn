@@ -3,8 +3,8 @@
  * Ported from orbkit (WebGL/GLSL) to WebGPU/WGSL for shadercn.
  * Original: https://github.com/zzzzshawn/orbkit
  */
-import { ShaderOrb } from './orbkit-core-wgpu';
-import type { OrbVariant, ShaderOrbProps } from './orbkit-core-wgpu';
+import { ShaderOrb } from "./orbkit-core-wgpu";
+import type { OrbVariant, ShaderOrbProps } from "./orbkit-core-wgpu";
 
 const FOAM_FRAG = `
 const AA: i32 = 2;
@@ -169,10 +169,20 @@ fn orbMain(fragCoord: vec2f, uv: vec2f) -> vec4f {
 `;
 
 export const orb19Orb: OrbVariant = {
+  /*
+   * Four stops: the two ends of the per-bead hash, the body the packing
+   * sits on, and the glass.
+   */
+  colors: [
+    { default: "#ffffff", key: "low", label: "Dot" },
+    { default: "#eef5ff", key: "high", label: "Dot accent" },
+    { default: "#05070c", key: "body", label: "Body" },
+    { default: "#9dbfe4", key: "sheen", label: "Sheen" },
+  ],
+  frag: FOAM_FRAG,
   key: "orb-19",
   label: "ORB-19",
   note: "beads swelling and shrinking in their cells, packed over the ball",
-  frag: FOAM_FRAG,
   params: [
     {
       default: 0.5,
@@ -322,91 +332,6 @@ export const orb19Orb: OrbVariant = {
       step: 0.015,
     },
   ],
-  /*
-   * Four stops: the two ends of the per-bead hash, the body the packing
-   * sits on, and the glass.
-   */
-  colors: [
-    { default: "#ffffff", key: "low", label: "Dot" },
-    { default: "#eef5ff", key: "high", label: "Dot accent" },
-    { default: "#05070c", key: "body", label: "Body" },
-    { default: "#9dbfe4", key: "sheen", label: "Sheen" },
-  ],
-  /*
-    Staged on BEAD SIZE, which decides whether the ball is a scatter of
-    separate beads or a packed foam, and on wander, which decides how far
-    each one strays from its cell. Packing scale never moves between
-    states — it sets the bead count, and a gliding count reads as the ball
-    inflating rather than as a change of mood.
-  */
-  statePresets: {
-    /*
-      at rest: a sparse, restless screen. The dots sit small with a wide
-      size spread and wander most of a cell, on a dome flattened almost to
-      a disc, so the halftone reads as grain rather than pattern — pushed
-      bright and hard-contrasted so the few dots that land carry.
-    */
-    idle: {
-      bulge: 0.08,
-      contrast: 2.6,
-      edge: 51,
-      gain: 2.28,
-      grow: 0.12,
-      jitter: 0.74,
-      rim: 0.345,
-      skew: 0.63,
-      slide: 0.1,
-      speed: 0.52,
-      swirl: 0.045,
-      vary: 0.19,
-    },
-    /*
-      searching: the screen is set MOVING. The clock runs five times idle,
-      the swirl and slide both open up an order of magnitude, and the
-      generator detunes near double, so the dots stream across the ball
-      rather than sit on it. They swell a little and wander half as far as
-      idle, under a softer contrast and a stronger key light — a flatter,
-      brighter, busier screen.
-    */
-    thinking: {
-      bulge: 0.14,
-      contrast: 0.55,
-      gain: 1.04,
-      grow: 0.19,
-      jitter: 0.37,
-      light: 0.585,
-      rim: 0.24,
-      skew: 1.13,
-      slide: 0.84,
-      speed: 2.55,
-      swirl: 0.57,
-      vary: 0.165,
-    },
-    /*
-      answering: the screen goes HARD. The generator detune drops to zero,
-      so every dot's size runs on the clock alone and the whole screen
-      pulses in step; the size spread opens to its widest and the rim
-      hardness nearly triples, so the dots read as punched holes rather
-      than beads. The dome rises, the dots settle to a quarter of idle's
-      wander, and the body fill is cut — pure white dots on black, at the
-      thinking tempo and a harder contrast still.
-    */
-    speaking: {
-      bulge: 0.28,
-      contrast: 3.2,
-      edge: 141,
-      floorLevel: 0,
-      gain: 1.35,
-      grow: 0.22,
-      jitter: 0.17,
-      saturation: 2.04,
-      skew: 0,
-      slide: 0.55,
-      speed: 2.85,
-      swirl: 0.585,
-      vary: 0.365,
-    },
-  },
   // cool glass at rest, then pure white on black for both working states —
   // the answering one keeps the faintly warm body
   stateColors: {
@@ -429,12 +354,64 @@ export const orb19Orb: OrbVariant = {
       sheen: "#ffffff",
     },
   },
+  /*
+    Staged on BEAD SIZE, which decides whether the ball is a scatter of
+    separate beads or a packed foam, and on wander, which decides how far
+    each one strays from its cell. Packing scale never moves between
+    states — it sets the bead count, and a gliding count reads as the ball
+    inflating rather than as a change of mood.
+  */
+  statePresets: {
+    idle: {
+      bulge: 0.08,
+      contrast: 2.6,
+      edge: 51,
+      gain: 2.28,
+      grow: 0.12,
+      jitter: 0.74,
+      rim: 0.345,
+      skew: 0.63,
+      slide: 0.1,
+      speed: 0.52,
+      swirl: 0.045,
+      vary: 0.19,
+    },
+    speaking: {
+      bulge: 0.28,
+      contrast: 3.2,
+      edge: 141,
+      floorLevel: 0,
+      gain: 1.35,
+      grow: 0.22,
+      jitter: 0.17,
+      saturation: 2.04,
+      skew: 0,
+      slide: 0.55,
+      speed: 2.85,
+      swirl: 0.585,
+      vary: 0.365,
+    },
+    thinking: {
+      bulge: 0.14,
+      contrast: 0.55,
+      gain: 1.04,
+      grow: 0.19,
+      jitter: 0.37,
+      light: 0.585,
+      rim: 0.24,
+      skew: 1.13,
+      slide: 0.84,
+      speed: 2.55,
+      swirl: 0.57,
+      vary: 0.165,
+    },
+  },
 };
 
 export type Orb19Props = Omit<ShaderOrbProps, "variant">;
 
-export function Orb19({ size = 280, ...rest }: Orb19Props) {
-  return <ShaderOrb variant={orb19Orb} size={size} {...rest} />;
-}
+export const Orb19 = ({ size = 280, ...rest }: Orb19Props) => (
+  <ShaderOrb variant={orb19Orb} size={size} {...rest} />
+);
 
 export default Orb19;

@@ -3,8 +3,8 @@
  * Ported from orbkit (WebGL/GLSL) to WebGPU/WGSL for shadercn.
  * Original: https://github.com/zzzzshawn/orbkit
  */
-import { ShaderOrb } from './orbkit-core-wgpu';
-import type { OrbVariant, ShaderOrbProps } from './orbkit-core-wgpu';
+import { ShaderOrb } from "./orbkit-core-wgpu";
+import type { OrbVariant, ShaderOrbProps } from "./orbkit-core-wgpu";
 
 const IRIS_FRAG = `
 const RINGS: i32 = 10;
@@ -129,8 +129,8 @@ fn orbMain(fragCoord: vec2f, uv: vec2f) -> vec4f {
 
 export const orb09Orb: OrbVariant = {
   colors: [
-    { key: "tint", label: "Tint", default: "#ffffff" },
-    { key: "sheen", label: "Sheen", default: "#b9d6ff" },
+    { default: "#ffffff", key: "tint", label: "Tint" },
+    { default: "#b9d6ff", key: "sheen", label: "Sheen" },
   ],
   frag: IRIS_FRAG,
   key: "orb-09",
@@ -138,143 +138,143 @@ export const orb09Orb: OrbVariant = {
   note: "torn rings of rainbow light worn as the ball's latitudes",
   params: [
     {
-      key: "speed",
-      label: "Anim speed",
-      min: 0.015,
-      max: 10,
-      step: 0.05,
       default: 0.6,
       integrate: true,
+      key: "speed",
+      label: "Anim speed",
+      max: 10,
+      min: 0.015,
+      step: 0.05,
     },
     {
-      key: "spin",
-      label: "Roll",
-      min: 0,
-      max: 3,
-      step: 0.015,
       default: 0.12,
       integrate: true,
+      key: "spin",
+      label: "Roll",
+      max: 3,
+      min: 0,
+      step: 0.015,
     },
     {
+      default: 0.4,
       key: "tilt",
       label: "Tilt",
-      min: -1.5,
       max: 1.5,
+      min: -1.5,
       step: 0.015,
-      default: 0.4,
     },
     {
+      default: 0.9,
       key: "radius",
       label: "Radius",
-      min: 0.15,
       max: 3,
+      min: 0.15,
       step: 0.015,
-      default: 0.9,
     },
     {
+      default: 3.5,
       key: "scale",
       label: "Ring spacing",
-      min: 0.3,
       max: 20,
+      min: 0.3,
       step: 0.1,
-      default: 3.5,
     },
-    { key: "warp", label: "Tear", min: 0, max: 3, step: 0.02, default: 0.45 },
+    { default: 0.45, key: "warp", label: "Tear", max: 3, min: 0, step: 0.02 },
     {
+      default: 0.9,
       key: "seed",
       label: "Ring seed",
-      min: 0,
       max: 3,
+      min: 0,
       step: 0.01,
-      default: 0.9,
     },
     {
+      default: 0.05,
       key: "glow",
       label: "Ring glow",
-      min: 0,
       max: 1,
+      min: 0,
       step: 0.002,
-      default: 0.05,
     },
     {
+      default: 0.05,
       key: "lineSoft",
       label: "Ring width",
-      min: 0.002,
       max: 1,
+      min: 0.002,
       step: 0.002,
-      default: 0.05,
     },
     {
+      default: 3,
       key: "inner",
       label: "Inner falloff",
-      min: 0.2,
       max: 12,
+      min: 0.2,
       step: 0.05,
-      default: 3,
     },
     {
+      default: 0.1,
       key: "fringe",
       label: "Rainbow fringe",
-      min: 0,
       max: 2,
+      min: 0,
       step: 0.005,
-      default: 0.1,
     },
     {
+      default: 0.003,
       key: "fringeSoft",
       label: "Fringe width",
-      min: 0.001,
       max: 1,
+      min: 0.001,
       step: 0.001,
-      default: 0.003,
     },
     {
+      default: 0.8,
       key: "ringPhase",
       label: "Ring hue step",
-      min: 0,
       max: 3,
+      min: 0,
       step: 0.01,
-      default: 0.8,
     },
     {
+      default: 1.1,
       key: "exposure",
       label: "Exposure",
-      min: 0.05,
       max: 20,
+      min: 0.05,
       step: 0.05,
-      default: 1.1,
     },
     {
+      default: 1.1,
       key: "contrast",
       label: "Contrast",
-      min: 0.15,
       max: 10,
+      min: 0.15,
       step: 0.05,
-      default: 1.1,
     },
     {
+      default: 1.2,
       key: "saturation",
       label: "Saturation",
-      min: 0,
       max: 4,
+      min: 0,
       step: 0.02,
-      default: 1.2,
     },
     {
+      default: 0.5,
       key: "light",
       label: "Key light",
-      min: 0,
       max: 3,
+      min: 0,
       step: 0.015,
-      default: 0.5,
     },
     {
+      default: 0.4,
       key: "rim",
       label: "Rim sheen",
-      min: 0,
       max: 3,
+      min: 0,
       step: 0.015,
-      default: 0.4,
     },
   ],
   stateColors: {
@@ -282,6 +282,7 @@ export const orb09Orb: OrbVariant = {
     speaking: { sheen: "#ffb277", tint: "#ffc492" },
     thinking: { sheen: "#7ba6ff", tint: "#9db8ff" },
   },
+
   statePresets: {
     idle: {
       contrast: 1.15,
@@ -326,8 +327,8 @@ export const orb09Orb: OrbVariant = {
 
 export type Orb09Props = Omit<ShaderOrbProps, "variant">;
 
-export function Orb09({ size = 280, ...rest }: Orb09Props) {
-  return <ShaderOrb variant={orb09Orb} size={size} {...rest} />;
-}
+export const Orb09 = ({ size = 280, ...rest }: Orb09Props) => (
+  <ShaderOrb variant={orb09Orb} size={size} {...rest} />
+);
 
 export default Orb09;

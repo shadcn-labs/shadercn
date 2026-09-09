@@ -1,30 +1,29 @@
 "use client";
 
+import { defineSound } from "@web-kits/audio";
 import { useAtom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 import { useCallback } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
 
-import { useFeedback } from "@/hooks/use-feedback";
+import * as audio from "@/audio/core";
 
 export const soundEnabledAtom = atomWithStorage("shadercn-sound", true);
 
 export const useSoundEnabled = () => useAtom(soundEnabledAtom);
 
 export const useSoundToggle = () => {
-  const [soundEnabled, setSoundEnabled] = useSoundEnabled();
-  const feedbackOn = useFeedback({ sound: "toggleOn" });
-  const feedbackOff = useFeedback({ sound: "toggleOff" });
+  const [soundEnabled, setSoundEnabled] = useAtom(soundEnabledAtom);
 
   const toggleSound = useCallback(() => {
-    const next = !soundEnabled;
-    if (next) {
-      feedbackOn();
+    if (soundEnabled) {
+      defineSound(audio._patch.sounds["toggle-off"])();
+      setSoundEnabled(false);
     } else {
-      feedbackOff();
+      setSoundEnabled(true);
+      defineSound(audio._patch.sounds["toggle-on"])();
     }
-    setSoundEnabled(next);
-  }, [soundEnabled, setSoundEnabled, feedbackOn, feedbackOff]);
+  }, [soundEnabled, setSoundEnabled]);
 
   useHotkeys("s", () => toggleSound(), { preventDefault: true });
 

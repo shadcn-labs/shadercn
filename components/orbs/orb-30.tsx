@@ -3,8 +3,8 @@
  * Ported from orbkit (WebGL/GLSL) to WebGPU/WGSL for shadercn.
  * Original: https://github.com/zzzzshawn/orbkit
  */
-import { ShaderOrb } from './orbkit-core-wgpu';
-import type { OrbVariant, ShaderOrbProps } from './orbkit-core-wgpu';
+import { ShaderOrb } from "./orbkit-core-wgpu";
+import type { OrbVariant, ShaderOrbProps } from "./orbkit-core-wgpu";
 
 const DROSTE_FRAG = `
 const AA: i32 = 2;
@@ -188,10 +188,24 @@ fn orbMain(fragCoord: vec2f, uv: vec2f) -> vec4f {
 `;
 
 export const orb30Orb: OrbVariant = {
+  /*
+   * Six stops, and they are the picture rather than a palette: the sky the
+   * recursion closes on, its cloud, the dark canopy, the meadow under the
+   * flowers, the planted warm colour, and the glass.
+   */
+  colors: [
+    { default: "#4a92e0", key: "sky", label: "Sky" },
+    { default: "#f7fbff", key: "cloud", label: "Cloud" },
+    { default: "#12401f", key: "canopy", label: "Canopy" },
+    { default: "#5aa63a", key: "meadow", label: "Meadow" },
+    { default: "#156f6a", key: "water", label: "Water" },
+    { default: "#ff6a3a", key: "bloom", label: "Bloom" },
+    { default: "#cfe6ff", key: "sheen", label: "Sheen" },
+  ],
+  frag: DROSTE_FRAG,
   key: "orb-30",
   label: "ORB-30",
   note: "a meadow folding into itself toward a blue vanishing point",
-  frag: DROSTE_FRAG,
   params: [
     {
       default: 0.12,
@@ -381,105 +395,6 @@ export const orb30Orb: OrbVariant = {
       step: 0.015,
     },
   ],
-  /*
-   * Six stops, and they are the picture rather than a palette: the sky the
-   * recursion closes on, its cloud, the dark canopy, the meadow under the
-   * flowers, the planted warm colour, and the glass.
-   */
-  colors: [
-    { default: "#4a92e0", key: "sky", label: "Sky" },
-    { default: "#f7fbff", key: "cloud", label: "Cloud" },
-    { default: "#12401f", key: "canopy", label: "Canopy" },
-    { default: "#5aa63a", key: "meadow", label: "Meadow" },
-    { default: "#156f6a", key: "water", label: "Water" },
-    { default: "#ff6a3a", key: "bloom", label: "Bloom" },
-    { default: "#cfe6ff", key: "sheen", label: "Sheen" },
-  ],
-  /*
-    Staged on the fall, which is the orb's whole subject, and on the haze,
-    which decides how far into the recursion the eye can see. Frame ratio
-    sets how many frames land on the ball; it differs only for idle, and
-    the glide out of rest reads as the tunnel breathing once.
-  */
-  statePresets: {
-    /*
-      at rest: a slow fall, deep haze, weather barely moving — on a frame
-      ratio nearly double the working states, so fewer, larger frames land
-      on the ball, with the horizon dropped below centre. The wall detail
-      is coarsened to a broad smear, the water drained entirely, and the
-      meadow thinned to sparse, oversized flowers; brighter, and more
-      saturated, than the states it falls into.
-    */
-    idle: {
-      bulge: 0.2,
-      cloudCover: 0.42,
-      cloudScale: 1.2,
-      drift: 0.2,
-      fall: 0.12,
-      flowerDensity: 0.27,
-      flowerScale: 24,
-      flowerSize: 0.43,
-      gain: 1.38,
-      haze: 0.8,
-      hazeRange: 0.09,
-      horizon: -0.11,
-      light: 0.345,
-      ratio: 3.06,
-      rim: 0.555,
-      saturation: 1.56,
-      streakFreq: 2.9,
-      streakRad: 0.54,
-      water: 0,
-    },
-    /*
-      searching: the fall QUINTUPLES and the haze closes in over three
-      times as far, so the recursion is swallowed within a frame or two of
-      the middle — the eye is pulled down a tunnel it cannot see the end
-      of. The weather thickens and the meadow goes out of flower. Lit hard
-      against that: the key light nearly triples, and the gain, contrast
-      and saturation all come up, so what the haze leaves is vivid.
-    */
-    thinking: {
-      cloudCover: 0.3,
-      contrast: 1.45,
-      drift: 0.5,
-      fall: 0.6,
-      flowerDensity: 0.28,
-      gain: 1.42,
-      haze: 1,
-      hazeRange: 0.3,
-      light: 0.96,
-      saturation: 2,
-    },
-    /*
-      answering: the fall goes FASTEST of the three — twelve times idle —
-      on a drift five times as quick and a tunnel nearly doubled in scale,
-      with the frames given a slight tilt. The haze lifts to less than half
-      idle over a longer reach, opening the recursion to the vanishing
-      point; the walls go to fine, wide-smeared detail, the clouds scale up
-      threefold, and the meadow comes fully into flower on larger blooms.
-      Lit and saturated hardest of the three.
-    */
-    speaking: {
-      cloudCover: 0.44,
-      cloudScale: 3.65,
-      contrast: 1.45,
-      drift: 1.54,
-      fall: 1.47,
-      flowerDensity: 0.95,
-      flowerScale: 32,
-      gain: 1.36,
-      haze: 0.38,
-      hazeRange: 0.315,
-      horizon: 0.03,
-      light: 0.57,
-      saturation: 2.32,
-      scale: 8.7,
-      streakFreq: 11,
-      streakRad: 1.48,
-      tilt: 0.03,
-    },
-  },
   // the picture keeps its own colours; the states move the weather and the
   // light, cooling toward overcast while searching and warming while
   // answering
@@ -512,12 +427,72 @@ export const orb30Orb: OrbVariant = {
       water: "#12525f",
     },
   },
+  /*
+    Staged on the fall, which is the orb's whole subject, and on the haze,
+    which decides how far into the recursion the eye can see. Frame ratio
+    sets how many frames land on the ball; it differs only for idle, and
+    the glide out of rest reads as the tunnel breathing once.
+  */
+  statePresets: {
+    idle: {
+      bulge: 0.2,
+      cloudCover: 0.42,
+      cloudScale: 1.2,
+      drift: 0.2,
+      fall: 0.12,
+      flowerDensity: 0.27,
+      flowerScale: 24,
+      flowerSize: 0.43,
+      gain: 1.38,
+      haze: 0.8,
+      hazeRange: 0.09,
+      horizon: -0.11,
+      light: 0.345,
+      ratio: 3.06,
+      rim: 0.555,
+      saturation: 1.56,
+      streakFreq: 2.9,
+      streakRad: 0.54,
+      water: 0,
+    },
+    speaking: {
+      cloudCover: 0.44,
+      cloudScale: 3.65,
+      contrast: 1.45,
+      drift: 1.54,
+      fall: 1.47,
+      flowerDensity: 0.95,
+      flowerScale: 32,
+      gain: 1.36,
+      haze: 0.38,
+      hazeRange: 0.315,
+      horizon: 0.03,
+      light: 0.57,
+      saturation: 2.32,
+      scale: 8.7,
+      streakFreq: 11,
+      streakRad: 1.48,
+      tilt: 0.03,
+    },
+    thinking: {
+      cloudCover: 0.3,
+      contrast: 1.45,
+      drift: 0.5,
+      fall: 0.6,
+      flowerDensity: 0.28,
+      gain: 1.42,
+      haze: 1,
+      hazeRange: 0.3,
+      light: 0.96,
+      saturation: 2,
+    },
+  },
 };
 
 export type Orb30Props = Omit<ShaderOrbProps, "variant">;
 
-export function Orb30({ size = 280, ...rest }: Orb30Props) {
-  return <ShaderOrb variant={orb30Orb} size={size} {...rest} />;
-}
+export const Orb30 = ({ size = 280, ...rest }: Orb30Props) => (
+  <ShaderOrb variant={orb30Orb} size={size} {...rest} />
+);
 
 export default Orb30;

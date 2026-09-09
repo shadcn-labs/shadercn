@@ -3,8 +3,8 @@
  * Ported from orbkit (WebGL/GLSL) to WebGPU/WGSL for shadercn.
  * Original: https://github.com/zzzzshawn/orbkit
  */
-import { ShaderOrb } from './orbkit-core-wgpu';
-import type { OrbVariant, ShaderOrbProps } from './orbkit-core-wgpu';
+import { ShaderOrb } from "./orbkit-core-wgpu";
+import type { OrbVariant, ShaderOrbProps } from "./orbkit-core-wgpu";
 
 const HEAT_REST = {
   banding: 0.85,
@@ -159,10 +159,22 @@ fn orbMain(fragCoord: vec2f, uv: vec2f) -> vec4f {
 `;
 
 export const orb33Orb: OrbVariant = {
+  /*
+   * Six stops: five up the thermal ramp, and the paper the screens are
+   * printed on.
+   */
+  colors: [
+    { default: "#0b0a1e", key: "cold", label: "Cold" },
+    { default: "#3b2a9a", key: "cool", label: "Cool" },
+    { default: "#f05a28", key: "warm", label: "Warm" },
+    { default: "#f6b53a", key: "hot", label: "Hot" },
+    { default: "#fff1e6", key: "core", label: "Core" },
+    { default: "#f4ecdf", key: "paper", label: "Paper" },
+  ],
+  frag: HEAT_FRAG,
   key: "orb-33",
   label: "ORB-33",
   note: "a thermal image, risograph-printed on the ball",
-  frag: HEAT_FRAG,
   params: [
     {
       default: 0.5,
@@ -345,18 +357,11 @@ export const orb33Orb: OrbVariant = {
       step: 0.015,
     },
   ],
-  /*
-   * Six stops: five up the thermal ramp, and the paper the screens are
-   * printed on.
-   */
-  colors: [
-    { default: "#0b0a1e", key: "cold", label: "Cold" },
-    { default: "#3b2a9a", key: "cool", label: "Cool" },
-    { default: "#f05a28", key: "warm", label: "Warm" },
-    { default: "#f6b53a", key: "hot", label: "Hot" },
-    { default: "#fff1e6", key: "core", label: "Core" },
-    { default: "#f4ecdf", key: "paper", label: "Paper" },
-  ],
+  stateColors: {
+    idle: HEAT_PALETTE,
+    speaking: HEAT_PALETTE,
+    thinking: HEAT_PALETTE,
+  },
   /*
     All three states share the rest palette; idle is the rest preset.
     Speaking is the rest look set RACING in place — the drift at eighteen
@@ -398,17 +403,12 @@ export const orb33Orb: OrbVariant = {
       warp: 1.82,
     },
   },
-  stateColors: {
-    idle: HEAT_PALETTE,
-    speaking: HEAT_PALETTE,
-    thinking: HEAT_PALETTE,
-  },
 };
 
 export type Orb33Props = Omit<ShaderOrbProps, "variant">;
 
-export function Orb33({ size = 280, ...rest }: Orb33Props) {
-  return <ShaderOrb variant={orb33Orb} size={size} {...rest} />;
-}
+export const Orb33 = ({ size = 280, ...rest }: Orb33Props) => (
+  <ShaderOrb variant={orb33Orb} size={size} {...rest} />
+);
 
 export default Orb33;

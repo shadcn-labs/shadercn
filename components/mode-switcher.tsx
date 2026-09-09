@@ -1,6 +1,7 @@
 "use client";
 
 import { Moon, Sun } from "lucide-react";
+import { useTheme } from "next-themes";
 
 import { useMounted } from "@/hooks/use-mounted";
 import { useThemeToggle } from "@/hooks/use-theme-toggle";
@@ -13,6 +14,7 @@ const THEME_OPTIONS = [
 
 export const ModeSwitcher = () => {
   const { toggleTheme } = useThemeToggle();
+  const { resolvedTheme } = useTheme();
   const isMounted = useMounted();
 
   if (!isMounted) {
@@ -36,7 +38,9 @@ export const ModeSwitcher = () => {
               "relative flex size-8 items-center justify-center rounded-full text-muted-foreground transition-[color,box-shadow] hover:text-foreground data-[active=true]:text-foreground data-[active=true]:inset-ring-1 data-[active=true]:inset-ring-border [&_svg]:size-4"
             )}
             role="radio"
+            aria-checked={resolvedTheme === option.value}
             aria-label={`${option.label} mode`}
+            data-active={resolvedTheme === option.value}
             onClick={toggleTheme}
           >
             <Icon />

@@ -3,8 +3,8 @@
  * Ported from orbkit (WebGL/GLSL) to WebGPU/WGSL for shadercn.
  * Original: https://github.com/zzzzshawn/orbkit
  */
-import { ShaderOrb } from './orbkit-core-wgpu';
-import type { OrbVariant, ShaderOrbProps } from './orbkit-core-wgpu';
+import { ShaderOrb } from "./orbkit-core-wgpu";
+import type { OrbVariant, ShaderOrbProps } from "./orbkit-core-wgpu";
 
 const MUONS_FRAG = `
 const STEPS: i32 = 10;
@@ -131,10 +131,11 @@ fn orbMain(fragCoord: vec2f, uv: vec2f) -> vec4f {
 `;
 
 export const orb15Orb: OrbVariant = {
+  colors: [{ default: "#ffffff", key: "tint", label: "Tint" }],
+  frag: MUONS_FRAG,
   key: "orb-15",
   label: "ORB-15",
   note: "an iridescent particle-track web worn as the ball's skin",
-  frag: MUONS_FRAG,
   params: [
     {
       default: 0.5,
@@ -284,7 +285,6 @@ export const orb15Orb: OrbVariant = {
       step: 0.015,
     },
   ],
-  colors: [{ default: "#ffffff", key: "tint", label: "Tint" }],
   /*
     Staged on the two integrated clocks, as across the family: thinking
     sends the AXIS hunting (the web continuously reweaves in place) while
@@ -292,7 +292,6 @@ export const orb15Orb: OrbVariant = {
     bright). turb and disperse are amplitudes/phases — everything glides.
   */
   statePresets: {
-    // calm: slow weave, near-still axis
     idle: {
       alphaGain: 2,
       disperse: 1,
@@ -302,18 +301,6 @@ export const orb15Orb: OrbVariant = {
       turb: 0.75,
       wander: 0.12,
     },
-    // reweaving: the axis hunts at six times idle and the weave deepens —
-    // the web knits and unknits in place, spectrum pulled tighter
-    thinking: {
-      alphaGain: 2.1,
-      disperse: 0.8,
-      exposure: 66,
-      scatter: 0.0095,
-      speed: 1,
-      turb: 0.95,
-      wander: 0.7,
-    },
-    // answering: fast iridescent shimmer, wide spectrum, hot threads
     speaking: {
       alphaGain: 2.5,
       disperse: 1.6,
@@ -323,13 +310,22 @@ export const orb15Orb: OrbVariant = {
       turb: 1.1,
       wander: 0.3,
     },
+    thinking: {
+      alphaGain: 2.1,
+      disperse: 0.8,
+      exposure: 66,
+      scatter: 0.0095,
+      speed: 1,
+      turb: 0.95,
+      wander: 0.7,
+    },
   },
 };
 
 export type Orb15Props = Omit<ShaderOrbProps, "variant">;
 
-export function Orb15({ size = 280, ...rest }: Orb15Props) {
-  return <ShaderOrb variant={orb15Orb} size={size} {...rest} />;
-}
+export const Orb15 = ({ size = 280, ...rest }: Orb15Props) => (
+  <ShaderOrb variant={orb15Orb} size={size} {...rest} />
+);
 
 export default Orb15;

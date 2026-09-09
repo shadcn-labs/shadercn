@@ -3,8 +3,8 @@
  * Ported from orbkit (WebGL/GLSL) to WebGPU/WGSL for shadercn.
  * Original: https://github.com/zzzzshawn/orbkit
  */
-import { ShaderOrb } from './orbkit-core-wgpu';
-import type { OrbVariant, ShaderOrbProps } from './orbkit-core-wgpu';
+import { ShaderOrb } from "./orbkit-core-wgpu";
+import type { OrbVariant, ShaderOrbProps } from "./orbkit-core-wgpu";
 
 const OCTANT_FRAG = `
 const STEPS: i32 = 50;
@@ -142,10 +142,11 @@ fn orbMain(fragCoord: vec2f, uv: vec2f) -> vec4f {
 `;
 
 export const orb18Orb: OrbVariant = {
+  colors: [{ default: "#ffffff", key: "tint", label: "Tint" }],
+  frag: OCTANT_FRAG,
   key: "orb-18",
   label: "ORB-18",
   note: "a crystal folded out of one eighth of space, tumbling",
-  frag: OCTANT_FRAG,
   params: [
     {
       default: 0.5,
@@ -309,14 +310,20 @@ export const orb18Orb: OrbVariant = {
       step: 0.015,
     },
   ],
-  colors: [{ default: "#ffffff", key: "tint", label: "Tint" }],
+  // the depth ramp supplies the colour, so the tint only shifts its
+  // temperature: neutral at rest, cooled while searching, warmed while
+  // answering
+  stateColors: {
+    idle: { tint: "#ffffff" },
+    speaking: { tint: "#ffc492" },
+    thinking: { tint: "#9db8ff" },
+  },
   /*
     Staged on the two folds, which is the only orb here where SYMMETRY is
     the mood: a crystal at rest, the mirrors relaxing open while it works,
     and locked hard shut while it answers. The tumble carries the tempo.
   */
   statePresets: {
-    // at rest: fully folded, turning slowly — a still crystal
     idle: {
       alphaGain: 2,
       crease: 1,
@@ -326,34 +333,6 @@ export const orb18Orb: OrbVariant = {
       scatter: 0.004,
       wander: 0.5,
     },
-    /*
-      searching: the crystal is pushed BACK and the mirrors loosen a hair.
-      The lens nearly doubles so the fold sits deeper in the frame, the
-      octant fold slips just under one — enough for the field to drift out
-      of register without dissolving — on a tumble twice idle and a
-      slightly coarser cell. The step clamp is thrown wide open and the
-      diffusion raised fivefold, so the march runs long and the light
-      fogs: the brightest state, but hazed rather than sharp.
-    */
-    thinking: {
-      alphaGain: 2,
-      crease: 1,
-      exposure: 26,
-      focal: 2.7,
-      fold: 0.91,
-      freq: 4.1,
-      scatter: 0.02,
-      stepClamp: 1200,
-      wander: 1.08,
-    },
-    /*
-      answering: the mirrors LOCK SHUT again and the crystal goes finer
-      than idle, marched on a step nearly twice as long so the cell walls
-      read as crisp lines rather than fog. The envelope core drops to half,
-      which hollows the ball and leaves the crystal floating in it; the
-      depth hue runs faster and the saturation is pushed hard, at less than
-      half the idle knee — the sharpest, most coloured state.
-    */
     speaking: {
       alphaGain: 2.7,
       crease: 1,
@@ -367,21 +346,24 @@ export const orb18Orb: OrbVariant = {
       stepScale: 0.51,
       wander: 0.7,
     },
-  },
-  // the depth ramp supplies the colour, so the tint only shifts its
-  // temperature: neutral at rest, cooled while searching, warmed while
-  // answering
-  stateColors: {
-    idle: { tint: "#ffffff" },
-    speaking: { tint: "#ffc492" },
-    thinking: { tint: "#9db8ff" },
+    thinking: {
+      alphaGain: 2,
+      crease: 1,
+      exposure: 26,
+      focal: 2.7,
+      fold: 0.91,
+      freq: 4.1,
+      scatter: 0.02,
+      stepClamp: 1200,
+      wander: 1.08,
+    },
   },
 };
 
 export type Orb18Props = Omit<ShaderOrbProps, "variant">;
 
-export function Orb18({ size = 280, ...rest }: Orb18Props) {
-  return <ShaderOrb variant={orb18Orb} size={size} {...rest} />;
-}
+export const Orb18 = ({ size = 280, ...rest }: Orb18Props) => (
+  <ShaderOrb variant={orb18Orb} size={size} {...rest} />
+);
 
 export default Orb18;

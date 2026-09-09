@@ -3,8 +3,8 @@
  * Ported from orbkit (WebGL/GLSL) to WebGPU/WGSL for shadercn.
  * Original: https://github.com/zzzzshawn/orbkit
  */
-import { ShaderOrb } from './orbkit-core-wgpu';
-import type { OrbVariant, ShaderOrbProps } from './orbkit-core-wgpu';
+import { ShaderOrb } from "./orbkit-core-wgpu";
+import type { OrbVariant, ShaderOrbProps } from "./orbkit-core-wgpu";
 
 const GALAXY_FRAG = `
 const STEPS: i32 = 56;
@@ -224,10 +224,23 @@ fn orbMain(fragCoord: vec2f, uv: vec2f) -> vec4f {
 `;
 
 export const orb32Orb: OrbVariant = {
+  /*
+   * Six stops: the overall tint, the core the bulge whitens toward, the
+   * inner and outer arm colours the ramp runs between, the night the ball
+   * is filled with, and the glass rim.
+   */
+  colors: [
+    { default: "#ffffff", key: "tint", label: "Tint" },
+    { default: "#fff3d6", key: "core", label: "Core" },
+    { default: "#7fb4ff", key: "inner", label: "Inner arms" },
+    { default: "#c46bff", key: "outer", label: "Outer arms" },
+    { default: "#04050f", key: "deep", label: "Night" },
+    { default: "#8fb0ff", key: "rim", label: "Rim" },
+  ],
+  frag: GALAXY_FRAG,
   key: "orb-32",
   label: "ORB-32",
   note: "a galaxy marched as gas and dust inside the ball",
-  frag: GALAXY_FRAG,
   params: [
     {
       default: 0.06,
@@ -492,106 +505,6 @@ export const orb32Orb: OrbVariant = {
       step: 0.015,
     },
   ],
-  /*
-   * Six stops: the overall tint, the core the bulge whitens toward, the
-   * inner and outer arm colours the ramp runs between, the night the ball
-   * is filled with, and the glass rim.
-   */
-  colors: [
-    { default: "#ffffff", key: "tint", label: "Tint" },
-    { default: "#fff3d6", key: "core", label: "Core" },
-    { default: "#7fb4ff", key: "inner", label: "Inner arms" },
-    { default: "#c46bff", key: "outer", label: "Outer arms" },
-    { default: "#04050f", key: "deep", label: "Night" },
-    { default: "#8fb0ff", key: "rim", label: "Rim" },
-  ],
-  /*
-    Staged on the TILT first — each state is a different view of the disc —
-    and then on the clocks and amplitudes. The tilt glides, and a tipping
-    disc is the biggest, most legible motion this orb has, so the state
-    change itself is the tell. The arm count and winding, the turbulence
-    scale and the star scale all multiply a coordinate and are pinned.
-  */
-  statePresets: {
-    /*
-      at rest: the spiral seen about halfway between edge-on and face-on.
-      A slow turn, the gas barely boiling, a lazy shallow beat on the core.
-    */
-    idle: {
-      absorb: 3.5,
-      armSharp: 2.2,
-      beat: 0.8,
-      breathe: 0,
-      churn: 0.25,
-      contrast: 1.15,
-      core: 5,
-      density: 14,
-      exposure: 1.1,
-      pulse: 0.2,
-      ragged: 3,
-      saturation: 1.35,
-      spin: 0.06,
-      stars: 1.2,
-      thick: 0.035,
-      threshold: 0.35,
-      tilt: 0.85,
-      twinkle: 1.2,
-    },
-    /*
-      searching: the disc swings FACE-ON and becomes a whirlpool. The arms
-      fray to nothing and the gas boils at six times rest on a thicker
-      disc, a sparser clumping and a heavier absorption, so what is left is
-      filaments and shadow spinning at seven times rest — face-on, the turn
-      is fully visible — with the core held down. Cold.
-    */
-    thinking: {
-      absorb: 6,
-      armSharp: 1,
-      beat: 2.4,
-      breathe: 0,
-      churn: 1.6,
-      contrast: 1.3,
-      core: 3,
-      density: 20,
-      exposure: 1.05,
-      pulse: 0.25,
-      ragged: 8,
-      saturation: 1.2,
-      spin: 0.45,
-      stars: 1.8,
-      thick: 0.07,
-      threshold: 0.5,
-      tilt: 1.45,
-      twinkle: 4.5,
-    },
-    /*
-      answering: the disc swings FACE-ON and lights up — the full spiral,
-      arms sharp and wide, the core flaring on a hard beat (depth five
-      times rest on a clock six times as fast) and the whole disc swelling
-      outward and drawing back on the same wave. The gas is dense but the
-      dust is cleared, so all of it glows, at a lower knee. Hot.
-    */
-    speaking: {
-      absorb: 1.6,
-      armSharp: 1.8,
-      beat: 4.8,
-      breathe: 0.45,
-      churn: 0.6,
-      contrast: 1.05,
-      core: 12,
-      density: 18,
-      exposure: 0.75,
-      pulse: 1,
-      ragged: 2,
-      saturation: 1.6,
-      spin: 0.2,
-      stars: 2,
-      thick: 0.04,
-      threshold: 0.25,
-      tilt: 1.3,
-      twinkle: 2.4,
-    },
-  },
   // blue into violet at rest, ice into cyan while searching, gold into rose
   // while answering
   stateColors: {
@@ -620,12 +533,81 @@ export const orb32Orb: OrbVariant = {
       tint: "#ffffff",
     },
   },
+  /*
+    Staged on the TILT first — each state is a different view of the disc —
+    and then on the clocks and amplitudes. The tilt glides, and a tipping
+    disc is the biggest, most legible motion this orb has, so the state
+    change itself is the tell. The arm count and winding, the turbulence
+    scale and the star scale all multiply a coordinate and are pinned.
+  */
+  statePresets: {
+    idle: {
+      absorb: 3.5,
+      armSharp: 2.2,
+      beat: 0.8,
+      breathe: 0,
+      churn: 0.25,
+      contrast: 1.15,
+      core: 5,
+      density: 14,
+      exposure: 1.1,
+      pulse: 0.2,
+      ragged: 3,
+      saturation: 1.35,
+      spin: 0.06,
+      stars: 1.2,
+      thick: 0.035,
+      threshold: 0.35,
+      tilt: 0.85,
+      twinkle: 1.2,
+    },
+    speaking: {
+      absorb: 1.6,
+      armSharp: 1.8,
+      beat: 4.8,
+      breathe: 0.45,
+      churn: 0.6,
+      contrast: 1.05,
+      core: 12,
+      density: 18,
+      exposure: 0.75,
+      pulse: 1,
+      ragged: 2,
+      saturation: 1.6,
+      spin: 0.2,
+      stars: 2,
+      thick: 0.04,
+      threshold: 0.25,
+      tilt: 1.3,
+      twinkle: 2.4,
+    },
+    thinking: {
+      absorb: 6,
+      armSharp: 1,
+      beat: 2.4,
+      breathe: 0,
+      churn: 1.6,
+      contrast: 1.3,
+      core: 3,
+      density: 20,
+      exposure: 1.05,
+      pulse: 0.25,
+      ragged: 8,
+      saturation: 1.2,
+      spin: 0.45,
+      stars: 1.8,
+      thick: 0.07,
+      threshold: 0.5,
+      tilt: 1.45,
+      twinkle: 4.5,
+    },
+  },
 };
 
 export type Orb32Props = Omit<ShaderOrbProps, "variant">;
 
-export function Orb32({ size = 280, ...rest }: Orb32Props) {
-  return <ShaderOrb variant={orb32Orb} size={size} {...rest} />;
-}
+export const Orb32 = ({ size = 280, ...rest }: Orb32Props) => (
+  <ShaderOrb variant={orb32Orb} size={size} {...rest} />
+);
 
 export default Orb32;

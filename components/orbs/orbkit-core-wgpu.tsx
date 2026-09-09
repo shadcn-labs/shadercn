@@ -53,7 +53,7 @@ export interface ShaderOrbProps {
  * loop reads, so changing state, params, or colours never rebuilds the pipeline —
  * only `variant` and `maxDpr` do.
  */
-export function ShaderOrb({
+export const ShaderOrb = ({
   variant,
   state = "idle",
   size,
@@ -69,7 +69,7 @@ export function ShaderOrb({
   className,
   style,
   ariaLabel,
-}: ShaderOrbProps) {
+}: ShaderOrbProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [paintedKey, setPaintedKey] = useState<string | null>(null);
   const drive = useRef<OrbDrive>({ state });
@@ -98,9 +98,14 @@ export function ShaderOrb({
       variant,
     });
 
-    renderer.ready.catch((error: unknown) => {
-      console.error(`[orbkit] ${variant.key} failed to start:`, error);
-    });
+    const start = async () => {
+      try {
+        await renderer.ready;
+      } catch (error: unknown) {
+        console.error(`[orbkit] ${variant.key} failed to start:`, error);
+      }
+    };
+    void start();
 
     return renderer.dispose;
   }, [variant, maxDpr, pauseOffscreen]);
@@ -123,6 +128,6 @@ export function ShaderOrb({
       />
     </div>
   );
-}
+};
 
 export default ShaderOrb;

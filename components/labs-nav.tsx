@@ -17,7 +17,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { SITE_LATEST, SITE_NAV_SECTIONS } from "@/constants/nav";
+import { SITE_NAV_SECTIONS } from "@/constants/nav";
 import type { SiteNavLink as SiteNavLinkItem } from "@/constants/nav";
 import { UTM_PARAMS } from "@/constants/site";
 import { addQueryParams } from "@/lib/url";
@@ -29,12 +29,6 @@ const SECTION_WIDTH: Partial<Record<SectionId, string>> = {
   registries: "w-72",
   skills: "w-72",
 };
-
-const latestCardClassName = cn(
-  "flex flex-col gap-4 rounded-lg border border-border bg-background p-4",
-  "text-base font-normal no-underline transition-colors",
-  "hover:border-foreground/25 hover:bg-background focus:bg-background"
-);
 
 const SectionTitle = ({ children }: { children: React.ReactNode }) => (
   <div className="text-sm font-medium text-muted-foreground">{children}</div>
@@ -70,46 +64,6 @@ const SiteNavLink = ({
   children({
     label: <ExternalLinkLabel name={item.name} size={iconSize} />,
   });
-
-const LatestCard = ({
-  item,
-  nameClassName,
-  textClassName,
-  children,
-}: {
-  item: SiteNavLinkItem;
-  nameClassName?: string;
-  textClassName?: string;
-  children: (props: { content: React.ReactNode }) => React.ReactNode;
-}) => {
-  const content = (
-    <>
-      <span
-        className={cn(
-          "flex items-center justify-center rounded-md bg-muted text-base font-medium",
-          nameClassName ?? "min-h-24 w-full"
-        )}
-      >
-        {item.name}
-      </span>
-      {item.description ? (
-        <span
-          className={cn(
-            "inline-flex items-center gap-1 text-sm text-foreground",
-            textClassName
-          )}
-        >
-          {item.description}
-          <ArrowUpRightIcon size={16} className="inline-flex shrink-0" />
-        </span>
-      ) : (
-        <ExternalLinkLabel name={item.name} />
-      )}
-    </>
-  );
-
-  return children({ content });
-};
 
 const DesktopSection = ({
   title,
@@ -208,26 +162,6 @@ const LabsNavMobile = () => {
         sideOffset={14}
       >
         <div className="flex flex-col gap-12 overflow-auto px-6 py-6">
-          {/* <div className="flex flex-col gap-4">
-            <SectionTitle>Latest</SectionTitle>
-            <LatestCard
-              item={SITE_LATEST}
-              nameClassName="min-h-16 text-2xl"
-              textClassName="text-base"
-            >
-              {({ content }) => (
-                <a
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  href={addQueryParams(SITE_LATEST.href, UTM_PARAMS)}
-                  className={cn(latestCardClassName, "w-full")}
-                  onClick={close}
-                >
-                  {content}
-                </a>
-              )}
-            </LatestCard>
-          </div> */}
           {SITE_NAV_SECTIONS.map((section) => (
             <div key={section.id} className="flex flex-col gap-4">
               <SectionTitle>{section.title}</SectionTitle>
@@ -299,21 +233,6 @@ const LabsNavDesktop = () => {
             >
               <div className="container-wrapper px-6">
                 <div className="flex gap-8 py-4 pl-3">
-                  {/* <div className="flex w-64 flex-col gap-3">
-                    <SectionTitle>Latest</SectionTitle>
-                    <LatestCard item={SITE_LATEST} nameClassName="min-h-8">
-                      {({ content }) => (
-                        <NavigationMenuLink
-                          href={addQueryParams(SITE_LATEST.href, UTM_PARAMS)}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className={cn(latestCardClassName, "w-60 gap-2 p-3")}
-                        >
-                          {content}
-                        </NavigationMenuLink>
-                      )}
-                    </LatestCard>
-                  </div> */}
                   {SITE_NAV_SECTIONS.map((section) => (
                     <DesktopSection
                       key={section.id}

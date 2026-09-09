@@ -3,8 +3,8 @@
  * Ported from orbkit (WebGL/GLSL) to WebGPU/WGSL for shadercn.
  * Original: https://github.com/zzzzshawn/orbkit
  */
-import { ShaderOrb } from './orbkit-core-wgpu';
-import type { OrbVariant, ShaderOrbProps } from './orbkit-core-wgpu';
+import { ShaderOrb } from "./orbkit-core-wgpu";
+import type { OrbVariant, ShaderOrbProps } from "./orbkit-core-wgpu";
 
 const VECTORS_FRAG = `
 const STEPS: i32 = 70;
@@ -165,10 +165,11 @@ fn orbMain(fragCoord: vec2f, uv: vec2f) -> vec4f {
 `;
 
 export const orb22Orb: OrbVariant = {
+  colors: [{ default: "#ffffff", key: "tint", label: "Tint" }],
+  frag: VECTORS_FRAG,
   key: "orb-22",
   label: "ORB-22",
   note: "field lines swirling around the ball about a wandering axis",
-  frag: VECTORS_FRAG,
   params: [
     {
       default: 0.5,
@@ -349,7 +350,13 @@ export const orb22Orb: OrbVariant = {
       step: 0.015,
     },
   ],
-  colors: [{ default: "#ffffff", key: "tint", label: "Tint" }],
+  // the tint carries the at-a-glance read, as in chords: neutral at rest,
+  // cooled while searching, warmed while answering
+  stateColors: {
+    idle: { tint: "#ffffff" },
+    speaking: { tint: "#ffd9c4" },
+    thinking: { tint: "#c3d2ff" },
+  },
   /*
     The states are staged on this orb's two best levers, both phase-safe
     integrated clocks: the AXIS WANDER (the whole field re-orients as the
@@ -357,7 +364,6 @@ export const orb22Orb: OrbVariant = {
     how many of the hot-wire vectors are lit at once.
   */
   statePresets: {
-    // calm: slow shimmer, near-still axis, a few soft glows
     idle: {
       alphaGain: 2,
       exposure: 260,
@@ -368,26 +374,6 @@ export const orb22Orb: OrbVariant = {
       turb: 0.55,
       wander: 0.1,
     },
-    /*
-      searching: the axis HUNTS — wander runs six times idle, so the field
-      lines continuously re-orient as if trying directions — while the
-      glows go SPARSER but sharper: rare single sparks, ideas catching.
-    */
-    thinking: {
-      alphaGain: 2.1,
-      exposure: 230,
-      glow: 1.7,
-      glowFew: 0.07,
-      scatter: 0.0095,
-      speed: 1.2,
-      turb: 0.7,
-      wander: 0.6,
-    },
-    /*
-      answering: the axis settles (it found the direction) and the energy
-      moves to the field itself — fast flicker, many hot wires at once
-      (glowFew 0.22, further flared by the output volume), bright.
-    */
     speaking: {
       alphaGain: 2.5,
       exposure: 170,
@@ -398,20 +384,23 @@ export const orb22Orb: OrbVariant = {
       turb: 0.85,
       wander: 0.3,
     },
-  },
-  // the tint carries the at-a-glance read, as in chords: neutral at rest,
-  // cooled while searching, warmed while answering
-  stateColors: {
-    idle: { tint: "#ffffff" },
-    speaking: { tint: "#ffd9c4" },
-    thinking: { tint: "#c3d2ff" },
+    thinking: {
+      alphaGain: 2.1,
+      exposure: 230,
+      glow: 1.7,
+      glowFew: 0.07,
+      scatter: 0.0095,
+      speed: 1.2,
+      turb: 0.7,
+      wander: 0.6,
+    },
   },
 };
 
 export type Orb22Props = Omit<ShaderOrbProps, "variant">;
 
-export function Orb22({ size = 280, ...rest }: Orb22Props) {
-  return <ShaderOrb variant={orb22Orb} size={size} {...rest} />;
-}
+export const Orb22 = ({ size = 280, ...rest }: Orb22Props) => (
+  <ShaderOrb variant={orb22Orb} size={size} {...rest} />
+);
 
 export default Orb22;

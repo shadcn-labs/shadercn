@@ -3,8 +3,8 @@
  * Ported from orbkit (WebGL/GLSL) to WebGPU/WGSL for shadercn.
  * Original: https://github.com/zzzzshawn/orbkit
  */
-import { ShaderOrb } from './orbkit-core-wgpu';
-import type { OrbVariant, ShaderOrbProps } from './orbkit-core-wgpu';
+import { ShaderOrb } from "./orbkit-core-wgpu";
+import type { OrbVariant, ShaderOrbProps } from "./orbkit-core-wgpu";
 
 const CHUNK_FRAG = `
 const STEPS: i32 = 160;
@@ -483,10 +483,20 @@ fn orbMain(fragCoord: vec2f, uv: vec2f) -> vec4f {
 `;
 
 export const orb24Orb: OrbVariant = {
+  colors: [
+    { default: "#6abe30", key: "grass", label: "Grass" },
+    { default: "#6f4a2f", key: "dirt", label: "Mud" },
+    { default: "#8a8a90", key: "stone", label: "Stone" },
+    { default: "#dbcf9c", key: "sand", label: "Sand" },
+    { default: "#2f66d0", key: "water", label: "Water" },
+    { default: "#3e8f27", key: "leaf", label: "Leaves" },
+    { default: "#4de3ff", key: "ore", label: "Ore" },
+    { default: "#ff7b26", key: "lava", label: "Lava" },
+  ],
+  frag: CHUNK_FRAG,
   key: "orb-24",
   label: "ORB-24",
   note: "a Minecraft Earth — a perfect voxel sphere whose seasons cycle it through lush, cherry-grove, ice, mesa and desert worlds",
-  frag: CHUNK_FRAG,
   params: [
     {
       default: 0.22,
@@ -610,16 +620,6 @@ export const orb24Orb: OrbVariant = {
       step: 0.05,
     },
   ],
-  colors: [
-    { default: "#6abe30", key: "grass", label: "Grass" },
-    { default: "#6f4a2f", key: "dirt", label: "Mud" },
-    { default: "#8a8a90", key: "stone", label: "Stone" },
-    { default: "#dbcf9c", key: "sand", label: "Sand" },
-    { default: "#2f66d0", key: "water", label: "Water" },
-    { default: "#3e8f27", key: "leaf", label: "Leaves" },
-    { default: "#4de3ff", key: "ore", label: "Ore" },
-    { default: "#ff7b26", key: "lava", label: "Lava" },
-  ],
   /*
     Each state animates DIFFERENTLY on the integrated clocks — same palette
     and biomes throughout (no stateColors on purpose):
@@ -642,18 +642,6 @@ export const orb24Orb: OrbVariant = {
       shuffle: 0.8,
       spin: 0.22,
     },
-    // thinking races the seasons as well as the terrain: the planet cycles
-    // through its worlds while it considers
-    thinking: {
-      core: 0.35,
-      drift: 1.7,
-      gain: 0.95,
-      glow: 1.3,
-      light: 0.9,
-      season: 1.8,
-      shuffle: 4.5,
-      spin: 0.04,
-    },
     speaking: {
       core: 1,
       drift: 0.35,
@@ -664,13 +652,23 @@ export const orb24Orb: OrbVariant = {
       shuffle: 1.6,
       spin: 0.85,
     },
+    thinking: {
+      core: 0.35,
+      drift: 1.7,
+      gain: 0.95,
+      glow: 1.3,
+      light: 0.9,
+      season: 1.8,
+      shuffle: 4.5,
+      spin: 0.04,
+    },
   },
 };
 
 export type Orb24Props = Omit<ShaderOrbProps, "variant">;
 
-export function Orb24({ size = 280, ...rest }: Orb24Props) {
-  return <ShaderOrb variant={orb24Orb} size={size} {...rest} />;
-}
+export const Orb24 = ({ size = 280, ...rest }: Orb24Props) => (
+  <ShaderOrb variant={orb24Orb} size={size} {...rest} />
+);
 
 export default Orb24;

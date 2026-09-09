@@ -3,8 +3,8 @@
  * Ported from orbkit (WebGL/GLSL) to WebGPU/WGSL for shadercn.
  * Original: https://github.com/zzzzshawn/orbkit
  */
-import { ShaderOrb } from './orbkit-core-wgpu';
-import type { OrbVariant, ShaderOrbProps } from './orbkit-core-wgpu';
+import { ShaderOrb } from "./orbkit-core-wgpu";
+import type { OrbVariant, ShaderOrbProps } from "./orbkit-core-wgpu";
 
 const CAUSTIC_FRAG = `
 // Volume- and surge-reactive values, resolved once per fragment in main().
@@ -122,10 +122,16 @@ fn orbMain(fragCoord: vec2f, uv: vec2f) -> vec4f {
 `;
 
 export const orb16Orb: OrbVariant = {
+  // the pool floor, the light thrown on it, and the wet gloss at the limb
+  colors: [
+    { default: "#0b2f6e", key: "deep", label: "Water" },
+    { default: "#7ff6ff", key: "sun", label: "Caustic light" },
+    { default: "#bfe8ff", key: "sheen", label: "Sheen" },
+  ],
+  frag: CAUSTIC_FRAG,
   key: "orb-16",
   label: "ORB-16",
   note: "sunlight through water — a caustic net crawling over the ball, fringing into colour where it moves",
-  frag: CAUSTIC_FRAG,
   params: [
     {
       default: 0.9,
@@ -235,12 +241,13 @@ export const orb16Orb: OrbVariant = {
       step: 0.015,
     },
   ],
-  // the pool floor, the light thrown on it, and the wet gloss at the limb
-  colors: [
-    { default: "#0b2f6e", key: "deep", label: "Water" },
-    { default: "#7ff6ff", key: "sun", label: "Caustic light" },
-    { default: "#bfe8ff", key: "sheen", label: "Sheen" },
-  ],
+  // aqua light on dark red water at rest, pure white on a darker red while
+  // searching, gold on brick-red water while answering
+  stateColors: {
+    idle: { deep: "#6f0b0b", sheen: "#bfe8ff", sun: "#7ff6ff" },
+    speaking: { deep: "#8d2525", sheen: "#ffb3c6", sun: "#ffb914" },
+    thinking: { deep: "#3a0808", sheen: "#ffffff", sun: "#ffffff" },
+  },
   /*
     Staged on the three integrated clocks and on amplitudes only — nothing
     a state touches is a spatial frequency, so every transition cross-fades
@@ -313,31 +320,12 @@ export const orb16Orb: OrbVariant = {
       warp: 1.52,
     },
   },
-  // aqua light on dark red water at rest, pure white on a darker red while
-  // searching, gold on brick-red water while answering
-  stateColors: {
-    idle: {
-      deep: "#6f0b0b",
-      sheen: "#bfe8ff",
-      sun: "#7ff6ff",
-    },
-    speaking: {
-      deep: "#8d2525",
-      sheen: "#ffb3c6",
-      sun: "#ffb914",
-    },
-    thinking: {
-      deep: "#3a0808",
-      sheen: "#ffffff",
-      sun: "#ffffff",
-    },
-  },
 };
 
 export type Orb16Props = Omit<ShaderOrbProps, "variant">;
 
-export function Orb16({ size = 280, ...rest }: Orb16Props) {
-  return <ShaderOrb variant={orb16Orb} size={size} {...rest} />;
-}
+export const Orb16 = ({ size = 280, ...rest }: Orb16Props) => (
+  <ShaderOrb variant={orb16Orb} size={size} {...rest} />
+);
 
 export default Orb16;

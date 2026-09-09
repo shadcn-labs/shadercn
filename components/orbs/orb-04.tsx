@@ -3,8 +3,8 @@
  * Ported from orbkit (WebGL/GLSL) to WebGPU/WGSL for shadercn.
  * Original: https://github.com/zzzzshawn/orbkit
  */
-import { ShaderOrb } from './orbkit-core-wgpu';
-import type { OrbVariant, ShaderOrbProps } from './orbkit-core-wgpu';
+import { ShaderOrb } from "./orbkit-core-wgpu";
+import type { OrbVariant, ShaderOrbProps } from "./orbkit-core-wgpu";
 
 const GEODE_FRAG = `
 const STEPS: i32 = 50;
@@ -122,10 +122,11 @@ fn orbMain(fragCoord: vec2f, uv: vec2f) -> vec4f {
 `;
 
 export const orb04Orb: OrbVariant = {
+  colors: [{ default: "#ffffff", key: "tint", label: "Tint" }],
+  frag: GEODE_FRAG,
   key: "orb-04",
   label: "ORB-04",
   note: "a hollow shell of light, faceted by a voxel lattice",
-  frag: GEODE_FRAG,
   params: [
     {
       default: 0.6,
@@ -220,7 +221,7 @@ export const orb04Orb: OrbVariant = {
       default: 3000,
       key: "exposure",
       label: "Exposure",
-      max: 40000,
+      max: 40_000,
       min: 20,
       step: 20,
     },
@@ -265,7 +266,14 @@ export const orb04Orb: OrbVariant = {
       step: 0.015,
     },
   ],
-  colors: [{ default: "#ffffff", key: "tint", label: "Tint" }],
+  // the position ramp supplies the colour, so the tint only shifts its
+  // temperature: neutral at rest and cool for both of the busy states —
+  // blue while searching, a brighter cyan while answering
+  stateColors: {
+    idle: { tint: "#ffffff" },
+    speaking: { tint: "#94f3ff" },
+    thinking: { tint: "#9db8ff" },
+  },
   /*
     Staged on displacement — how far the lattice pushes the shell out of
     round — and on surface width, which is the only material control this
@@ -278,7 +286,6 @@ export const orb04Orb: OrbVariant = {
     that state rather than cross-fading. Deliberate — see the note there.
   */
   statePresets: {
-    // at rest: a shallow crust, the surface held thin and bright
     idle: {
       contrast: 1.3,
       exposure: 3000,
@@ -288,35 +295,6 @@ export const orb04Orb: OrbVariant = {
       turb: 0.45,
       width: 0.003,
     },
-    /*
-      searching: the lattice pushes HARD — displacement nearly doubled —
-      and the surface pulls to under half its idle width, so the facets
-      read as sharp shifting plates. The knee rises with them: this is the
-      dim, brittle state.
-    */
-    thinking: {
-      contrast: 1.75,
-      exposure: 4800,
-      hueGain: 1.7,
-      slack: 0.07,
-      speed: 1.8,
-      turb: 0.85,
-      width: 0.0012,
-    },
-    /*
-      answering: plates AND lamp, which the other two never are at once. The
-      lattice pushes almost as hard as it does while searching — 0.8 against
-      0.85 — but on ten times the idle surface width instead of a third of
-      it, so the facets stay sharp while the shell they sit on is wide open
-      and bright. Fastest of the three, on the widest silhouette margin, and
-      the most saturated.
-
-      Two things here break the file's own rules on purpose. Facet size drops
-      to 0.22, so the quantizer glides on the way in and out and the lattice
-      re-snaps rather than fading; see the staging note above. And the tint
-      goes COOL — cyan, cooler than the searching blue — against the warm
-      answering tint the colour note below describes.
-    */
     speaking: {
       contrast: 0.92,
       envScale: 1.67,
@@ -330,21 +308,22 @@ export const orb04Orb: OrbVariant = {
       turb: 0.8,
       width: 0.032,
     },
-  },
-  // the position ramp supplies the colour, so the tint only shifts its
-  // temperature: neutral at rest and cool for both of the busy states —
-  // blue while searching, a brighter cyan while answering
-  stateColors: {
-    idle: { tint: "#ffffff" },
-    speaking: { tint: "#94f3ff" },
-    thinking: { tint: "#9db8ff" },
+    thinking: {
+      contrast: 1.75,
+      exposure: 4800,
+      hueGain: 1.7,
+      slack: 0.07,
+      speed: 1.8,
+      turb: 0.85,
+      width: 0.0012,
+    },
   },
 };
 
 export type Orb04Props = Omit<ShaderOrbProps, "variant">;
 
-export function Orb04({ size = 280, ...rest }: Orb04Props) {
-  return <ShaderOrb variant={orb04Orb} size={size} {...rest} />;
-}
+export const Orb04 = ({ size = 280, ...rest }: Orb04Props) => (
+  <ShaderOrb variant={orb04Orb} size={size} {...rest} />
+);
 
 export default Orb04;

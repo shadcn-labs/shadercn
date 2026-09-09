@@ -3,8 +3,8 @@
  * Ported from orbkit (WebGL/GLSL) to WebGPU/WGSL for shadercn.
  * Original: https://github.com/zzzzshawn/orbkit
  */
-import { ShaderOrb } from './orbkit-core-wgpu';
-import type { OrbVariant, ShaderOrbProps } from './orbkit-core-wgpu';
+import { ShaderOrb } from "./orbkit-core-wgpu";
+import type { OrbVariant, ShaderOrbProps } from "./orbkit-core-wgpu";
 
 const CAUSTIC_FRAG = `
 const AA: i32 = 3;
@@ -107,10 +107,15 @@ fn orbMain(fragCoord: vec2f, uv: vec2f) -> vec4f {
 `;
 
 export const orb05Orb: OrbVariant = {
+  colors: [
+    { default: "#ffffff", key: "tint", label: "Tint" },
+    { default: "#141a30", key: "body", label: "Body" },
+    { default: "#bcd8ff", key: "sheen", label: "Sheen" },
+  ],
+  frag: CAUSTIC_FRAG,
   key: "orb-05",
   label: "ORB-05",
   note: "rainbow rings travelling through a lattice of lenses",
-  frag: CAUSTIC_FRAG,
   params: [
     {
       default: 0.9,
@@ -244,11 +249,14 @@ export const orb05Orb: OrbVariant = {
       step: 0.015,
     },
   ],
-  colors: [
-    { default: "#ffffff", key: "tint", label: "Tint" },
-    { default: "#141a30", key: "body", label: "Body" },
-    { default: "#bcd8ff", key: "sheen", label: "Sheen" },
-  ],
+  // the ring phases supply the colour, so the tint only shifts temperature
+  // and the body carries the mood: neutral at rest, cold while searching,
+  // warm while answering
+  stateColors: {
+    idle: { body: "#141a30", sheen: "#bcd8ff", tint: "#ffffff" },
+    speaking: { body: "#2e1408", sheen: "#ffb277", tint: "#ffc492" },
+    thinking: { body: "#080c26", sheen: "#7ea9ff", tint: "#a6c0ff" },
+  },
   /*
     Staged on WALL SOFTNESS, which decides how tightly the rings are
     allowed to crowd before a cell wall stops them, and on ring frequency,
@@ -263,19 +271,6 @@ export const orb05Orb: OrbVariant = {
     a quantizer, so gliding them is safe.
   */
   statePresets: {
-    /*
-      at rest: a plain sphere of drifting bands. Dome bulge is at zero and
-      the lens down to under half its default — the only state that flattens
-      both — so the ball is read straight rather than through a lens, which
-      is what lets resting look settled even though the rings never stop
-      moving.
-
-      The walls are the TIGHTEST of the three here, under a third of
-      searching's and a fifth of answering's, so the rings crowd hard
-      against them; the colour split narrows to 0.7 with the key light
-      raised well over its default to put back the separation the narrower
-      split gives away.
-    */
     idle: {
       bulge: 0,
       contrast: 1,
@@ -290,19 +285,18 @@ export const orb05Orb: OrbVariant = {
       spread: 0.7,
       swirl: 0.195,
     },
-    /*
-      searching: the ball comes UP. Where resting is flat and read straight,
-      this bulges the dome and drives the lens past one, so the bands are
-      magnified through the middle — and the drift roughly triples, swirl
-      and lattice slide together, on a ring clock three times as fast.
-
-      It is also the hardest-looking of the three by some way: contrast more
-      than triples over resting and saturation doubles, on a body fill three
-      times as deep and with the rim sheen switched off entirely, so nothing
-      softens the edge. The walls open to three times resting's, which stops
-      the rings being hairlines — this state reads through colour and shape
-      now, not through fineness.
-    */
+    speaking: {
+      bulge: 0.96,
+      contrast: 0.75,
+      freq: 4.8,
+      gain: 1.6,
+      lens: 1.2,
+      poleSoft: 0.064,
+      ring: 1.4,
+      slide: 1,
+      spread: 0.68,
+      swirl: 0.6,
+    },
     thinking: {
       bulge: 0.36,
       contrast: 3.2,
@@ -318,46 +312,13 @@ export const orb05Orb: OrbVariant = {
       spread: 1.82,
       swirl: 0.57,
     },
-    /*
-      answering: the FINEST banding of the three by a long way — ring
-      frequency near five times resting's and nearly four times searching's
-      — laid over the most strongly domed ball, bulge pushed almost to one
-      against resting's flat zero. Many tight bands, spread across a surface
-      curving away from you.
-
-      The walls open to five times resting's, which is what keeps banding
-      that fine from crowding into a solid field, and the drift is the
-      highest of the three on both controls. Colour split comes back to
-      about where resting holds it, so it is the fineness that carries this
-      state rather than the split.
-    */
-    speaking: {
-      bulge: 0.96,
-      contrast: 0.75,
-      freq: 4.8,
-      gain: 1.6,
-      lens: 1.2,
-      poleSoft: 0.064,
-      ring: 1.4,
-      slide: 1,
-      spread: 0.68,
-      swirl: 0.6,
-    },
-  },
-  // the ring phases supply the colour, so the tint only shifts temperature
-  // and the body carries the mood: neutral at rest, cold while searching,
-  // warm while answering
-  stateColors: {
-    idle: { body: "#141a30", sheen: "#bcd8ff", tint: "#ffffff" },
-    speaking: { body: "#2e1408", sheen: "#ffb277", tint: "#ffc492" },
-    thinking: { body: "#080c26", sheen: "#7ea9ff", tint: "#a6c0ff" },
   },
 };
 
 export type Orb05Props = Omit<ShaderOrbProps, "variant">;
 
-export function Orb05({ size = 280, ...rest }: Orb05Props) {
-  return <ShaderOrb variant={orb05Orb} size={size} {...rest} />;
-}
+export const Orb05 = ({ size = 280, ...rest }: Orb05Props) => (
+  <ShaderOrb variant={orb05Orb} size={size} {...rest} />
+);
 
 export default Orb05;

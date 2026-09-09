@@ -3,8 +3,8 @@
  * Ported from orbkit (WebGL/GLSL) to WebGPU/WGSL for shadercn.
  * Original: https://github.com/zzzzshawn/orbkit
  */
-import { ShaderOrb } from './orbkit-core-wgpu';
-import type { OrbVariant, ShaderOrbProps } from './orbkit-core-wgpu';
+import { ShaderOrb } from "./orbkit-core-wgpu";
+import type { OrbVariant, ShaderOrbProps } from "./orbkit-core-wgpu";
 
 const CREASE_FRAG = `
 const OCTAVES: i32 = 8;
@@ -127,10 +127,15 @@ fn orbMain(fragCoord: vec2f, uv: vec2f) -> vec4f {
 `;
 
 export const orb25Orb: OrbVariant = {
+  colors: [
+    { default: "#dbe8f7", key: "tint", label: "Rim" },
+    { default: "#0d1118", key: "body", label: "Body" },
+    { default: "#a8c8f0", key: "sheen", label: "Sheen" },
+  ],
+  frag: CREASE_FRAG,
   key: "orb-25",
   label: "ORB-25",
   note: "the folds of a warped field, drawn by their own steepness",
-  frag: CREASE_FRAG,
   params: [
     {
       default: 3,
@@ -273,11 +278,13 @@ export const orb25Orb: OrbVariant = {
       step: 0.015,
     },
   ],
-  colors: [
-    { default: "#dbe8f7", key: "tint", label: "Rim" },
-    { default: "#0d1118", key: "body", label: "Body" },
-    { default: "#a8c8f0", key: "sheen", label: "Sheen" },
-  ],
+  // cool steel at rest, cold indigo for both working states — the answer
+  // is told apart by its fold and scale, not its colour
+  stateColors: {
+    idle: { body: "#0d1118", sheen: "#a8c8f0", tint: "#dbe8f7" },
+    speaking: { body: "#090d1c", sheen: "#8fb4f2", tint: "#c2d6f5" },
+    thinking: { body: "#090d1c", sheen: "#8fb4f2", tint: "#c2d6f5" },
+  },
   /*
     Staged on the FOLD, which is what makes creases exist at all, and on
     edge gain, which decides how steep a slope has to be to count as one.
@@ -286,9 +293,6 @@ export const orb25Orb: OrbVariant = {
     answer's entrance.
   */
   statePresets: {
-    // at rest: a slow boil, folds moderate, rims clean — the octave zoom
-    // pulled in a touch under the default and the edge gain a quarter up,
-    // so slightly gentler slopes count as creases
     idle: {
       contrast: 1.15,
       drift: 0.6,
@@ -299,14 +303,21 @@ export const orb25Orb: OrbVariant = {
       warp: 0.4,
       zoom: 1.07,
     },
-    /*
-      searching: the folds RELAX a touch below idle, but the edge gain
-      nearly triples so even the shallowest slope lights up as a crease,
-      on a boil half again idle's. The ripple tightens, the rim widens with
-      more than double the chromatic fringe, and the saturation, key light
-      and rim sheen all come up — every cell rims at once in colour, and
-      none of it settles.
-    */
+    speaking: {
+      blur: 2,
+      bulge: 2.22,
+      contrast: 1.35,
+      drift: 0.8,
+      edgeGain: 5,
+      exposure: 2.35,
+      fringe: 0.23,
+      ripple: 1.18,
+      scale: 11.5,
+      speed: 1.4,
+      swirl: 0.6,
+      warp: 1.55,
+      zoom: 0.945,
+    },
     thinking: {
       blur: 2.75,
       bulge: 0.38,
@@ -324,43 +335,13 @@ export const orb25Orb: OrbVariant = {
       warp: 0.34,
       zoom: 1.12,
     },
-    /*
-      answering: the field FOLDS hardest of the three and the gain drops to
-      under a sixth of the thinking state, so the creases are deep but only
-      the steepest rims light. The cell scale is pushed past idle's and the
-      dome bulged to near a hemisphere, the swirl opened an order of
-      magnitude, the ripple widened — a slow, heavy, swirling boil, with
-      the exposure tripled so what does light, burns.
-    */
-    speaking: {
-      blur: 2,
-      bulge: 2.22,
-      contrast: 1.35,
-      drift: 0.8,
-      edgeGain: 5,
-      exposure: 2.35,
-      fringe: 0.23,
-      ripple: 1.18,
-      scale: 11.5,
-      speed: 1.4,
-      swirl: 0.6,
-      warp: 1.55,
-      zoom: 0.945,
-    },
-  },
-  // cool steel at rest, cold indigo for both working states — the answer
-  // is told apart by its fold and scale, not its colour
-  stateColors: {
-    idle: { body: "#0d1118", sheen: "#a8c8f0", tint: "#dbe8f7" },
-    speaking: { body: "#090d1c", sheen: "#8fb4f2", tint: "#c2d6f5" },
-    thinking: { body: "#090d1c", sheen: "#8fb4f2", tint: "#c2d6f5" },
   },
 };
 
 export type Orb25Props = Omit<ShaderOrbProps, "variant">;
 
-export function Orb25({ size = 280, ...rest }: Orb25Props) {
-  return <ShaderOrb variant={orb25Orb} size={size} {...rest} />;
-}
+export const Orb25 = ({ size = 280, ...rest }: Orb25Props) => (
+  <ShaderOrb variant={orb25Orb} size={size} {...rest} />
+);
 
 export default Orb25;

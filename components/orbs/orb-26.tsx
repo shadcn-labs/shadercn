@@ -3,8 +3,8 @@
  * Ported from orbkit (WebGL/GLSL) to WebGPU/WGSL for shadercn.
  * Original: https://github.com/zzzzshawn/orbkit
  */
-import { ShaderOrb } from './orbkit-core-wgpu';
-import type { OrbVariant, ShaderOrbProps } from './orbkit-core-wgpu';
+import { ShaderOrb } from "./orbkit-core-wgpu";
+import type { OrbVariant, ShaderOrbProps } from "./orbkit-core-wgpu";
 
 const KNOT_REST = {
   bulge: 3.28,
@@ -204,10 +204,21 @@ fn orbMain(fragCoord: vec2f, uv: vec2f) -> vec4f {
 `;
 
 export const orb26Orb: OrbVariant = {
+  /*
+   * Four stops: the glaze the web is crazed into, the two ends of the thread
+   * ramp, and the fresnel sheen. The chromatic split runs the threads apart
+   * into three filaments on its own, so the palette only has to set the mood.
+   */
+  colors: [
+    { default: "#111a2e", key: "deep", label: "Glaze" },
+    { default: "#3fd2ff", key: "line", label: "Thread" },
+    { default: "#fff4d6", key: "hot", label: "Hot thread" },
+    { default: "#a9d8ff", key: "sheen", label: "Sheen" },
+  ],
+  frag: LATTICE_FRAG,
   key: "orb-26",
   label: "ORB-26",
   note: "a crazed web of coloured threads knotted to a cell grid",
-  frag: LATTICE_FRAG,
   params: [
     {
       default: 0.4,
@@ -350,17 +361,14 @@ export const orb26Orb: OrbVariant = {
       step: 0.015,
     },
   ],
-  /*
-   * Four stops: the glaze the web is crazed into, the two ends of the thread
-   * ramp, and the fresnel sheen. The chromatic split runs the threads apart
-   * into three filaments on its own, so the palette only has to set the mood.
-   */
-  colors: [
-    { default: "#111a2e", key: "deep", label: "Glaze" },
-    { default: "#3fd2ff", key: "line", label: "Thread" },
-    { default: "#fff4d6", key: "hot", label: "Hot thread" },
-    { default: "#a9d8ff", key: "sheen", label: "Sheen" },
-  ],
+  // one palette, cold cyan porcelain, across all three states — unlike the
+  // sibling orbs, this one tells its states apart by the knots and the
+  // tempo alone, not by colour
+  stateColors: {
+    idle: KNOT_PALETTE,
+    speaking: KNOT_PALETTE,
+    thinking: KNOT_PALETTE,
+  },
   /*
     Staged on the pole, which is this orb's loudest control: knot strength
     decides whether the field flows past the lattice or tears itself around
@@ -376,25 +384,6 @@ export const orb26Orb: OrbVariant = {
       cut to a third: a dark ball with a fierce centre.
     */
     idle: KNOT_REST,
-    /*
-      searching: the rest look, set MOVING. The boil runs at nearly two and
-      a half times idle, the swirl four times and the drift three, so the
-      web migrates over the glaze instead of sitting on it. The knots come
-      up a third but breathe less, the threads soften a touch on a tighter
-      split, and the contrast is pushed — busier, but no brighter.
-    */
-    thinking: {
-      ...KNOT_REST,
-      contrast: 1.6,
-      drift: 0.51,
-      floor: 0.28,
-      pole: 0.18,
-      pulse: 0.22,
-      sharp: 3.6,
-      speed: 1,
-      split: 0.03,
-      swirl: 0.3,
-    },
     /*
       answering: the web goes FAST and FLOODS. The boil runs at six times
       thinking and the drift more than three, the knots breathe at their
@@ -421,21 +410,32 @@ export const orb26Orb: OrbVariant = {
       swirl: 0.555,
       warp: 0.76,
     },
-  },
-  // one palette, cold cyan porcelain, across all three states — unlike the
-  // sibling orbs, this one tells its states apart by the knots and the
-  // tempo alone, not by colour
-  stateColors: {
-    idle: KNOT_PALETTE,
-    speaking: KNOT_PALETTE,
-    thinking: KNOT_PALETTE,
+    /*
+      searching: the rest look, set MOVING. The boil runs at nearly two and
+      a half times idle, the swirl four times and the drift three, so the
+      web migrates over the glaze instead of sitting on it. The knots come
+      up a third but breathe less, the threads soften a touch on a tighter
+      split, and the contrast is pushed — busier, but no brighter.
+    */
+    thinking: {
+      ...KNOT_REST,
+      contrast: 1.6,
+      drift: 0.51,
+      floor: 0.28,
+      pole: 0.18,
+      pulse: 0.22,
+      sharp: 3.6,
+      speed: 1,
+      split: 0.03,
+      swirl: 0.3,
+    },
   },
 };
 
 export type Orb26Props = Omit<ShaderOrbProps, "variant">;
 
-export function Orb26({ size = 280, ...rest }: Orb26Props) {
-  return <ShaderOrb variant={orb26Orb} size={size} {...rest} />;
-}
+export const Orb26 = ({ size = 280, ...rest }: Orb26Props) => (
+  <ShaderOrb variant={orb26Orb} size={size} {...rest} />
+);
 
 export default Orb26;

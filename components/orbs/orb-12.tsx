@@ -3,8 +3,8 @@
  * Ported from orbkit (WebGL/GLSL) to WebGPU/WGSL for shadercn.
  * Original: https://github.com/zzzzshawn/orbkit
  */
-import { ShaderOrb } from './orbkit-core-wgpu';
-import type { OrbVariant, ShaderOrbProps } from './orbkit-core-wgpu';
+import { ShaderOrb } from "./orbkit-core-wgpu";
+import type { OrbVariant, ShaderOrbProps } from "./orbkit-core-wgpu";
 
 const BRICK_FRAG = `
 const STEPS: i32 = 96;
@@ -268,11 +268,11 @@ fn orbMain(fragCoord: vec2f, uv: vec2f) -> vec4f {
 
 export const orb12Orb: OrbVariant = {
   colors: [
-    { key: "brickA", label: "Red", default: "#c4281c" },
-    { key: "brickB", label: "Yellow", default: "#f2cd37" },
-    { key: "brickC", label: "Blue", default: "#1e5aa8" },
-    { key: "brickD", label: "Green", default: "#00852b" },
-    { key: "brickE", label: "White", default: "#f4f4f4" },
+    { default: "#c4281c", key: "brickA", label: "Red" },
+    { default: "#f2cd37", key: "brickB", label: "Yellow" },
+    { default: "#1e5aa8", key: "brickC", label: "Blue" },
+    { default: "#00852b", key: "brickD", label: "Green" },
+    { default: "#f4f4f4", key: "brickE", label: "White" },
   ],
   frag: BRICK_FRAG,
   key: "orb-12",
@@ -280,75 +280,75 @@ export const orb12Orb: OrbVariant = {
   note: "a ball of glossy toy bricks, studs up — it rebuilds itself while it thinks",
   params: [
     {
-      key: "spin",
-      label: "Spin",
-      min: 0,
-      max: 5,
-      step: 0.03,
       default: 0.25,
       integrate: true,
-    },
-    { key: "tilt", label: "Tilt", min: 0, max: 4, step: 0.02, default: 0.55 },
-    {
-      key: "rebuild",
-      label: "Rebuild rate",
+      key: "spin",
+      label: "Spin",
+      max: 5,
       min: 0,
-      max: 20,
-      step: 0.1,
+      step: 0.03,
+    },
+    { default: 0.55, key: "tilt", label: "Tilt", max: 4, min: 0, step: 0.02 },
+    {
       default: 0.4,
       integrate: true,
+      key: "rebuild",
+      label: "Rebuild rate",
+      max: 20,
+      min: 0,
+      step: 0.1,
     },
     {
+      default: 0.07,
       key: "gap",
       label: "Missing bricks",
-      min: 0,
       max: 0.8,
+      min: 0,
       step: 0.01,
-      default: 0.07,
     },
-    { key: "studs", label: "Studs", min: 8, max: 48, step: 1, default: 18 },
+    { default: 18, key: "studs", label: "Studs", max: 48, min: 8, step: 1 },
     {
+      default: 0.95,
       key: "radius",
       label: "Radius",
-      min: 0.15,
       max: 3,
+      min: 0.15,
       step: 0.015,
-      default: 0.95,
     },
     {
+      default: 0.35,
       key: "patch",
       label: "Colour patches",
-      min: 0,
       max: 1,
+      min: 0,
       step: 0.01,
-      default: 0.35,
     },
     {
+      default: 0.85,
       key: "stud",
       label: "Stud relief",
-      min: 0,
       max: 1,
+      min: 0,
       step: 0.01,
-      default: 0.85,
     },
-    { key: "seam", label: "Seams", min: 0, max: 1, step: 0.01, default: 0.6 },
-    { key: "gloss", label: "Gloss", min: 0, max: 3, step: 0.02, default: 1 },
+    { default: 0.6, key: "seam", label: "Seams", max: 1, min: 0, step: 0.01 },
+    { default: 1, key: "gloss", label: "Gloss", max: 3, min: 0, step: 0.02 },
     {
+      default: 1,
       key: "light",
       label: "Key light",
-      min: 0,
       max: 3,
+      min: 0,
       step: 0.015,
-      default: 1,
     },
-    { key: "gain", label: "Gain", min: 0.05, max: 5, step: 0.05, default: 1 },
+    { default: 1, key: "gain", label: "Gain", max: 5, min: 0.05, step: 0.05 },
     {
+      default: 1,
       key: "contrast",
       label: "Contrast",
-      min: 0.15,
       max: 10,
+      min: 0.15,
       step: 0.05,
-      default: 1,
     },
   ],
   stateColors: {
@@ -360,6 +360,7 @@ export const orb12Orb: OrbVariant = {
       brickE: "#ffffff",
     },
   },
+
   statePresets: {
     idle: {
       gain: 1,
@@ -398,8 +399,8 @@ export const orb12Orb: OrbVariant = {
 
 export type Orb12Props = Omit<ShaderOrbProps, "variant">;
 
-export function Orb12({ size = 280, ...rest }: Orb12Props) {
-  return <ShaderOrb variant={orb12Orb} size={size} {...rest} />;
-}
+export const Orb12 = ({ size = 280, ...rest }: Orb12Props) => (
+  <ShaderOrb variant={orb12Orb} size={size} {...rest} />
+);
 
 export default Orb12;
