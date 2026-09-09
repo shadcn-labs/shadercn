@@ -47,8 +47,7 @@ export const OrbPreview = ({
   return (
     <div
       className={cn(
-        // The orbs are premultiplied emissive shaders authored against white.
-        "relative flex min-h-[26rem] items-center justify-center overflow-hidden rounded-xl border border-neutral-200 bg-white p-6",
+        "relative flex min-h-[26rem] items-center justify-center overflow-hidden rounded-xl border border-border bg-background p-6",
         className
       )}
       data-slot="orb-preview"
@@ -66,7 +65,7 @@ export const OrbPreview = ({
         >
           <SelectTrigger
             aria-label="Orb state"
-            className="w-[8.5rem] border-neutral-200 bg-white text-neutral-900 hover:bg-neutral-50 dark:bg-white dark:hover:bg-neutral-50"
+            className="w-[8.5rem]"
             size="sm"
           >
             <SelectValue />

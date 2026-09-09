@@ -2,17 +2,28 @@ import path from "node:path";
 
 import { readFileFromRoot } from "@/lib/read-file";
 
+/** Docs titles stay `components/orbs/*`; sources live under `registry/`. */
+export const resolveDocsSourcePath = (relativePath: string): string => {
+  if (relativePath.startsWith("components/orbs/")) {
+    return path.join("registry", relativePath);
+  }
+
+  return relativePath;
+};
+
 export const readOptionalFromRoot = async (
   relativePath: string
 ): Promise<string | null> => {
   try {
-    return await readFileFromRoot(relativePath);
+    return await readFileFromRoot(resolveDocsSourcePath(relativePath));
   } catch {
     return null;
   }
 };
 
 export const getRegistryUiSourceCandidates = ({ name }: { name: string }) => [
+  path.join("registry", "components", "orbs", name, "index.tsx"),
+  path.join("registry", "components", "orbs", `${name}.tsx`),
   path.join("registry", "new-york", `${name}.tsx`),
 ];
 

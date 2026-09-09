@@ -1,3 +1,4 @@
+import typegpu from "eslint-plugin-typegpu";
 import { defineConfig } from "oxlint";
 import core from "ultracite/oxlint/core";
 import next from "ultracite/oxlint/next";
@@ -15,4 +16,8 @@ export default defineConfig({
     ".web-kits/**",
     "audio/**",
   ],
+  jsPlugins: ["eslint-plugin-typegpu"],
+  rules: {
+    ...typegpu.configs.recommended.rules,
+  },
 });

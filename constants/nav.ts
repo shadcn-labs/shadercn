@@ -11,14 +11,14 @@ export const SITE_LATEST = {
 } as const satisfies SiteNavLink;
 
 export const SITE_REGISTRIES = [
-  { href: "https://editorcn.vercel.app", name: "editorcn" },
-  { href: "https://pdfcn.dev", name: "pdfcn" },
   { href: "https://termcn.dev", name: "termcn" },
   { href: "https://framecn.dev", name: "framecn" },
   { href: "https://ogimagecn.com", name: "ogimagecn" },
   { href: "https://agentcn.run", name: "agentcn" },
   { href: "https://emailcn.run", name: "emailcn" },
   { href: "https://mcpcn.dev", name: "mcpcn" },
+  { href: "https://pdfcn.dev", name: "pdfcn" },
+  { href: "https://editorcn.vercel.app", name: "editorcn" },
 ] as const satisfies readonly SiteNavLink[];
 
 export const SITE_TEMPLATES = [

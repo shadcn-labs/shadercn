@@ -1,16 +1,27 @@
+import { createRequire } from "node:module";
+
 import { createMDX } from "fumadocs-mdx/next";
 import { createJiti } from "jiti";
 
+const require = createRequire(import.meta.url);
 const jiti = createJiti(import.meta.url);
 
 const { LINK } = await jiti.import("./constants/links");
 const { ROUTES } = await jiti.import("./constants/routes");
 
+const typegpuBabelLoader = {
+  loader: require.resolve("babel-loader"),
+  options: {
+    plugins: [require.resolve("unplugin-typegpu/babel")],
+    presets: [require.resolve("@babel/preset-typescript")],
+  },
+};
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   devIndicators: false,
   experimental: {
-    viewTransition: true,
+    turbopackUseBuiltinBabel: false,
   },
   headers() {
     const link = [
@@ -51,6 +62,17 @@ const nextConfig = {
         source: `${ROUTES.DOCS}/:path*.mdx`,
       },
     ];
+  },
+  turbopack: {
+    resolveAlias: {
+      "@/components/orbs": "./registry/components/orbs",
+    },
+    rules: {
+      "**/orbs/**/gpu.ts": {
+        as: "*.js",
+        loaders: [typegpuBabelLoader],
+      },
+    },
   },
 };
 

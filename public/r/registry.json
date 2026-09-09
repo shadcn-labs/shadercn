@@ -10,12 +10,14 @@
       "description": "Core engine for GPU-powered shader orbs using vgpu",
       "files": [
         {
-          "path": "components/orbs/orbkit-renderer.ts",
-          "type": "registry:ui"
+          "path": "registry/components/orbs/orbkit-renderer.ts",
+          "type": "registry:ui",
+          "target": "components/orbs/orbkit-renderer.ts"
         },
         {
-          "path": "components/orbs/orbkit-core-wgpu.tsx",
-          "type": "registry:ui"
+          "path": "registry/components/orbs/orbkit-core-wgpu.tsx",
+          "type": "registry:ui",
+          "target": "components/orbs/orbkit-core-wgpu.tsx"
         }
       ]
     },
@@ -24,495 +26,825 @@
       "type": "registry:ui",
       "title": "ORB-01",
       "description": "cut-glass orb with a dispersive, turbulent interior",
-      "dependencies": [
-        "vgpu"
-      ],
+      "dependencies": ["vgpu", "typegpu"],
       "files": [
         {
-          "path": "components/orbs/orb-01.tsx",
-          "type": "registry:ui"
+          "path": "registry/components/orbs/orb-01/index.tsx",
+          "type": "registry:ui",
+          "target": "components/orbs/orb-01/index.tsx"
+        },
+        {
+          "path": "registry/components/orbs/orb-01/meta.ts",
+          "type": "registry:file",
+          "target": "components/orbs/orb-01/meta.ts"
+        },
+        {
+          "path": "registry/components/orbs/orb-01/gpu.ts",
+          "type": "registry:file",
+          "target": "components/orbs/orb-01/gpu.ts"
         }
-      ]
+      ],
+      "registryDependencies": ["orbkit-core-wgpu"]
     },
     {
       "name": "orb-02",
       "type": "registry:ui",
       "title": "ORB-02",
       "description": "ornate scrollwork on a rolling dome",
-      "dependencies": [
-        "vgpu"
-      ],
+      "dependencies": ["vgpu", "typegpu"],
       "files": [
         {
-          "path": "components/orbs/orb-02.tsx",
+          "path": "registry/components/orbs/orb-02/index.tsx",
+          "target": "components/orbs/orb-02/index.tsx",
           "type": "registry:ui"
+        },
+        {
+          "path": "registry/components/orbs/orb-02/meta.ts",
+          "target": "components/orbs/orb-02/meta.ts",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/components/orbs/orb-02/gpu.ts",
+          "target": "components/orbs/orb-02/gpu.ts",
+          "type": "registry:file"
         }
-      ]
+      ],
+      "registryDependencies": ["orbkit-core-wgpu"]
     },
     {
       "name": "orb-03",
       "type": "registry:ui",
       "title": "ORB-03",
       "description": "a turbulent belt of light girdling the ball, contoured in rainbow",
-      "dependencies": [
-        "vgpu"
-      ],
+      "dependencies": ["vgpu", "typegpu"],
       "files": [
         {
-          "path": "components/orbs/orb-03.tsx",
+          "path": "registry/components/orbs/orb-03/index.tsx",
+          "target": "components/orbs/orb-03/index.tsx",
           "type": "registry:ui"
+        },
+        {
+          "path": "registry/components/orbs/orb-03/meta.ts",
+          "target": "components/orbs/orb-03/meta.ts",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/components/orbs/orb-03/gpu.ts",
+          "target": "components/orbs/orb-03/gpu.ts",
+          "type": "registry:file"
         }
-      ]
+      ],
+      "registryDependencies": ["orbkit-core-wgpu"]
     },
     {
       "name": "orb-04",
       "type": "registry:ui",
       "title": "ORB-04",
       "description": "a hollow shell of light, faceted by a voxel lattice",
-      "dependencies": [
-        "vgpu"
-      ],
+      "dependencies": ["vgpu", "typegpu"],
       "files": [
         {
-          "path": "components/orbs/orb-04.tsx",
+          "path": "registry/components/orbs/orb-04/index.tsx",
+          "target": "components/orbs/orb-04/index.tsx",
           "type": "registry:ui"
+        },
+        {
+          "path": "registry/components/orbs/orb-04/meta.ts",
+          "target": "components/orbs/orb-04/meta.ts",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/components/orbs/orb-04/gpu.ts",
+          "target": "components/orbs/orb-04/gpu.ts",
+          "type": "registry:file"
         }
-      ]
+      ],
+      "registryDependencies": ["orbkit-core-wgpu"]
     },
     {
       "name": "orb-05",
       "type": "registry:ui",
       "title": "ORB-05",
       "description": "rainbow rings travelling through a lattice of lenses",
-      "dependencies": [
-        "vgpu"
-      ],
+      "dependencies": ["vgpu", "typegpu"],
       "files": [
         {
-          "path": "components/orbs/orb-05.tsx",
+          "path": "registry/components/orbs/orb-05/index.tsx",
+          "target": "components/orbs/orb-05/index.tsx",
           "type": "registry:ui"
+        },
+        {
+          "path": "registry/components/orbs/orb-05/meta.ts",
+          "target": "components/orbs/orb-05/meta.ts",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/components/orbs/orb-05/gpu.ts",
+          "target": "components/orbs/orb-05/gpu.ts",
+          "type": "registry:file"
         }
-      ]
+      ],
+      "registryDependencies": ["orbkit-core-wgpu"]
     },
     {
       "name": "orb-06",
       "type": "registry:ui",
       "title": "ORB-06",
       "description": "a hundred glowing lattices stacked through the ball, interfering",
-      "dependencies": [
-        "vgpu"
-      ],
+      "dependencies": ["vgpu", "typegpu"],
       "files": [
         {
-          "path": "components/orbs/orb-06.tsx",
+          "path": "registry/components/orbs/orb-06/index.tsx",
+          "target": "components/orbs/orb-06/index.tsx",
           "type": "registry:ui"
+        },
+        {
+          "path": "registry/components/orbs/orb-06/meta.ts",
+          "target": "components/orbs/orb-06/meta.ts",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/components/orbs/orb-06/gpu.ts",
+          "target": "components/orbs/orb-06/gpu.ts",
+          "type": "registry:file"
         }
-      ]
+      ],
+      "registryDependencies": ["orbkit-core-wgpu"]
     },
     {
       "name": "orb-07",
       "type": "registry:ui",
       "title": "ORB-07",
       "description": "a twist wave travelling out through the ball around a lit column",
-      "dependencies": [
-        "vgpu"
-      ],
+      "dependencies": ["vgpu", "typegpu"],
       "files": [
         {
-          "path": "components/orbs/orb-07.tsx",
+          "path": "registry/components/orbs/orb-07/index.tsx",
+          "target": "components/orbs/orb-07/index.tsx",
           "type": "registry:ui"
+        },
+        {
+          "path": "registry/components/orbs/orb-07/meta.ts",
+          "target": "components/orbs/orb-07/meta.ts",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/components/orbs/orb-07/gpu.ts",
+          "target": "components/orbs/orb-07/gpu.ts",
+          "type": "registry:file"
         }
-      ]
+      ],
+      "registryDependencies": ["orbkit-core-wgpu"]
     },
     {
       "name": "orb-08",
       "type": "registry:ui",
       "title": "ORB-08",
       "description": "mother-of-pearl contour bands, each layer its own hue",
-      "dependencies": [
-        "vgpu"
-      ],
+      "dependencies": ["vgpu", "typegpu"],
       "files": [
         {
-          "path": "components/orbs/orb-08.tsx",
+          "path": "registry/components/orbs/orb-08/index.tsx",
+          "target": "components/orbs/orb-08/index.tsx",
           "type": "registry:ui"
+        },
+        {
+          "path": "registry/components/orbs/orb-08/meta.ts",
+          "target": "components/orbs/orb-08/meta.ts",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/components/orbs/orb-08/gpu.ts",
+          "target": "components/orbs/orb-08/gpu.ts",
+          "type": "registry:file"
         }
-      ]
+      ],
+      "registryDependencies": ["orbkit-core-wgpu"]
     },
     {
       "name": "orb-09",
       "type": "registry:ui",
       "title": "ORB-09",
       "description": "torn rings of rainbow light worn as the ball's latitudes",
-      "dependencies": [
-        "vgpu"
-      ],
+      "dependencies": ["vgpu", "typegpu"],
       "files": [
         {
-          "path": "components/orbs/orb-09.tsx",
+          "path": "registry/components/orbs/orb-09/index.tsx",
+          "target": "components/orbs/orb-09/index.tsx",
           "type": "registry:ui"
+        },
+        {
+          "path": "registry/components/orbs/orb-09/meta.ts",
+          "target": "components/orbs/orb-09/meta.ts",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/components/orbs/orb-09/gpu.ts",
+          "target": "components/orbs/orb-09/gpu.ts",
+          "type": "registry:file"
         }
-      ]
+      ],
+      "registryDependencies": ["orbkit-core-wgpu"]
     },
     {
       "name": "orb-10",
       "type": "registry:ui",
       "title": "ORB-10",
       "description": "a lattice of light knitted into the ball's own skin",
-      "dependencies": [
-        "vgpu"
-      ],
+      "dependencies": ["vgpu", "typegpu"],
       "files": [
         {
-          "path": "components/orbs/orb-10.tsx",
+          "path": "registry/components/orbs/orb-10/index.tsx",
+          "target": "components/orbs/orb-10/index.tsx",
           "type": "registry:ui"
+        },
+        {
+          "path": "registry/components/orbs/orb-10/meta.ts",
+          "target": "components/orbs/orb-10/meta.ts",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/components/orbs/orb-10/gpu.ts",
+          "target": "components/orbs/orb-10/gpu.ts",
+          "type": "registry:file"
         }
-      ]
+      ],
+      "registryDependencies": ["orbkit-core-wgpu"]
     },
     {
       "name": "orb-11",
       "type": "registry:ui",
       "title": "ORB-11",
       "description": "quantum orbital, rainbow chroma",
-      "dependencies": [
-        "vgpu"
-      ],
+      "dependencies": ["vgpu", "typegpu"],
       "files": [
         {
-          "path": "components/orbs/orb-11.tsx",
+          "path": "registry/components/orbs/orb-11/index.tsx",
+          "target": "components/orbs/orb-11/index.tsx",
           "type": "registry:ui"
+        },
+        {
+          "path": "registry/components/orbs/orb-11/meta.ts",
+          "target": "components/orbs/orb-11/meta.ts",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/components/orbs/orb-11/gpu.ts",
+          "target": "components/orbs/orb-11/gpu.ts",
+          "type": "registry:file"
         }
-      ]
+      ],
+      "registryDependencies": ["orbkit-core-wgpu"]
     },
     {
       "name": "orb-12",
       "type": "registry:ui",
       "title": "ORB-12",
       "description": "a ball of glossy toy bricks, studs up — it rebuilds itself while it thinks",
-      "dependencies": [
-        "vgpu"
-      ],
+      "dependencies": ["vgpu", "typegpu"],
       "files": [
         {
-          "path": "components/orbs/orb-12.tsx",
+          "path": "registry/components/orbs/orb-12/index.tsx",
+          "target": "components/orbs/orb-12/index.tsx",
           "type": "registry:ui"
+        },
+        {
+          "path": "registry/components/orbs/orb-12/meta.ts",
+          "target": "components/orbs/orb-12/meta.ts",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/components/orbs/orb-12/gpu.ts",
+          "target": "components/orbs/orb-12/gpu.ts",
+          "type": "registry:file"
         }
-      ]
+      ],
+      "registryDependencies": ["orbkit-core-wgpu"]
     },
     {
       "name": "orb-13",
       "type": "registry:ui",
       "title": "ORB-13",
       "description": "plasma globe: crawling lightning filaments",
-      "dependencies": [
-        "vgpu"
-      ],
+      "dependencies": ["vgpu", "typegpu"],
       "files": [
         {
-          "path": "components/orbs/orb-13.tsx",
+          "path": "registry/components/orbs/orb-13/index.tsx",
+          "target": "components/orbs/orb-13/index.tsx",
           "type": "registry:ui"
+        },
+        {
+          "path": "registry/components/orbs/orb-13/meta.ts",
+          "target": "components/orbs/orb-13/meta.ts",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/components/orbs/orb-13/gpu.ts",
+          "target": "components/orbs/orb-13/gpu.ts",
+          "type": "registry:file"
         }
-      ]
+      ],
+      "registryDependencies": ["orbkit-core-wgpu"]
     },
     {
       "name": "orb-14",
       "type": "registry:ui",
       "title": "ORB-14",
       "description": "a lit plasma dome quantized to chunky two-tone pixels",
-      "dependencies": [
-        "vgpu"
-      ],
+      "dependencies": ["vgpu", "typegpu"],
       "files": [
         {
-          "path": "components/orbs/orb-14.tsx",
+          "path": "registry/components/orbs/orb-14/index.tsx",
+          "target": "components/orbs/orb-14/index.tsx",
           "type": "registry:ui"
+        },
+        {
+          "path": "registry/components/orbs/orb-14/meta.ts",
+          "target": "components/orbs/orb-14/meta.ts",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/components/orbs/orb-14/gpu.ts",
+          "target": "components/orbs/orb-14/gpu.ts",
+          "type": "registry:file"
         }
-      ]
+      ],
+      "registryDependencies": ["orbkit-core-wgpu"]
     },
     {
       "name": "orb-15",
       "type": "registry:ui",
       "title": "ORB-15",
       "description": "an iridescent particle-track web worn as the ball's skin",
-      "dependencies": [
-        "vgpu"
-      ],
+      "dependencies": ["vgpu", "typegpu"],
       "files": [
         {
-          "path": "components/orbs/orb-15.tsx",
+          "path": "registry/components/orbs/orb-15/index.tsx",
+          "target": "components/orbs/orb-15/index.tsx",
           "type": "registry:ui"
+        },
+        {
+          "path": "registry/components/orbs/orb-15/meta.ts",
+          "target": "components/orbs/orb-15/meta.ts",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/components/orbs/orb-15/gpu.ts",
+          "target": "components/orbs/orb-15/gpu.ts",
+          "type": "registry:file"
         }
-      ]
+      ],
+      "registryDependencies": ["orbkit-core-wgpu"]
     },
     {
       "name": "orb-16",
       "type": "registry:ui",
       "title": "ORB-16",
       "description": "sunlight through water — a caustic net crawling over the ball, fringing into colour where it moves",
-      "dependencies": [
-        "vgpu"
-      ],
+      "dependencies": ["vgpu", "typegpu"],
       "files": [
         {
-          "path": "components/orbs/orb-16.tsx",
+          "path": "registry/components/orbs/orb-16/index.tsx",
+          "target": "components/orbs/orb-16/index.tsx",
           "type": "registry:ui"
+        },
+        {
+          "path": "registry/components/orbs/orb-16/meta.ts",
+          "target": "components/orbs/orb-16/meta.ts",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/components/orbs/orb-16/gpu.ts",
+          "target": "components/orbs/orb-16/gpu.ts",
+          "type": "registry:file"
         }
-      ]
+      ],
+      "registryDependencies": ["orbkit-core-wgpu"]
     },
     {
       "name": "orb-17",
       "type": "registry:ui",
       "title": "ORB-17",
       "description": "a grainy many-coloured storm with band shear and lightning",
-      "dependencies": [
-        "vgpu"
-      ],
+      "dependencies": ["vgpu", "typegpu"],
       "files": [
         {
-          "path": "components/orbs/orb-17.tsx",
+          "path": "registry/components/orbs/orb-17/index.tsx",
+          "target": "components/orbs/orb-17/index.tsx",
           "type": "registry:ui"
+        },
+        {
+          "path": "registry/components/orbs/orb-17/meta.ts",
+          "target": "components/orbs/orb-17/meta.ts",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/components/orbs/orb-17/gpu.ts",
+          "target": "components/orbs/orb-17/gpu.ts",
+          "type": "registry:file"
         }
-      ]
+      ],
+      "registryDependencies": ["orbkit-core-wgpu"]
     },
     {
       "name": "orb-18",
       "type": "registry:ui",
       "title": "ORB-18",
       "description": "a crystal folded out of one eighth of space, tumbling",
-      "dependencies": [
-        "vgpu"
-      ],
+      "dependencies": ["vgpu", "typegpu"],
       "files": [
         {
-          "path": "components/orbs/orb-18.tsx",
+          "path": "registry/components/orbs/orb-18/index.tsx",
+          "target": "components/orbs/orb-18/index.tsx",
           "type": "registry:ui"
+        },
+        {
+          "path": "registry/components/orbs/orb-18/meta.ts",
+          "target": "components/orbs/orb-18/meta.ts",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/components/orbs/orb-18/gpu.ts",
+          "target": "components/orbs/orb-18/gpu.ts",
+          "type": "registry:file"
         }
-      ]
+      ],
+      "registryDependencies": ["orbkit-core-wgpu"]
     },
     {
       "name": "orb-19",
       "type": "registry:ui",
       "title": "ORB-19",
       "description": "beads swelling and shrinking in their cells, packed over the ball",
-      "dependencies": [
-        "vgpu"
-      ],
+      "dependencies": ["vgpu", "typegpu"],
       "files": [
         {
-          "path": "components/orbs/orb-19.tsx",
+          "path": "registry/components/orbs/orb-19/index.tsx",
+          "target": "components/orbs/orb-19/index.tsx",
           "type": "registry:ui"
+        },
+        {
+          "path": "registry/components/orbs/orb-19/meta.ts",
+          "target": "components/orbs/orb-19/meta.ts",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/components/orbs/orb-19/gpu.ts",
+          "target": "components/orbs/orb-19/gpu.ts",
+          "type": "registry:file"
         }
-      ]
+      ],
+      "registryDependencies": ["orbkit-core-wgpu"]
     },
     {
       "name": "orb-20",
       "type": "registry:ui",
       "title": "ORB-20",
       "description": "a water film rushing down the ball, fountain-style",
-      "dependencies": [
-        "vgpu"
-      ],
+      "dependencies": ["vgpu", "typegpu"],
       "files": [
         {
-          "path": "components/orbs/orb-20.tsx",
+          "path": "registry/components/orbs/orb-20/index.tsx",
+          "target": "components/orbs/orb-20/index.tsx",
           "type": "registry:ui"
+        },
+        {
+          "path": "registry/components/orbs/orb-20/meta.ts",
+          "target": "components/orbs/orb-20/meta.ts",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/components/orbs/orb-20/gpu.ts",
+          "target": "components/orbs/orb-20/gpu.ts",
+          "type": "registry:file"
         }
-      ]
+      ],
+      "registryDependencies": ["orbkit-core-wgpu"]
     },
     {
       "name": "orb-21",
       "type": "registry:ui",
       "title": "ORB-21",
       "description": "light diffusing through a cloud",
-      "dependencies": [
-        "vgpu"
-      ],
+      "dependencies": ["vgpu", "typegpu"],
       "files": [
         {
-          "path": "components/orbs/orb-21.tsx",
+          "path": "registry/components/orbs/orb-21/index.tsx",
+          "target": "components/orbs/orb-21/index.tsx",
           "type": "registry:ui"
+        },
+        {
+          "path": "registry/components/orbs/orb-21/meta.ts",
+          "target": "components/orbs/orb-21/meta.ts",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/components/orbs/orb-21/gpu.ts",
+          "target": "components/orbs/orb-21/gpu.ts",
+          "type": "registry:file"
         }
-      ]
+      ],
+      "registryDependencies": ["orbkit-core-wgpu"]
     },
     {
       "name": "orb-22",
       "type": "registry:ui",
       "title": "ORB-22",
       "description": "field lines swirling around the ball about a wandering axis",
-      "dependencies": [
-        "vgpu"
-      ],
+      "dependencies": ["vgpu", "typegpu"],
       "files": [
         {
-          "path": "components/orbs/orb-22.tsx",
+          "path": "registry/components/orbs/orb-22/index.tsx",
+          "target": "components/orbs/orb-22/index.tsx",
           "type": "registry:ui"
+        },
+        {
+          "path": "registry/components/orbs/orb-22/meta.ts",
+          "target": "components/orbs/orb-22/meta.ts",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/components/orbs/orb-22/gpu.ts",
+          "target": "components/orbs/orb-22/gpu.ts",
+          "type": "registry:file"
         }
-      ]
+      ],
+      "registryDependencies": ["orbkit-core-wgpu"]
     },
     {
       "name": "orb-23",
       "type": "registry:ui",
       "title": "ORB-23",
       "description": "an ASCII glyph matrix in CRT green, wrapped on the ball",
-      "dependencies": [
-        "vgpu"
-      ],
+      "dependencies": ["vgpu", "typegpu"],
       "files": [
         {
-          "path": "components/orbs/orb-23.tsx",
+          "path": "registry/components/orbs/orb-23/index.tsx",
+          "target": "components/orbs/orb-23/index.tsx",
           "type": "registry:ui"
+        },
+        {
+          "path": "registry/components/orbs/orb-23/meta.ts",
+          "target": "components/orbs/orb-23/meta.ts",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/components/orbs/orb-23/gpu.ts",
+          "target": "components/orbs/orb-23/gpu.ts",
+          "type": "registry:file"
         }
-      ]
+      ],
+      "registryDependencies": ["orbkit-core-wgpu"]
     },
     {
       "name": "orb-24",
       "type": "registry:ui",
       "title": "ORB-24",
       "description": "a Minecraft Earth — a perfect voxel sphere whose seasons cycle it through lush, cherry-grove, ice, mesa and desert worlds",
-      "dependencies": [
-        "vgpu"
-      ],
+      "dependencies": ["vgpu", "typegpu"],
       "files": [
         {
-          "path": "components/orbs/orb-24.tsx",
+          "path": "registry/components/orbs/orb-24/index.tsx",
+          "target": "components/orbs/orb-24/index.tsx",
           "type": "registry:ui"
+        },
+        {
+          "path": "registry/components/orbs/orb-24/meta.ts",
+          "target": "components/orbs/orb-24/meta.ts",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/components/orbs/orb-24/gpu.ts",
+          "target": "components/orbs/orb-24/gpu.ts",
+          "type": "registry:file"
         }
-      ]
+      ],
+      "registryDependencies": ["orbkit-core-wgpu"]
     },
     {
       "name": "orb-25",
       "type": "registry:ui",
       "title": "ORB-25",
       "description": "the folds of a warped field, drawn by their own steepness",
-      "dependencies": [
-        "vgpu"
-      ],
+      "dependencies": ["vgpu", "typegpu"],
       "files": [
         {
-          "path": "components/orbs/orb-25.tsx",
+          "path": "registry/components/orbs/orb-25/index.tsx",
+          "target": "components/orbs/orb-25/index.tsx",
           "type": "registry:ui"
+        },
+        {
+          "path": "registry/components/orbs/orb-25/meta.ts",
+          "target": "components/orbs/orb-25/meta.ts",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/components/orbs/orb-25/gpu.ts",
+          "target": "components/orbs/orb-25/gpu.ts",
+          "type": "registry:file"
         }
-      ]
+      ],
+      "registryDependencies": ["orbkit-core-wgpu"]
     },
     {
       "name": "orb-26",
       "type": "registry:ui",
       "title": "ORB-26",
       "description": "a crazed web of coloured threads knotted to a cell grid",
-      "dependencies": [
-        "vgpu"
-      ],
+      "dependencies": ["vgpu", "typegpu"],
       "files": [
         {
-          "path": "components/orbs/orb-26.tsx",
+          "path": "registry/components/orbs/orb-26/index.tsx",
+          "target": "components/orbs/orb-26/index.tsx",
           "type": "registry:ui"
+        },
+        {
+          "path": "registry/components/orbs/orb-26/meta.ts",
+          "target": "components/orbs/orb-26/meta.ts",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/components/orbs/orb-26/gpu.ts",
+          "target": "components/orbs/orb-26/gpu.ts",
+          "type": "registry:file"
         }
-      ]
+      ],
+      "registryDependencies": ["orbkit-core-wgpu"]
     },
     {
       "name": "orb-27",
       "type": "registry:ui",
       "title": "ORB-27",
       "description": "a weather-radar mosaic, fronts of coloured pixels sweeping the ball",
-      "dependencies": [
-        "vgpu"
-      ],
+      "dependencies": ["vgpu", "typegpu"],
       "files": [
         {
-          "path": "components/orbs/orb-27.tsx",
+          "path": "registry/components/orbs/orb-27/index.tsx",
+          "target": "components/orbs/orb-27/index.tsx",
           "type": "registry:ui"
+        },
+        {
+          "path": "registry/components/orbs/orb-27/meta.ts",
+          "target": "components/orbs/orb-27/meta.ts",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/components/orbs/orb-27/gpu.ts",
+          "target": "components/orbs/orb-27/gpu.ts",
+          "type": "registry:file"
         }
-      ]
+      ],
+      "registryDependencies": ["orbkit-core-wgpu"]
     },
     {
       "name": "orb-28",
       "type": "registry:ui",
       "title": "ORB-28",
       "description": "nested binary grids shuttering on a tumbling bit-sphere",
-      "dependencies": [
-        "vgpu"
-      ],
+      "dependencies": ["vgpu", "typegpu"],
       "files": [
         {
-          "path": "components/orbs/orb-28.tsx",
+          "path": "registry/components/orbs/orb-28/index.tsx",
+          "target": "components/orbs/orb-28/index.tsx",
           "type": "registry:ui"
+        },
+        {
+          "path": "registry/components/orbs/orb-28/meta.ts",
+          "target": "components/orbs/orb-28/meta.ts",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/components/orbs/orb-28/gpu.ts",
+          "target": "components/orbs/orb-28/gpu.ts",
+          "type": "registry:file"
         }
-      ]
+      ],
+      "registryDependencies": ["orbkit-core-wgpu"]
     },
     {
       "name": "orb-29",
       "type": "registry:ui",
       "title": "ORB-29",
       "description": "an LED tile wall lighting up in flowing blobs, wrapped on the ball",
-      "dependencies": [
-        "vgpu"
-      ],
+      "dependencies": ["vgpu", "typegpu"],
       "files": [
         {
-          "path": "components/orbs/orb-29.tsx",
+          "path": "registry/components/orbs/orb-29/index.tsx",
+          "target": "components/orbs/orb-29/index.tsx",
           "type": "registry:ui"
+        },
+        {
+          "path": "registry/components/orbs/orb-29/meta.ts",
+          "target": "components/orbs/orb-29/meta.ts",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/components/orbs/orb-29/gpu.ts",
+          "target": "components/orbs/orb-29/gpu.ts",
+          "type": "registry:file"
         }
-      ]
+      ],
+      "registryDependencies": ["orbkit-core-wgpu"]
     },
     {
       "name": "orb-30",
       "type": "registry:ui",
       "title": "ORB-30",
       "description": "a meadow folding into itself toward a blue vanishing point",
-      "dependencies": [
-        "vgpu"
-      ],
+      "dependencies": ["vgpu", "typegpu"],
       "files": [
         {
-          "path": "components/orbs/orb-30.tsx",
+          "path": "registry/components/orbs/orb-30/index.tsx",
+          "target": "components/orbs/orb-30/index.tsx",
           "type": "registry:ui"
+        },
+        {
+          "path": "registry/components/orbs/orb-30/meta.ts",
+          "target": "components/orbs/orb-30/meta.ts",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/components/orbs/orb-30/gpu.ts",
+          "target": "components/orbs/orb-30/gpu.ts",
+          "type": "registry:file"
         }
-      ]
+      ],
+      "registryDependencies": ["orbkit-core-wgpu"]
     },
     {
       "name": "orb-31",
       "type": "registry:ui",
       "title": "ORB-31",
       "description": "raymarched shell, volumetric godrays",
-      "dependencies": [
-        "vgpu"
-      ],
+      "dependencies": ["vgpu", "typegpu"],
       "files": [
         {
-          "path": "components/orbs/orb-31.tsx",
+          "path": "registry/components/orbs/orb-31/index.tsx",
+          "target": "components/orbs/orb-31/index.tsx",
           "type": "registry:ui"
+        },
+        {
+          "path": "registry/components/orbs/orb-31/meta.ts",
+          "target": "components/orbs/orb-31/meta.ts",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/components/orbs/orb-31/gpu.ts",
+          "target": "components/orbs/orb-31/gpu.ts",
+          "type": "registry:file"
         }
-      ]
+      ],
+      "registryDependencies": ["orbkit-core-wgpu"]
     },
     {
       "name": "orb-32",
       "type": "registry:ui",
       "title": "ORB-32",
       "description": "a galaxy marched as gas and dust inside the ball",
-      "dependencies": [
-        "vgpu"
-      ],
+      "dependencies": ["vgpu", "typegpu"],
       "files": [
         {
-          "path": "components/orbs/orb-32.tsx",
+          "path": "registry/components/orbs/orb-32/index.tsx",
+          "target": "components/orbs/orb-32/index.tsx",
           "type": "registry:ui"
+        },
+        {
+          "path": "registry/components/orbs/orb-32/meta.ts",
+          "target": "components/orbs/orb-32/meta.ts",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/components/orbs/orb-32/gpu.ts",
+          "target": "components/orbs/orb-32/gpu.ts",
+          "type": "registry:file"
         }
-      ]
+      ],
+      "registryDependencies": ["orbkit-core-wgpu"]
     },
     {
       "name": "orb-33",
       "type": "registry:ui",
       "title": "ORB-33",
       "description": "a thermal image, risograph-printed on the ball",
-      "dependencies": [
-        "vgpu"
-      ],
+      "dependencies": ["vgpu", "typegpu"],
       "files": [
         {
-          "path": "components/orbs/orb-33.tsx",
+          "path": "registry/components/orbs/orb-33/index.tsx",
+          "target": "components/orbs/orb-33/index.tsx",
           "type": "registry:ui"
+        },
+        {
+          "path": "registry/components/orbs/orb-33/meta.ts",
+          "target": "components/orbs/orb-33/meta.ts",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/components/orbs/orb-33/gpu.ts",
+          "target": "components/orbs/orb-33/gpu.ts",
+          "type": "registry:file"
         }
-      ]
+      ],
+      "registryDependencies": ["orbkit-core-wgpu"]
     }
   ]
 }

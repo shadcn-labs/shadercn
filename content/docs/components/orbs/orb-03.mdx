@@ -29,15 +29,27 @@ npx shadcn@latest add https://shadercn.vercel.app/r/orb-03.json
 <Step>Install the following dependencies:</Step>
 
 ```bash
-pnpm add vgpu
+pnpm add vgpu typegpu
 ```
 
 <Step>Copy and paste the following code into your project.</Step>
 
 <ComponentSource
-  src="components/orbs/orb-03.tsx"
+  src="components/orbs/orb-03/index.tsx"
   base="shadercn"
-  title="components/orbs/orb-03.tsx"
+  title="components/orbs/orb-03/index.tsx"
+/>
+
+<ComponentSource
+  src="components/orbs/orb-03/meta.ts"
+  base="shadercn"
+  title="components/orbs/orb-03/meta.ts"
+/>
+
+<ComponentSource
+  src="components/orbs/orb-03/gpu.ts"
+  base="shadercn"
+  title="components/orbs/orb-03/gpu.ts"
 />
 
 <ComponentSource

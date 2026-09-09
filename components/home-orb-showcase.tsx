@@ -24,9 +24,6 @@ const STATE_LABELS: Record<OrbState, string> = {
   thinking: "Thinking",
 };
 
-const LIGHT_CONTROL_CLS =
-  "border-neutral-200 bg-white text-neutral-900 hover:bg-neutral-50 dark:bg-white dark:hover:bg-neutral-50";
-
 export const HomeOrbShowcase = ({ className }: { className?: string }) => {
   const [slug, setSlug] = useState(ORB_SLUGS[0] as string);
   const [state, setState] = useState<OrbState>("idle");
@@ -36,7 +33,7 @@ export const HomeOrbShowcase = ({ className }: { className?: string }) => {
 
   return (
     <div className={cn("flex w-full flex-col gap-4 text-left", className)}>
-      <div className="relative flex min-h-[24rem] items-center justify-center overflow-hidden rounded-xl border border-neutral-200 bg-white p-6 sm:min-h-[28rem]">
+      <div className="relative flex min-h-[24rem] items-center justify-center overflow-hidden rounded-xl border border-border bg-background p-6 sm:min-h-[28rem]">
         <Component
           ariaLabel={`${variant.label} orb, ${state}`}
           size={300}
@@ -45,11 +42,7 @@ export const HomeOrbShowcase = ({ className }: { className?: string }) => {
 
         <div className="absolute bottom-4 left-4 flex items-center gap-2">
           <Select onValueChange={setSlug} value={slug}>
-            <SelectTrigger
-              aria-label="Orb"
-              className={cn("w-[7.5rem]", LIGHT_CONTROL_CLS)}
-              size="sm"
-            >
+            <SelectTrigger aria-label="Orb" className="w-[7.5rem]" size="sm">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -67,7 +60,7 @@ export const HomeOrbShowcase = ({ className }: { className?: string }) => {
           >
             <SelectTrigger
               aria-label="Orb state"
-              className={cn("w-[8rem]", LIGHT_CONTROL_CLS)}
+              className="w-[8rem]"
               size="sm"
             >
               <SelectValue />
@@ -83,13 +76,7 @@ export const HomeOrbShowcase = ({ className }: { className?: string }) => {
         </div>
 
         <div className="absolute right-4 bottom-4 flex items-center gap-2">
-          <Button
-            asChild
-            className={LIGHT_CONTROL_CLS}
-            size="sm"
-            sound="click"
-            variant="outline"
-          >
+          <Button asChild size="sm" sound="click" variant="outline">
             <Link href={docsHref}>
               <span className="sm:hidden">Docs</span>
               <span className="hidden sm:inline">{variant.label} docs</span>

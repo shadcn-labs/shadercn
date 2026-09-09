@@ -1,7 +1,7 @@
 /**
  * Headless orb shader validation (Dawn via `vgpu/node`).
  *
- * For every `components/orbs/orb-*.tsx` variant: assemble the WGSL module the
+ * For every `registry/components/orbs/orb-*` variant: assemble the WGSL module the
  * browser runtime would compile, render one frame into an offscreen target, and
  * report compile errors plus whether the frame produced any non-transparent
  * pixels. Run with `bun scripts/validate-orb-shaders.ts [orb-01 orb-07 ...]`.
@@ -11,18 +11,33 @@ import { join } from "node:path";
 
 import { effect, frame, init, target } from "vgpu/node";
 
-import type { OrbVariant } from "../components/orbs/orbkit-renderer";
+import type { OrbVariant } from "../registry/components/orbs/orbkit-renderer";
 import {
   buildOrbShaderSource,
   orbInitialUniforms,
-} from "../components/orbs/orbkit-renderer";
+} from "../registry/components/orbs/orbkit-renderer";
 
-const ORBS_DIR = join(import.meta.dirname, "..", "components", "orbs");
+const ORBS_DIR = join(
+  import.meta.dirname,
+  "..",
+  "registry",
+  "components",
+  "orbs"
+);
 const SIZE = 192;
 
 const filter = process.argv.slice(2);
-const files = readdirSync(ORBS_DIR)
-  .filter((name) => /^orb-\d+\.tsx$/.test(name))
+const entries = readdirSync(ORBS_DIR, { withFileTypes: true });
+const files = entries
+  .flatMap((entry) => {
+    if (entry.isFile() && /^orb-\d+\.tsx$/.test(entry.name)) {
+      return [entry.name];
+    }
+    if (entry.isDirectory() && /^orb-\d+$/.test(entry.name)) {
+      return [join(entry.name, "index.tsx")];
+    }
+    return [];
+  })
   .filter((name) => filter.length === 0 || filter.some((f) => name.includes(f)))
   .toSorted();
 
@@ -34,7 +49,8 @@ for (const file of files) {
     (value): value is OrbVariant =>
       typeof value === "object" &&
       value !== null &&
-      typeof (value as OrbVariant).frag === "string"
+      (typeof (value as OrbVariant).frag === "string" ||
+        typeof (value as OrbVariant).shader === "string")
   );
   if (!variant) {
     console.error(`${file}: no OrbVariant export`);

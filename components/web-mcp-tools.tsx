@@ -62,7 +62,7 @@ export const WebMcpTools = () => {
       inputSchema: Record<string, unknown>;
       name: string;
     }) => {
-      const maybeCleanup = registerTool(def, { signal: ac.signal });
+      const maybeCleanup = registerTool(def);
       if (typeof maybeCleanup === "function") {
         cleanups.push(maybeCleanup);
       }
@@ -91,15 +91,23 @@ export const WebMcpTools = () => {
     register({
       description:
         "Fetch the published shadcn registry manifest (registry.json) for this site.",
-      execute: async (_input, { signal }) => {
-        const res = await fetch(`${window.location.origin}${ROUTES.REGISTRY}`, {
-          signal,
-        });
-        if (!res.ok) {
-          return { ok: false, status: res.status };
-        }
+      execute: async () => {
+        try {
+          const res = await fetch(
+            `${window.location.origin}${ROUTES.REGISTRY}`,
+            { signal: ac.signal }
+          );
+          if (!res.ok) {
+            return { ok: false, status: res.status };
+          }
 
-        return res.json();
+          return res.json();
+        } catch (error) {
+          if (error instanceof DOMException && error.name === "AbortError") {
+            return { ok: false };
+          }
+          throw error;
+        }
       },
       inputSchema: { properties: {}, type: "object" },
       name: `${SITE.NAME}_fetch_registry`,

@@ -178,7 +178,7 @@ export const OrbPlayground = ({
   return (
     <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_20rem]">
       <div className="flex flex-col gap-4">
-        <div className="relative flex min-h-[32rem] items-center justify-center overflow-hidden rounded-xl border border-neutral-200 bg-white p-6">
+        <div className="relative flex min-h-[32rem] items-center justify-center overflow-hidden rounded-xl border border-border bg-background p-6">
           <Component
             ariaLabel={`${slug} orb, ${state}`}
             colors={draft.colors}
@@ -195,11 +195,7 @@ export const OrbPlayground = ({
 
           <div className="absolute bottom-4 left-4 flex items-center gap-2">
             <Select onValueChange={selectOrb} value={slug}>
-              <SelectTrigger
-                aria-label="Orb"
-                className="w-[7.5rem] border-neutral-200 bg-white text-neutral-900 hover:bg-neutral-50 dark:bg-white dark:hover:bg-neutral-50"
-                size="sm"
-              >
+              <SelectTrigger aria-label="Orb" className="w-[7.5rem]" size="sm">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -217,7 +213,7 @@ export const OrbPlayground = ({
             >
               <SelectTrigger
                 aria-label="Orb state"
-                className="w-[8.5rem] border-neutral-200 bg-white text-neutral-900 hover:bg-neutral-50 dark:bg-white dark:hover:bg-neutral-50"
+                className="w-[8.5rem]"
                 size="sm"
               >
                 <SelectValue />
@@ -234,7 +230,6 @@ export const OrbPlayground = ({
 
           <div className="absolute right-4 bottom-4 flex items-center gap-2">
             <Button
-              className="border-neutral-200 bg-white text-neutral-900 hover:bg-neutral-50 dark:bg-white dark:hover:bg-neutral-50"
               onClick={() => setPaused((prev) => !prev)}
               size="sm"
               sound="click"

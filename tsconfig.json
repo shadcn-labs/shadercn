@@ -21,6 +21,7 @@
     "ignoreDeprecations": "6.0",
     "baseUrl": ".",
     "paths": {
+      "@/components/orbs/*": ["./registry/components/orbs/*"],
       "@/*": ["./*"],
       "react": ["./node_modules/@types/react"]
     }
