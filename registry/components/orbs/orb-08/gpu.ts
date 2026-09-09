@@ -100,7 +100,8 @@ const nacreRender = tgpu.fn(
   const z = std.sqrt(std.max(1 - std.dot(pl, pl), 0));
   const n = d.vec3f(pl.x, pl.y, z);
 
-  const t = u.p_speed; // integrated clock: the boil
+  // integrated clock: the boil
+  const t = u.p_speed;
 
   /*
    * Stereographic projection, on the UNROTATED dome. Equal steps in screen
@@ -113,9 +114,11 @@ const nacreRender = tgpu.fn(
 
   // projection-safe 2D motion, in place of a dome spin: the plane turns,
   // and the bands travel across themselves
-  const sw = u.p_swirl; // integrated clock
+  // integrated clock
+  const sw = u.p_swirl;
   p = std.mul(rot2(sw), p);
-  p = d.vec2f(p.x, p.y - u.p_flow); // integrated clock
+  // integrated clock
+  p = d.vec2f(p.x, p.y - u.p_flow);
 
   /*
    * The ten-octave feedback warp. q is fed back into itself with the
@@ -190,9 +193,9 @@ const nacreRender = tgpu.fn(
 
   // fresnel sheen: the wet gloss of a shell, and the thing that keeps the
   // limb reading as a surface where the bands have compressed to a blur
-  let fres = 1 - z;
-  fres = fres * fres * fres;
-  col = col.add(u.c_sheen.mul(u.p_rim * fres));
+  const fres = 1 - z;
+  const fresCubed = fres * fres * fres;
+  col = col.add(u.c_sheen.mul(u.p_rim * fresCubed));
 
   return col;
 });

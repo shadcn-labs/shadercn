@@ -78,7 +78,8 @@ const orb28Fragment = tgpu
     let sp = d.vec3f(n);
     const tilted = std.mul(rot2(u.p_tilt), d.vec2f(sp.y, sp.z));
     sp = d.vec3f(sp.x, tilted.x, tilted.y);
-    const spun = std.mul(rot2(u.p_spin), d.vec2f(sp.x, sp.z)); // integrated clock
+    // integrated clock
+    const spun = std.mul(rot2(u.p_spin), d.vec2f(sp.x, sp.z));
     sp = d.vec3f(spun.x, sp.y, spun.y);
     let p = sp.xy.div(std.abs(sp.z) + 1).mul(u.p_gridScale);
 
@@ -93,7 +94,8 @@ const orb28Fragment = tgpu
       u.p_gridScale;
 
     let acc = d.vec4f();
-    const phase = u.p_speed * 0.2; // integrated clock, additive phase
+    // integrated clock, additive phase
+    const phase = u.p_speed * 0.2;
 
     for (const i of std.range(LEVELS)) {
       const fi = d.f32(i) + 1;

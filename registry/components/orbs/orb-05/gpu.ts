@@ -78,16 +78,19 @@ const causticRender = tgpu.fn(
   const pl = uv.div(R);
   const z = std.sqrt(std.max(1 - std.dot(pl, pl), 0));
 
-  const ring = u.p_ring; // integrated clock: the rings travel
+  // integrated clock: the rings travel
+  const ring = u.p_ring;
 
   // stereographic wrap of the unrotated dome, as in orb-08 — the lens
   // lattice compresses toward the limb the way a texture on a sphere does
   let p = d.vec2f(pl.div(z + 1 + u.p_bulge).mul(u.p_scale));
 
   // projection-safe 2D motion: the lattice turns and slides
-  const sw = u.p_swirl; // integrated clock
+  // integrated clock
+  const sw = u.p_swirl;
   p = std.mul(rot2(sw), p);
-  p = p.add(d.vec2f(u.p_slide, u.p_slide * 0.6)); // integrated clock
+  // integrated clock
+  p = p.add(d.vec2f(u.p_slide, u.p_slide * 0.6));
 
   /*
    * The lens lattice. Adding p back to its own tangent is what gives every
@@ -130,9 +133,9 @@ const causticRender = tgpu.fn(
   );
   col = col.mul(0.6 + u.p_light * lambert);
 
-  let fres = 1 - z;
-  fres = fres * fres * fres;
-  col = col.add(u.c_sheen.mul(u.p_rim * fres));
+  const fres = 1 - z;
+  const fresCubed = fres * fres * fres;
+  col = col.add(u.c_sheen.mul(u.p_rim * fresCubed));
 
   return col;
 });

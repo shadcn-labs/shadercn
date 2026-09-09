@@ -194,6 +194,59 @@ const ckTreeCell = tgpu.fn(
 });
 
 /*
+ * Check tree material at a position based on climate type.
+ * Returns: 0 = no tree, 2 = trunk, 3 = leaves
+ */
+const ckTreeMaterial = tgpu.fn(
+  [d.vec3f, d.vec3f, d.f32, d.f32, d.f32, d.f32, World],
+  d.f32
+)((cc, treeDir, h2, r, ha, lat, world) => {
+  "use gpu";
+
+  if (world.clim.z > 0.5) {
+    // ICE SPIKES: tapering packed-ice spires
+    const spikeH = (2 + 6 * h2 * h2) * world.vs;
+    const w = std.mix(1.15, 0.3, std.clamp((r - ha) / spikeH, 0, 1)) * world.vs;
+    if (lat < w && r > ha - world.vs && r < ha + spikeH) {
+      return d.f32(3);
+    }
+  } else if (world.clim.w > 0.5) {
+    // CACTI: short green columns
+    const cacH = (1.5 + 2 * h2) * world.vs;
+    if (lat < 0.6 * world.vs && r > ha - world.vs && r < ha + cacH) {
+      return d.f32(3);
+    }
+  } else if (world.cherry > 0.5) {
+    // CHERRY GROVE: broad flat blossom puffs on short dark trunks
+    const trunkTop = ha + (2 + 1.5 * h2) * world.vs;
+    if (lat < 0.75 * world.vs && r > ha - world.vs && r < trunkTop) {
+      return d.f32(2);
+    }
+    let dd = cc.sub(treeDir.mul(trunkTop + 0.6 * world.vs));
+    dd = dd.add(treeDir.mul(std.dot(dd, treeDir) * 0.8));
+    const lv = std.floor(cc.div(world.vs));
+    const rag = hash(lv.xy.mul(0.61).add(lv.z * 2.23));
+    if (std.length(dd) < (2.2 + 0.5 * rag) * world.vs) {
+      return d.f32(3);
+    }
+  } else {
+    // DEFAULT: tall trees with trunks and canopies
+    const trunkTop = ha + (2.5 + 2 * h2) * world.vs;
+    if (lat < 0.75 * world.vs && r > ha - world.vs && r < trunkTop) {
+      return d.f32(2);
+    }
+    const dd = cc.sub(treeDir.mul(trunkTop + 0.7 * world.vs));
+    const lv = std.floor(cc.div(world.vs));
+    const rag = hash(lv.xy.mul(0.61).add(lv.z * 2.23));
+    if (std.length(dd) < (1.7 + 0.5 * rag) * world.vs) {
+      return d.f32(3);
+    }
+  }
+
+  return d.f32();
+});
+
+/*
  * The world function: what fills this voxel?
  *   0 air   1 ground   2 trunk   3 leaves
  * Ground is the terrain sphere; caves are carved ONLY where the ground has
@@ -207,11 +260,12 @@ const ckVoxel = tgpu.fn(
   const u = layout.$.params;
   const r = std.length(cc);
   const dir = cc.div(std.max(r, 1e-4));
+
+  // ground: terrain sphere with caves
   if (r < world.maxH) {
     const h = ckTerrain(dir, world);
     if (r < h) {
-      // carve caves into risen ground only — mountainsides get entrances,
-      // the perfect lowland sphere keeps its silhouette
+      // carve caves into risen ground only
       if (h > 1 + 1.5 * world.vs) {
         const cv = ckN3(cc.mul(u.p_scale * 1.9).add(71.3));
         const cw =
@@ -223,67 +277,34 @@ const ckVoxel = tgpu.fn(
       return d.f32(1);
     }
   }
-  // trees live in a thin shell above the tallest terrain
-  if (r < world.maxH + 8 * world.vs && u.p_trees > 0.001) {
-    const tree = ckTreeCell(dir);
-    const thrMax = std.clamp(u.p_trees, 0, 1) * 0.8;
-    if (tree.h1 > 1 - thrMax) {
-      // forest density comes from the biome at the ANCHOR, so a whole
-      // tree agrees with itself about existing
-      const bioA = ckBiome(tree.dir, world);
-      let dens = std.select(std.select(0, 0.25, bioA > 0.3), 1, bioA > 0.58);
-      dens *= world.treeMul;
-      if (tree.h1 > 1 - thrMax * dens) {
-        const fA = ckField(tree.dir, world);
-        const ha = 1 + u.p_rough * std.max(fA - world.seaN, 0) * 1.2;
-        // dry land only, below the stone tree line
-        if (fA > world.seaN + 0.015 && ha < 1 + u.p_rough * 0.42) {
-          const lat = std.length(cc.sub(tree.dir.mul(std.dot(cc, tree.dir))));
-          if (world.clim.z > 0.5) {
-            // ICE SPIKES: tapering packed-ice spires. Squaring the height
-            // hash makes many stubs and a few tall spires.
-            const spikeH = (2 + 6 * tree.h2 * tree.h2) * world.vs;
-            const w =
-              std.mix(1.15, 0.3, std.clamp((r - ha) / spikeH, 0, 1)) * world.vs;
-            if (lat < w && r > ha - world.vs && r < ha + spikeH) {
-              return d.f32(3);
-            }
-          } else if (world.clim.w > 0.5) {
-            // CACTI: short green columns dotting the badlands flats
-            const cacH = (1.5 + 2 * tree.h2) * world.vs;
-            if (lat < 0.6 * world.vs && r > ha - world.vs && r < ha + cacH) {
-              return d.f32(3);
-            }
-          } else if (world.cherry > 0.5) {
-            // CHERRY GROVE: broad flat blossom puffs on short dark trunks
-            const trunkTop = ha + (2 + 1.5 * tree.h2) * world.vs;
-            if (lat < 0.75 * world.vs && r > ha - world.vs && r < trunkTop) {
-              return d.f32(2);
-            }
-            let dd = cc.sub(tree.dir.mul(trunkTop + 0.6 * world.vs));
-            dd = dd.add(tree.dir.mul(std.dot(dd, tree.dir) * 0.8));
-            const lv = std.floor(cc.div(world.vs));
-            const rag = hash(lv.xy.mul(0.61).add(lv.z * 2.23));
-            if (std.length(dd) < (2.2 + 0.5 * rag) * world.vs) {
-              return d.f32(3);
-            }
-          } else {
-            const trunkTop = ha + (2.5 + 2 * tree.h2) * world.vs;
-            if (lat < 0.75 * world.vs && r > ha - world.vs && r < trunkTop) {
-              return d.f32(2);
-            }
-            const dd = cc.sub(tree.dir.mul(trunkTop + 0.7 * world.vs));
-            const lv = std.floor(cc.div(world.vs));
-            const rag = hash(lv.xy.mul(0.61).add(lv.z * 2.23));
-            if (std.length(dd) < (1.7 + 0.5 * rag) * world.vs) {
-              return d.f32(3);
-            }
-          }
-        }
-      }
-    }
+
+  // trees: thin shell above terrain
+  if (r >= world.maxH + 8 * world.vs || u.p_trees <= 0.001) {
+    return d.f32();
   }
-  return d.f32();
+
+  const tree = ckTreeCell(dir);
+  const thrMax = std.clamp(u.p_trees, 0, 1) * 0.8;
+  if (tree.h1 <= 1 - thrMax) {
+    return d.f32();
+  }
+
+  const bioA = ckBiome(tree.dir, world);
+  let dens = std.select(std.select(0, 0.25, bioA > 0.3), 1, bioA > 0.58);
+  dens *= world.treeMul;
+  if (tree.h1 <= 1 - thrMax * dens) {
+    return d.f32();
+  }
+
+  const fA = ckField(tree.dir, world);
+  const ha = 1 + u.p_rough * std.max(fA - world.seaN, 0) * 1.2;
+  // dry land only, below the stone tree line
+  if (fA <= world.seaN + 0.015 || ha >= 1 + u.p_rough * 0.42) {
+    return d.f32();
+  }
+
+  const lat = std.length(cc.sub(tree.dir.mul(std.dot(cc, tree.dir))));
+  return ckTreeMaterial(cc, tree.dir, tree.h2, r, ha, lat, world);
 });
 
 const orb24Fragment = tgpu

@@ -189,9 +189,9 @@ const latticeRender = tgpu.fn(
   col = col.mul(0.35 + u.p_light * lambert);
 
   // fresnel sheen: the glaze the threads are crazed into
-  let fres = 1 - z;
-  fres = fres * fres * fres;
-  col = col.add(u.c_sheen.mul(u.p_rim * fres));
+  const fres = 1 - z;
+  const fresCubed = fres * fres * fres;
+  col = col.add(u.c_sheen.mul(u.p_rim * fresCubed));
 
   return col;
 });

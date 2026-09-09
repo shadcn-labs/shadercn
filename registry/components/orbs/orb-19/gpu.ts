@@ -176,9 +176,9 @@ const foamRender = tgpu.fn(
   const lambert = std.clamp(std.dot(n, key), 0, 1);
   col = col.mul(0.55 + u.p_light * lambert);
 
-  let fres = 1 - z;
-  fres = fres * fres * fres;
-  col = col.add(u.c_sheen.mul(u.p_rim * fres));
+  const fres = 1 - z;
+  const fresCubed = fres * fres * fres;
+  col = col.add(u.c_sheen.mul(u.p_rim * fresCubed));
 
   return col;
 });

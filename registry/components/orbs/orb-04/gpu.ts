@@ -66,7 +66,8 @@ const geodeRender = tgpu.fn(
   const ro = d.vec3f(0, 0, u.p_camDist);
   const rd = std.normalize(d.vec3f(uv.x, uv.y, -u.p_focal));
 
-  const animTime = u.p_speed; // integrated clock
+  // integrated clock
+  const animTime = u.p_speed;
   const shellR = u.p_shellR;
   const pitch = std.max(u.p_pitch, 0.002);
 
@@ -79,7 +80,7 @@ const geodeRender = tgpu.fn(
   // travelling — see the header. z is the distance already walked.
   let z = d.f32(0);
 
-  for (const it of std.range(STEPS)) {
+  for (const _it of std.range(STEPS)) {
     let p = d.vec3f(ro.add(rd.mul(z)));
 
     /*

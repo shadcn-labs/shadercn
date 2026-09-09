@@ -73,9 +73,12 @@ const torsionRender = tgpu.fn(
   const ro = d.vec3f(0, 0, u.p_camDist);
   const rd = std.normalize(d.vec3f(uv.x, uv.y, -u.p_focal));
 
-  const shimmer = u.p_speed; // integrated clock: cell flicker
-  const wave = u.p_wave; // integrated clock: the travelling twist
-  const spin = u.p_spin; // integrated clock: roll about the axis
+  // integrated clock: cell flicker
+  const shimmer = u.p_speed;
+  // integrated clock: the travelling twist
+  const wave = u.p_wave;
+  // integrated clock: roll about the axis
+  const spin = u.p_spin;
 
   // the axis lean and the roll, applied to the SAMPLE rather than to the
   // axis — see the header

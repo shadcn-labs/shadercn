@@ -90,7 +90,8 @@ const orb29Fragment = tgpu
     );
     const cellIdx = std.floor(fragCoord.div(cellPx));
     const cellCentre = cellIdx.add(0.5).mul(cellPx);
-    const g = std.fract(fragCoord.div(cellPx)); // 0..1 inside the tile
+    // 0..1 inside the tile
+    const g = std.fract(fragCoord.div(cellPx));
 
     const suv = cellCentre.mul(2).sub(u.res).div(std.min(u.res.x, u.res.y));
     const duv = suv.div(u.p_radius);
@@ -104,7 +105,8 @@ const orb29Fragment = tgpu
 
     // rotating dome, stereographic projection — the blobs roll around the
     // ball as the dome turns
-    const rot = u.p_spin; // integrated clock
+    // integrated clock
+    const rot = u.p_spin;
     const cr = std.cos(rot);
     const sr = std.sin(rot);
     const sp = d.vec3f(n.x * cr - n.z * sr, n.y, n.x * sr + n.z * cr);
@@ -119,9 +121,12 @@ const orb29Fragment = tgpu
      * Rates glide; a rate at zero freezes that motion with its phase intact.
      * The pulse depth is an amplitude, so idle carries no static rings.
      */
-    const driftT = u.p_drift; // integrated clock: blob stream
-    const churnT = u.p_churn; // integrated clock: warp evolution
-    const shuffleT = u.p_shuffle; // integrated clock: confetti reshuffle
+    // integrated clock: blob stream
+    const driftT = u.p_drift;
+    // integrated clock: warp evolution
+    const churnT = u.p_churn;
+    // integrated clock: confetti reshuffle
+    const shuffleT = u.p_shuffle;
     const f1 = d.vec2f(driftT * 0.5, -driftT * 0.35);
     const f2 = d.vec2f(-churnT * 0.4, churnT * 0.6);
 

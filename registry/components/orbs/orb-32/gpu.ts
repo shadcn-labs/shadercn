@@ -159,8 +159,10 @@ const galaxyRender = tgpu.fn(
   const ro = d.vec3f(0, 0, u.p_camDist);
   const rd = std.normalize(d.vec3f(uv, -u.p_focal));
 
-  const t = u.p_churn; // integrated clock: the turbulence boils
-  const spin = u.p_spin; // integrated clock: the disc turns
+  // integrated clock: the turbulence boils
+  const t = u.p_churn;
+  // integrated clock: the disc turns
+  const spin = u.p_spin;
 
   // the galaxy frame: tip about x by the tilt, then turn about the disc's
   // own normal
@@ -280,7 +282,8 @@ const orb32Fragment = tgpu
           0.12,
           u.p_twinkle
         );
-        const veil = 1 - acc.w; // what the march let through
+        // what the march let through
+        const veil = 1 - acc.w;
         const starLight = d
           .vec3f(1, 0.97, 0.9)
           .mul(sf * u.p_stars * std.exp(-rho * 1.5) * (0.25 + 0.75 * veil));

@@ -1,7 +1,5 @@
 import { d, std, tgpu } from "typegpu";
 
-const PI = 3.141_592_653_59;
-
 const Params = d.struct({
   anim: d.f32,
   c_deep: d.vec3f,
@@ -175,7 +173,7 @@ const orb17Fragment = tgpu
           d
             .vec3f(0, 0.33, 0.67)
             .add(f * 0.9 + q.x * 1.1 + t * 0.06)
-            .mul(2 * PI)
+            .mul(2 * Math.PI)
         )
         .mul(0.5)
     );

@@ -69,8 +69,10 @@ const weaveRender = tgpu.fn(
   const ro = d.vec3f(0, 0, u.p_camDist);
   const rd = std.normalize(d.vec3f(uv.x, uv.y, -u.p_focal));
 
-  const animTime = u.p_speed; // integrated clock: the warp
-  const scroll = u.p_scroll; // integrated clock: the skin climbs
+  // integrated clock: the warp
+  const animTime = u.p_speed;
+  // integrated clock: the skin climbs
+  const scroll = u.p_scroll;
 
   let acc = d.vec3f();
 

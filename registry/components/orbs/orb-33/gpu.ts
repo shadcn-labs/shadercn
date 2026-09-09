@@ -102,7 +102,8 @@ const screen = tgpu.fn(
   const u = layout.$.params;
   const cell = std.mul(rot2(a), uv).mul(u.p_dots).add(o);
   const f = std.fract(cell).sub(0.5);
-  const dist = std.length(f); // a round dot: reads as tone, not as a grid
+  // a round dot: reads as tone, not as a grid
+  const dist = std.length(f);
   // dot half-size from coverage; sqrt so mid-tones read as mid-tones the
   // way a real screen's area does
   const size = 0.5 * std.sqrt(std.clamp(coverage * u.p_dotGain, 0, 1));
@@ -140,7 +141,8 @@ const orb33Fragment = tgpu
     const sr = std.sin(u.p_spin);
     const sp = d.vec3f(n.x * cr - n.z * sr, n.y, n.x * sr + n.z * cr);
 
-    const t = u.p_speed; // integrated clock: the sources drift
+    // integrated clock: the sources drift
+    const t = u.p_speed;
 
     // stereographic wrap of the plane onto the ball
     const st = sp.xy.div(1.3 + sp.z).mul(u.p_scale);

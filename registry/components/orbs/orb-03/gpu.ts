@@ -70,8 +70,10 @@ const eclipticRender = tgpu.fn(
   const ro = d.vec3f(0, 0, u.p_camDist);
   const rd = std.normalize(d.vec3f(uv.x, uv.y, -u.p_focal));
 
-  const animTime = u.p_speed; // integrated clock: the warp
-  const wander = u.p_wander; // integrated clock: the belt's tilt
+  // integrated clock: the warp
+  const animTime = u.p_speed;
+  // integrated clock: the belt's tilt
+  const wander = u.p_wander;
 
   let acc = d.vec3f();
 
@@ -89,7 +91,7 @@ const eclipticRender = tgpu.fn(
    */
   let dist = d.f32(0);
 
-  for (const it of std.range(STEPS)) {
+  for (const _it of std.range(STEPS)) {
     const p = ro.add(rd.mul(z));
 
     /*

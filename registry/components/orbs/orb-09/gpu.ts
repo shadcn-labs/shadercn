@@ -68,7 +68,8 @@ const irisRender = tgpu.fn(
   const z = std.sqrt(std.max(1 - std.dot(pl, pl), 0));
   const n = d.vec3f(pl.x, pl.y, z);
 
-  const t = u.p_speed; // integrated clock
+  // integrated clock
+  const t = u.p_speed;
 
   // tilt about X, then roll about Y on its own integrated clock
   const ct = std.cos(u.p_tilt);
@@ -148,9 +149,9 @@ const irisRender = tgpu.fn(
   );
   col = col.mul(0.55 + u.p_light * lambert);
 
-  let fres = 1 - z;
-  fres = fres * fres * fres;
-  col = col.add(u.c_sheen.mul(u.p_rim * fres));
+  const fres = 1 - z;
+  const fresCubed = fres * fres * fres;
+  col = col.add(u.c_sheen.mul(u.p_rim * fresCubed));
 
   return col;
 });

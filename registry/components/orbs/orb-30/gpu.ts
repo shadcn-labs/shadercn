@@ -147,8 +147,10 @@ const drosteRender = tgpu.fn(
   const pl = uv.div(R);
   const z = std.sqrt(std.max(1 - std.dot(pl, pl), 0));
 
-  const fall = u.p_fall; // integrated clock: the flight inward
-  const drift = u.p_drift; // integrated clock: weather
+  // integrated clock: the flight inward
+  const fall = u.p_fall;
+  // integrated clock: weather
+  const drift = u.p_drift;
 
   /*
    * The frame tilt is a STATIC angle, not an integrated clock like the roll
@@ -174,12 +176,17 @@ const drosteRender = tgpu.fn(
   const K = std.max(u.p_ratio, 1.05);
   const L = std.log2(m) / std.log2(K) + fall;
 
-  const q = p.div(m); // direction, on the unit square boundary
-  const sm = std.pow(K, std.fract(L)); // this fragment's radius in base-frame units
-  const P = q.mul(sm); // where it lands in the base picture
+  // direction, on the unit square boundary
+  const q = p.div(m);
+  // this fragment's radius in base-frame units
+  const sm = std.pow(K, std.fract(L));
+  // where it lands in the base picture
+  const P = q.mul(sm);
 
-  const Yn = P.y / K; // picture height, about -1 at the bottom edge
-  const arc = squareArc(q); // distance around the frame
+  // picture height, about -1 at the bottom edge
+  const Yn = P.y / K;
+  // distance around the frame
+  const arc = squareArc(q);
 
   // ---- sky -----------------------------------------------------------
   let col = std.mix(u.c_sky.mul(0.72), u.c_sky, std.clamp(Yn * 1.3, 0, 1));
@@ -273,9 +280,9 @@ const drosteRender = tgpu.fn(
 
   // the glass: a strong fresnel is what turns a picture into a sphere
   // with a world inside it
-  let fres = 1 - z;
-  fres = fres * fres * fres;
-  col = col.add(u.c_sheen.mul(u.p_rim * fres));
+  const fres = 1 - z;
+  const fresCubed = fres * fres * fres;
+  col = col.add(u.c_sheen.mul(u.p_rim * fresCubed));
 
   return col;
 });

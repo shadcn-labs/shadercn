@@ -62,7 +62,8 @@ const moireRender = tgpu.fn(
   const pl = uv.div(R);
   const z = std.sqrt(std.max(1 - std.dot(pl, pl), 0));
 
-  const t = u.p_speed; // integrated clock
+  // integrated clock
+  const t = u.p_speed;
 
   /*
    * The layer-zero projection: the plain stereographic wrap of the dome's
@@ -147,9 +148,9 @@ const moireRender = tgpu.fn(
   );
   col = col.mul(0.6 + u.p_light * lambert);
 
-  let fres = 1 - z;
-  fres = fres * fres * fres;
-  col = col.add(u.c_sheen.mul(u.p_rim * fres));
+  const fres = 1 - z;
+  const fresCubed = fres * fres * fres;
+  col = col.add(u.c_sheen.mul(u.p_rim * fresCubed));
 
   return col;
 });

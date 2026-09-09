@@ -205,7 +205,8 @@ const orb27Fragment = tgpu
     const z = std.sqrt(std.max(1 - r2, 0));
     const n = d.vec3f(pl, z);
 
-    const t = u.p_speed; // integrated clock: the weather drifts
+    // integrated clock: the weather drifts
+    const t = u.p_speed;
 
     /*
      * The pixel grid lives on the UNROLLED dome: a stereographic wrap of the

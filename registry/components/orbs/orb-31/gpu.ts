@@ -228,7 +228,8 @@ const orb31Fragment = tgpu
     const fragCoord = input.uv.mul(u.res);
     const orbUv = fragCoord.mul(2).sub(u.res).div(std.min(u.res.x, u.res.y));
 
-    const animTime = u.p_speed; // integrated clock
+    // integrated clock
+    const animTime = u.p_speed;
     const globalRot = coronaRot(animTime);
     const globalInvRot = std.transpose(coronaRot(animTime));
 
