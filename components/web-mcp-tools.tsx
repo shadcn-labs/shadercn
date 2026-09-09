@@ -37,13 +37,21 @@ const getPath = (input: unknown, fallback: string): string => {
 
 export const WebMcpTools = () => {
   useEffect(() => {
-    const { modelContext } = navigator as Navigator & {
-      modelContext?: ModelContextApi;
-    };
-    const registerTool = modelContext?.registerTool;
-    if (typeof registerTool !== "function") {
+    /*
+      `navigator.modelContext` is deprecated in favour of `document.modelContext`.
+      Keep the object intact and call through it: a detached `registerTool` throws
+      `Illegal invocation`, and that error used to take the whole client tree down
+      (docs previews included) in any browser exposing the API.
+    */
+    const modelContext =
+      (document as Document & { modelContext?: ModelContextApi })
+        .modelContext ??
+      (navigator as Navigator & { modelContext?: ModelContextApi })
+        .modelContext;
+    if (typeof modelContext?.registerTool !== "function") {
       return;
     }
+    const registerTool = modelContext.registerTool.bind(modelContext);
 
     const ac = new AbortController();
     const cleanups: (() => void)[] = [];

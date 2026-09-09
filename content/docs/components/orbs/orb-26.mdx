@@ -1,0 +1,130 @@
+---
+title: "ORB-26"
+description: "a crazed web of coloured threads knotted to a cell grid"
+---
+
+<OrbPreview slug="orb-26" />
+
+## Installation
+
+<CodeTabs>
+
+<TabsList>
+  <TabsTrigger value="cli">Command</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+
+<TabsContent value="cli">
+
+```bash
+npx shadcn@latest add https://shadercn.vercel.app/r/orb-26.json
+```
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+<Steps>
+
+<Step>Install the following dependencies:</Step>
+
+```bash
+pnpm add vgpu
+```
+
+<Step>Copy and paste the following code into your project.</Step>
+
+<ComponentSource
+  src="components/orbs/orb-26.tsx"
+  base="shadercn"
+  title="components/orbs/orb-26.tsx"
+/>
+
+<ComponentSource
+  src="components/orbs/orbkit-core-wgpu.tsx"
+  base="shadercn"
+  title="components/orbs/orbkit-core-wgpu.tsx"
+/>
+
+<ComponentSource
+  src="components/orbs/orbkit-renderer.ts"
+  base="shadercn"
+  title="components/orbs/orbkit-renderer.ts"
+/>
+
+<Step>Update the import paths to match your project setup.</Step>
+
+</Steps>
+
+</TabsContent>
+
+</CodeTabs>
+
+## Usage
+
+```tsx
+import { Orb26 } from "@/components/orbs/orb-26";
+```
+
+```tsx
+<Orb26 size={280} state="idle" />
+```
+
+## Props
+
+### Component Props
+
+| Prop             | Type                                                             | Default  | Description                                  |
+| ---------------- | ---------------------------------------------------------------- | -------- | -------------------------------------------- |
+| `state`          | `"idle" \| "thinking" \| "speaking"`                             | `"idle"` | Drive preset the orb eases toward            |
+| `size`           | `number`                                                         | `280`    | Rendered size in CSS pixels                  |
+| `params`         | `Partial<Record<string, number>>`                                | -        | Shader param overrides, see Shader Props     |
+| `colors`         | `Partial<Record<string, string>>`                                | -        | Shader colour overrides as hex strings       |
+| `statePresets`   | `Partial<Record<OrbState, Record<string, number>>>`              | -        | Replace the built-in per-state param presets |
+| `stateColors`    | `Partial<Record<OrbState, Record<string, string>>>`              | -        | Replace the built-in per-state colours       |
+| `stateVolumes`   | `Partial<Record<OrbState, { input?: number; output?: number }>>` | -        | Pin the drive volumes a state settles on     |
+| `volumes`        | `{ input?: number; output?: number }`                            | -        | Drive the orb directly, bypassing synthesis  |
+| `paused`         | `boolean`                                                        | `false`  | Freeze the frame loop                        |
+| `pauseOffscreen` | `boolean`                                                        | `true`   | Stop rendering while scrolled out of view    |
+| `maxDpr`         | `number`                                                         | `2`      | Upper bound on the device pixel ratio        |
+| `className`      | `string`                                                         | -        | Class on the wrapper element                 |
+| `style`          | `CSSProperties`                                                  | -        | Inline style on the wrapper element          |
+| `ariaLabel`      | `string`                                                         | -        | Accessible name for the canvas               |
+
+### Shader Props
+
+Pass any of these through `params`; each is a single `f32` uniform read by the shader.
+
+| Param      | Label           | Range          | Step    | Default |
+| ---------- | --------------- | -------------- | ------- | ------- |
+| `speed`    | Boil            | `0.015` – `10` | `0.05`  | `0.4`   |
+| `swirl`    | Swirl           | `0` – `3`      | `0.015` | `0.07`  |
+| `drift`    | Crazing drift   | `0` – `5`      | `0.03`  | `0.18`  |
+| `radius`   | Radius          | `0.15` – `3`   | `0.015` | `0.9`   |
+| `scale`    | Cell scale      | `0.3` – `20`   | `0.1`   | `9`     |
+| `bulge`    | Dome bulge      | `0` – `4`      | `0.02`  | `0.25`  |
+| `warp`     | Warp            | `0` – `3`      | `0.02`  | `0.85`  |
+| `pole`     | Knot strength   | `0` – `2`      | `0.005` | `0.25`  |
+| `poleSoft` | Knot size       | `0.001` – `1`  | `0.001` | `0.012` |
+| `pulse`    | Cell breathing  | `0` – `2`      | `0.01`  | `0.35`  |
+| `sharp`    | Thread width    | `0.3` – `20`   | `0.05`  | `4.5`   |
+| `split`    | Chromatic split | `0` – `1`      | `0.005` | `0.045` |
+| `core`     | Hot core        | `0` – `3`      | `0.015` | `0.45`  |
+| `floor`    | Body fill       | `0` – `3`      | `0.01`  | `0.9`   |
+| `gain`     | Brightness      | `0.05` – `5`   | `0.05`  | `1`     |
+| `contrast` | Contrast        | `0.15` – `10`  | `0.05`  | `1.35`  |
+| `light`    | Key light       | `0` – `3`      | `0.015` | `0.7`   |
+| `rim`      | Rim sheen       | `0` – `3`      | `0.015` | `0.45`  |
+
+Colours are passed through `colors` as hex strings.
+
+| Colour  | Label      | Default   |
+| ------- | ---------- | --------- |
+| `deep`  | Glaze      | `#111a2e` |
+| `line`  | Thread     | `#3fd2ff` |
+| `hot`   | Hot thread | `#fff4d6` |
+| `sheen` | Sheen      | `#a9d8ff` |
+
+## Credits
+
+Shader by [XorDev](https://x.com/XorDev), ported from [orbkit](https://github.com/zzzzshawn/orbkit) (WebGL/GLSL) to WebGPU/WGSL.

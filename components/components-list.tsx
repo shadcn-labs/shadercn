@@ -30,7 +30,7 @@ const ComponentGrid = ({ pages }: { pages: PageTreePage[] }) => (
 );
 
 export const ComponentsList = ({
-  folderName = "Components",
+  folderName = "Orbs",
 }: {
   folderName?: string;
 }) => {

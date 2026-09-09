@@ -1,0 +1,148 @@
+---
+title: "ORB-32"
+description: "a galaxy marched as gas and dust inside the ball"
+---
+
+<OrbPreview slug="orb-32" />
+
+## Installation
+
+<CodeTabs>
+
+<TabsList>
+  <TabsTrigger value="cli">Command</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+
+<TabsContent value="cli">
+
+```bash
+npx shadcn@latest add https://shadercn.vercel.app/r/orb-32.json
+```
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+<Steps>
+
+<Step>Install the following dependencies:</Step>
+
+```bash
+pnpm add vgpu
+```
+
+<Step>Copy and paste the following code into your project.</Step>
+
+<ComponentSource
+  src="components/orbs/orb-32.tsx"
+  base="shadercn"
+  title="components/orbs/orb-32.tsx"
+/>
+
+<ComponentSource
+  src="components/orbs/orbkit-core-wgpu.tsx"
+  base="shadercn"
+  title="components/orbs/orbkit-core-wgpu.tsx"
+/>
+
+<ComponentSource
+  src="components/orbs/orbkit-renderer.ts"
+  base="shadercn"
+  title="components/orbs/orbkit-renderer.ts"
+/>
+
+<Step>Update the import paths to match your project setup.</Step>
+
+</Steps>
+
+</TabsContent>
+
+</CodeTabs>
+
+## Usage
+
+```tsx
+import { Orb32 } from "@/components/orbs/orb-32";
+```
+
+```tsx
+<Orb32 size={280} state="idle" />
+```
+
+## Props
+
+### Component Props
+
+| Prop             | Type                                                             | Default  | Description                                  |
+| ---------------- | ---------------------------------------------------------------- | -------- | -------------------------------------------- |
+| `state`          | `"idle" \| "thinking" \| "speaking"`                             | `"idle"` | Drive preset the orb eases toward            |
+| `size`           | `number`                                                         | `280`    | Rendered size in CSS pixels                  |
+| `params`         | `Partial<Record<string, number>>`                                | -        | Shader param overrides, see Shader Props     |
+| `colors`         | `Partial<Record<string, string>>`                                | -        | Shader colour overrides as hex strings       |
+| `statePresets`   | `Partial<Record<OrbState, Record<string, number>>>`              | -        | Replace the built-in per-state param presets |
+| `stateColors`    | `Partial<Record<OrbState, Record<string, string>>>`              | -        | Replace the built-in per-state colours       |
+| `stateVolumes`   | `Partial<Record<OrbState, { input?: number; output?: number }>>` | -        | Pin the drive volumes a state settles on     |
+| `volumes`        | `{ input?: number; output?: number }`                            | -        | Drive the orb directly, bypassing synthesis  |
+| `paused`         | `boolean`                                                        | `false`  | Freeze the frame loop                        |
+| `pauseOffscreen` | `boolean`                                                        | `true`   | Stop rendering while scrolled out of view    |
+| `maxDpr`         | `number`                                                         | `2`      | Upper bound on the device pixel ratio        |
+| `className`      | `string`                                                         | -        | Class on the wrapper element                 |
+| `style`          | `CSSProperties`                                                  | -        | Inline style on the wrapper element          |
+| `ariaLabel`      | `string`                                                         | -        | Accessible name for the canvas               |
+
+### Shader Props
+
+Pass any of these through `params`; each is a single `f32` uniform read by the shader.
+
+| Param         | Label            | Range          | Step    | Default |
+| ------------- | ---------------- | -------------- | ------- | ------- |
+| `spin`        | Disc turn        | `0` – `3`      | `0.01`  | `0.06`  |
+| `churn`       | Gas churn        | `0` – `5`      | `0.02`  | `0.25`  |
+| `beat`        | Core beat        | `0` – `12`     | `0.05`  | `0.8`   |
+| `twinkle`     | Twinkle rate     | `0` – `12`     | `0.05`  | `1.2`   |
+| `camDist`     | Camera distance  | `1` – `50`     | `0.3`   | `7`     |
+| `focal`       | Lens             | `0.15` – `15`  | `0.05`  | `2.25`  |
+| `envRadius`   | Envelope radius  | `0.15` – `15`  | `0.1`   | `2.6`   |
+| `tilt`        | Tilt (0 edge-on) | `0` – `1.5`    | `0.01`  | `0.85`  |
+| `arms`        | Arm count        | `1` – `6`      | `1`     | `2`     |
+| `wind`        | Arm winding      | `0` – `8`      | `0.05`  | `3.4`   |
+| `ragged`      | Arm fray         | `0` – `12`     | `0.05`  | `3`     |
+| `armSharp`    | Arm sharpness    | `0.3` – `8`    | `0.05`  | `2.2`   |
+| `falloff`     | Disc falloff     | `0.3` – `12`   | `0.05`  | `1.7`   |
+| `thick`       | Disc thickness   | `0.01` – `1`   | `0.005` | `0.035` |
+| `bulge`       | Core tightness   | `2` – `200`    | `1`     | `40`    |
+| `core`        | Core density     | `0` – `20`     | `0.1`   | `5`     |
+| `turbScale`   | Turbulence scale | `0.5` – `30`   | `0.1`   | `9`     |
+| `threshold`   | Clumping         | `0` – `1`      | `0.01`  | `0.35`  |
+| `density`     | Gas density      | `0.1` – `40`   | `0.1`   | `14`    |
+| `absorb`      | Dust absorption  | `0` – `20`     | `0.1`   | `3.5`   |
+| `stars`       | Stars            | `0` – `10`     | `0.05`  | `1.2`   |
+| `starDensity` | Star density     | `0` – `1`      | `0.01`  | `0.5`   |
+| `starScale`   | Star scale       | `5` – `200`    | `1`     | `48`    |
+| `hueReach`    | Hue reach        | `0.15` – `1.5` | `0.01`  | `0.6`   |
+| `pulse`       | Beat depth       | `0` – `3`      | `0.01`  | `0.2`   |
+| `breathe`     | Disc breathing   | `0` – `2`      | `0.01`  | `0`     |
+| `exposure`    | Exposure         | `0.05` – `50`  | `0.05`  | `1.1`   |
+| `contrast`    | Contrast         | `0.15` – `6`   | `0.05`  | `1.15`  |
+| `saturation`  | Saturation       | `0` – `4`      | `0.02`  | `1.35`  |
+| `alphaGain`   | Alpha gain       | `0.05` – `15`  | `0.1`   | `2`     |
+| `fill`        | Night fill       | `0` – `1`      | `0.01`  | `0.85`  |
+| `rim`         | Rim light        | `0` – `3`      | `0.015` | `0.35`  |
+| `edge`        | Edge sharpness   | `0` – `1`      | `0.01`  | `1`     |
+| `edgeFade`    | Halo falloff     | `0.1` – `3`    | `0.015` | `0.98`  |
+
+Colours are passed through `colors` as hex strings.
+
+| Colour  | Label      | Default   |
+| ------- | ---------- | --------- |
+| `tint`  | Tint       | `#ffffff` |
+| `core`  | Core       | `#fff3d6` |
+| `inner` | Inner arms | `#7fb4ff` |
+| `outer` | Outer arms | `#c46bff` |
+| `deep`  | Night      | `#04050f` |
+| `rim`   | Rim        | `#8fb0ff` |
+
+## Credits
+
+Shader by [XorDev](https://x.com/XorDev), ported from [orbkit](https://github.com/zzzzshawn/orbkit) (WebGL/GLSL) to WebGPU/WGSL.

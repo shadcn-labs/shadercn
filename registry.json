@@ -1,5 +1,452 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "shadercn",
   "homepage": "https://shadercn.vercel.app",
-  "items": []
+  "items": [
+    {
+      "name": "orbkit-core-wgpu",
+      "type": "registry:ui",
+      "title": "Orbkit Core (WebGPU)",
+      "description": "Core engine for GPU-powered shader orbs using vgpu",
+      "files": [
+        {
+          "path": "components/orbs/orbkit-renderer.ts",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/orbs/orbkit-core-wgpu.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "orb-01",
+      "type": "registry:ui",
+      "title": "ORB-01",
+      "description": "cut-glass orb with a dispersive, turbulent interior",
+      "dependencies": ["vgpu"],
+      "files": [
+        {
+          "path": "components/orbs/orb-01.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "orb-02",
+      "type": "registry:ui",
+      "title": "ORB-02",
+      "description": "ornate scrollwork on a rolling dome",
+      "dependencies": ["vgpu"],
+      "files": [
+        {
+          "path": "components/orbs/orb-02.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "orb-03",
+      "type": "registry:ui",
+      "title": "ORB-03",
+      "description": "a turbulent belt of light girdling the ball, contoured in rainbow",
+      "dependencies": ["vgpu"],
+      "files": [
+        {
+          "path": "components/orbs/orb-03.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "orb-04",
+      "type": "registry:ui",
+      "title": "ORB-04",
+      "description": "a hollow shell of light, faceted by a voxel lattice",
+      "dependencies": ["vgpu"],
+      "files": [
+        {
+          "path": "components/orbs/orb-04.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "orb-05",
+      "type": "registry:ui",
+      "title": "ORB-05",
+      "description": "rainbow rings travelling through a lattice of lenses",
+      "dependencies": ["vgpu"],
+      "files": [
+        {
+          "path": "components/orbs/orb-05.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "orb-06",
+      "type": "registry:ui",
+      "title": "ORB-06",
+      "description": "a hundred glowing lattices stacked through the ball, interfering",
+      "dependencies": ["vgpu"],
+      "files": [
+        {
+          "path": "components/orbs/orb-06.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "orb-07",
+      "type": "registry:ui",
+      "title": "ORB-07",
+      "description": "a twist wave travelling out through the ball around a lit column",
+      "dependencies": ["vgpu"],
+      "files": [
+        {
+          "path": "components/orbs/orb-07.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "orb-08",
+      "type": "registry:ui",
+      "title": "ORB-08",
+      "description": "mother-of-pearl contour bands, each layer its own hue",
+      "dependencies": ["vgpu"],
+      "files": [
+        {
+          "path": "components/orbs/orb-08.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "orb-09",
+      "type": "registry:ui",
+      "title": "ORB-09",
+      "description": "torn rings of rainbow light worn as the ball's latitudes",
+      "dependencies": ["vgpu"],
+      "files": [
+        {
+          "path": "components/orbs/orb-09.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "orb-10",
+      "type": "registry:ui",
+      "title": "ORB-10",
+      "description": "a lattice of light knitted into the ball's own skin",
+      "dependencies": ["vgpu"],
+      "files": [
+        {
+          "path": "components/orbs/orb-10.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "orb-11",
+      "type": "registry:ui",
+      "title": "ORB-11",
+      "description": "quantum orbital, rainbow chroma",
+      "dependencies": ["vgpu"],
+      "files": [
+        {
+          "path": "components/orbs/orb-11.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "orb-12",
+      "type": "registry:ui",
+      "title": "ORB-12",
+      "description": "a ball of glossy toy bricks, studs up — it rebuilds itself while it thinks",
+      "dependencies": ["vgpu"],
+      "files": [
+        {
+          "path": "components/orbs/orb-12.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "orb-13",
+      "type": "registry:ui",
+      "title": "ORB-13",
+      "description": "plasma globe: crawling lightning filaments",
+      "dependencies": ["vgpu"],
+      "files": [
+        {
+          "path": "components/orbs/orb-13.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "orb-14",
+      "type": "registry:ui",
+      "title": "ORB-14",
+      "description": "a lit plasma dome quantized to chunky two-tone pixels",
+      "dependencies": ["vgpu"],
+      "files": [
+        {
+          "path": "components/orbs/orb-14.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "orb-15",
+      "type": "registry:ui",
+      "title": "ORB-15",
+      "description": "an iridescent particle-track web worn as the ball's skin",
+      "dependencies": ["vgpu"],
+      "files": [
+        {
+          "path": "components/orbs/orb-15.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "orb-16",
+      "type": "registry:ui",
+      "title": "ORB-16",
+      "description": "sunlight through water — a caustic net crawling over the ball, fringing into colour where it moves",
+      "dependencies": ["vgpu"],
+      "files": [
+        {
+          "path": "components/orbs/orb-16.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "orb-17",
+      "type": "registry:ui",
+      "title": "ORB-17",
+      "description": "a grainy many-coloured storm with band shear and lightning",
+      "dependencies": ["vgpu"],
+      "files": [
+        {
+          "path": "components/orbs/orb-17.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "orb-18",
+      "type": "registry:ui",
+      "title": "ORB-18",
+      "description": "a crystal folded out of one eighth of space, tumbling",
+      "dependencies": ["vgpu"],
+      "files": [
+        {
+          "path": "components/orbs/orb-18.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "orb-19",
+      "type": "registry:ui",
+      "title": "ORB-19",
+      "description": "beads swelling and shrinking in their cells, packed over the ball",
+      "dependencies": ["vgpu"],
+      "files": [
+        {
+          "path": "components/orbs/orb-19.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "orb-20",
+      "type": "registry:ui",
+      "title": "ORB-20",
+      "description": "a water film rushing down the ball, fountain-style",
+      "dependencies": ["vgpu"],
+      "files": [
+        {
+          "path": "components/orbs/orb-20.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "orb-21",
+      "type": "registry:ui",
+      "title": "ORB-21",
+      "description": "light diffusing through a cloud",
+      "dependencies": ["vgpu"],
+      "files": [
+        {
+          "path": "components/orbs/orb-21.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "orb-22",
+      "type": "registry:ui",
+      "title": "ORB-22",
+      "description": "field lines swirling around the ball about a wandering axis",
+      "dependencies": ["vgpu"],
+      "files": [
+        {
+          "path": "components/orbs/orb-22.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "orb-23",
+      "type": "registry:ui",
+      "title": "ORB-23",
+      "description": "an ASCII glyph matrix in CRT green, wrapped on the ball",
+      "dependencies": ["vgpu"],
+      "files": [
+        {
+          "path": "components/orbs/orb-23.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "orb-24",
+      "type": "registry:ui",
+      "title": "ORB-24",
+      "description": "a Minecraft Earth — a perfect voxel sphere whose seasons cycle it through lush, cherry-grove, ice, mesa and desert worlds",
+      "dependencies": ["vgpu"],
+      "files": [
+        {
+          "path": "components/orbs/orb-24.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "orb-25",
+      "type": "registry:ui",
+      "title": "ORB-25",
+      "description": "the folds of a warped field, drawn by their own steepness",
+      "dependencies": ["vgpu"],
+      "files": [
+        {
+          "path": "components/orbs/orb-25.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "orb-26",
+      "type": "registry:ui",
+      "title": "ORB-26",
+      "description": "a crazed web of coloured threads knotted to a cell grid",
+      "dependencies": ["vgpu"],
+      "files": [
+        {
+          "path": "components/orbs/orb-26.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "orb-27",
+      "type": "registry:ui",
+      "title": "ORB-27",
+      "description": "a weather-radar mosaic, fronts of coloured pixels sweeping the ball",
+      "dependencies": ["vgpu"],
+      "files": [
+        {
+          "path": "components/orbs/orb-27.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "orb-28",
+      "type": "registry:ui",
+      "title": "ORB-28",
+      "description": "nested binary grids shuttering on a tumbling bit-sphere",
+      "dependencies": ["vgpu"],
+      "files": [
+        {
+          "path": "components/orbs/orb-28.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "orb-29",
+      "type": "registry:ui",
+      "title": "ORB-29",
+      "description": "an LED tile wall lighting up in flowing blobs, wrapped on the ball",
+      "dependencies": ["vgpu"],
+      "files": [
+        {
+          "path": "components/orbs/orb-29.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "orb-30",
+      "type": "registry:ui",
+      "title": "ORB-30",
+      "description": "a meadow folding into itself toward a blue vanishing point",
+      "dependencies": ["vgpu"],
+      "files": [
+        {
+          "path": "components/orbs/orb-30.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "orb-31",
+      "type": "registry:ui",
+      "title": "ORB-31",
+      "description": "raymarched shell, volumetric godrays",
+      "dependencies": ["vgpu"],
+      "files": [
+        {
+          "path": "components/orbs/orb-31.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "orb-32",
+      "type": "registry:ui",
+      "title": "ORB-32",
+      "description": "a galaxy marched as gas and dust inside the ball",
+      "dependencies": ["vgpu"],
+      "files": [
+        {
+          "path": "components/orbs/orb-32.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "orb-33",
+      "type": "registry:ui",
+      "title": "ORB-33",
+      "description": "a thermal image, risograph-printed on the ball",
+      "dependencies": ["vgpu"],
+      "files": [
+        {
+          "path": "components/orbs/orb-33.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    }
+  ]
 }

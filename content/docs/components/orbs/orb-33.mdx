@@ -1,0 +1,138 @@
+---
+title: "ORB-33"
+description: "a thermal image, risograph-printed on the ball"
+---
+
+<OrbPreview slug="orb-33" />
+
+## Installation
+
+<CodeTabs>
+
+<TabsList>
+  <TabsTrigger value="cli">Command</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+
+<TabsContent value="cli">
+
+```bash
+npx shadcn@latest add https://shadercn.vercel.app/r/orb-33.json
+```
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+<Steps>
+
+<Step>Install the following dependencies:</Step>
+
+```bash
+pnpm add vgpu
+```
+
+<Step>Copy and paste the following code into your project.</Step>
+
+<ComponentSource
+  src="components/orbs/orb-33.tsx"
+  base="shadercn"
+  title="components/orbs/orb-33.tsx"
+/>
+
+<ComponentSource
+  src="components/orbs/orbkit-core-wgpu.tsx"
+  base="shadercn"
+  title="components/orbs/orbkit-core-wgpu.tsx"
+/>
+
+<ComponentSource
+  src="components/orbs/orbkit-renderer.ts"
+  base="shadercn"
+  title="components/orbs/orbkit-renderer.ts"
+/>
+
+<Step>Update the import paths to match your project setup.</Step>
+
+</Steps>
+
+</TabsContent>
+
+</CodeTabs>
+
+## Usage
+
+```tsx
+import { Orb33 } from "@/components/orbs/orb-33";
+```
+
+```tsx
+<Orb33 size={280} state="idle" />
+```
+
+## Props
+
+### Component Props
+
+| Prop             | Type                                                             | Default  | Description                                  |
+| ---------------- | ---------------------------------------------------------------- | -------- | -------------------------------------------- |
+| `state`          | `"idle" \| "thinking" \| "speaking"`                             | `"idle"` | Drive preset the orb eases toward            |
+| `size`           | `number`                                                         | `280`    | Rendered size in CSS pixels                  |
+| `params`         | `Partial<Record<string, number>>`                                | -        | Shader param overrides, see Shader Props     |
+| `colors`         | `Partial<Record<string, string>>`                                | -        | Shader colour overrides as hex strings       |
+| `statePresets`   | `Partial<Record<OrbState, Record<string, number>>>`              | -        | Replace the built-in per-state param presets |
+| `stateColors`    | `Partial<Record<OrbState, Record<string, string>>>`              | -        | Replace the built-in per-state colours       |
+| `stateVolumes`   | `Partial<Record<OrbState, { input?: number; output?: number }>>` | -        | Pin the drive volumes a state settles on     |
+| `volumes`        | `{ input?: number; output?: number }`                            | -        | Drive the orb directly, bypassing synthesis  |
+| `paused`         | `boolean`                                                        | `false`  | Freeze the frame loop                        |
+| `pauseOffscreen` | `boolean`                                                        | `true`   | Stop rendering while scrolled out of view    |
+| `maxDpr`         | `number`                                                         | `2`      | Upper bound on the device pixel ratio        |
+| `className`      | `string`                                                         | -        | Class on the wrapper element                 |
+| `style`          | `CSSProperties`                                                  | -        | Inline style on the wrapper element          |
+| `ariaLabel`      | `string`                                                         | -        | Accessible name for the canvas               |
+
+### Shader Props
+
+Pass any of these through `params`; each is a single `f32` uniform read by the shader.
+
+| Param         | Label            | Range          | Step    | Default |
+| ------------- | ---------------- | -------------- | ------- | ------- |
+| `speed`       | Drift            | `0.015` – `10` | `0.05`  | `0.5`   |
+| `spin`        | Roll             | `0` – `5`      | `0.03`  | `0.05`  |
+| `radius`      | Radius           | `0.15` – `3`   | `0.015` | `0.9`   |
+| `scale`       | Zoom             | `0.3` – `8`    | `0.05`  | `3`     |
+| `freq`        | Pool scale       | `0.2` – `6`    | `0.05`  | `1.4`   |
+| `warp`        | Warp             | `0` – `3`      | `0.02`  | `0.6`   |
+| `lo`          | Cold threshold   | `0` – `1`      | `0.005` | `0.42`  |
+| `hi`          | Hot threshold    | `0` – `1`      | `0.005` | `0.74`  |
+| `gain`        | Heat gain        | `0.1` – `6`    | `0.02`  | `1`     |
+| `jitter`      | Heat jitter      | `0` – `0.5`    | `0.005` | `0.015` |
+| `bands`       | Contour bands    | `2` – `24`     | `1`     | `7`     |
+| `banding`     | Contour strength | `0` – `1`      | `0.01`  | `0.85`  |
+| `contrast`    | Contrast         | `0.3` – `3`    | `0.02`  | `1`     |
+| `dither`      | Dither           | `0` – `0.6`    | `0.005` | `0.05`  |
+| `dots`        | Screen pitch     | `4` – `120`    | `1`     | `46`    |
+| `dotGain`     | Dot gain         | `0.2` – `2`    | `0.01`  | `1`     |
+| `dotSoft`     | Dot softness     | `0.01` – `0.3` | `0.005` | `0.12`  |
+| `misregister` | Misregistration  | `0` – `3`      | `0.02`  | `0.5`   |
+| `ink`         | Ink density      | `0` – `1`      | `0.01`  | `0.92`  |
+| `printMix`    | Print mix        | `0` – `1`      | `0.01`  | `0.28`  |
+| `grain`       | Paper grain      | `0` – `2`      | `0.01`  | `0.35`  |
+| `grainSize`   | Grain size       | `1` – `8`      | `1`     | `2`     |
+| `light`       | Key light        | `0` – `1`      | `0.01`  | `0.25`  |
+| `rim`         | Rim light        | `0` – `3`      | `0.015` | `0.25`  |
+
+Colours are passed through `colors` as hex strings.
+
+| Colour  | Label | Default   |
+| ------- | ----- | --------- |
+| `cold`  | Cold  | `#0b0a1e` |
+| `cool`  | Cool  | `#3b2a9a` |
+| `warm`  | Warm  | `#f05a28` |
+| `hot`   | Hot   | `#f6b53a` |
+| `core`  | Core  | `#fff1e6` |
+| `paper` | Paper | `#f4ecdf` |
+
+## Credits
+
+Shader by [XorDev](https://x.com/XorDev), ported from [orbkit](https://github.com/zzzzshawn/orbkit) (WebGL/GLSL) to WebGPU/WGSL.

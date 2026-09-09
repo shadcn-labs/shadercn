@@ -1,0 +1,134 @@
+---
+title: "ORB-03"
+description: "a turbulent belt of light girdling the ball, contoured in rainbow"
+---
+
+<OrbPreview slug="orb-03" />
+
+## Installation
+
+<CodeTabs>
+
+<TabsList>
+  <TabsTrigger value="cli">Command</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+
+<TabsContent value="cli">
+
+```bash
+npx shadcn@latest add https://shadercn.vercel.app/r/orb-03.json
+```
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+<Steps>
+
+<Step>Install the following dependencies:</Step>
+
+```bash
+pnpm add vgpu
+```
+
+<Step>Copy and paste the following code into your project.</Step>
+
+<ComponentSource
+  src="components/orbs/orb-03.tsx"
+  base="shadercn"
+  title="components/orbs/orb-03.tsx"
+/>
+
+<ComponentSource
+  src="components/orbs/orbkit-core-wgpu.tsx"
+  base="shadercn"
+  title="components/orbs/orbkit-core-wgpu.tsx"
+/>
+
+<ComponentSource
+  src="components/orbs/orbkit-renderer.ts"
+  base="shadercn"
+  title="components/orbs/orbkit-renderer.ts"
+/>
+
+<Step>Update the import paths to match your project setup.</Step>
+
+</Steps>
+
+</TabsContent>
+
+</CodeTabs>
+
+## Usage
+
+```tsx
+import { Orb03 } from "@/components/orbs/orb-03";
+```
+
+```tsx
+<Orb03 size={280} state="idle" />
+```
+
+## Props
+
+### Component Props
+
+| Prop             | Type                                                             | Default  | Description                                  |
+| ---------------- | ---------------------------------------------------------------- | -------- | -------------------------------------------- |
+| `state`          | `"idle" \| "thinking" \| "speaking"`                             | `"idle"` | Drive preset the orb eases toward            |
+| `size`           | `number`                                                         | `280`    | Rendered size in CSS pixels                  |
+| `params`         | `Partial<Record<string, number>>`                                | -        | Shader param overrides, see Shader Props     |
+| `colors`         | `Partial<Record<string, string>>`                                | -        | Shader colour overrides as hex strings       |
+| `statePresets`   | `Partial<Record<OrbState, Record<string, number>>>`              | -        | Replace the built-in per-state param presets |
+| `stateColors`    | `Partial<Record<OrbState, Record<string, string>>>`              | -        | Replace the built-in per-state colours       |
+| `stateVolumes`   | `Partial<Record<OrbState, { input?: number; output?: number }>>` | -        | Pin the drive volumes a state settles on     |
+| `volumes`        | `{ input?: number; output?: number }`                            | -        | Drive the orb directly, bypassing synthesis  |
+| `paused`         | `boolean`                                                        | `false`  | Freeze the frame loop                        |
+| `pauseOffscreen` | `boolean`                                                        | `true`   | Stop rendering while scrolled out of view    |
+| `maxDpr`         | `number`                                                         | `2`      | Upper bound on the device pixel ratio        |
+| `className`      | `string`                                                         | -        | Class on the wrapper element                 |
+| `style`          | `CSSProperties`                                                  | -        | Inline style on the wrapper element          |
+| `ariaLabel`      | `string`                                                         | -        | Accessible name for the canvas               |
+
+### Shader Props
+
+Pass any of these through `params`; each is a single `f32` uniform read by the shader.
+
+| Param        | Label           | Range            | Step     | Default  |
+| ------------ | --------------- | ---------------- | -------- | -------- |
+| `speed`      | Anim speed      | `0.015` – `10`   | `0.05`   | `0.6`    |
+| `wander`     | Belt tilt drift | `0` – `5`        | `0.02`   | `0.3`    |
+| `feedback`   | Tilt feedback   | `0` – `40`       | `0.1`    | `1.5`    |
+| `camDist`    | Camera distance | `1` – `50`       | `0.3`    | `5`      |
+| `focal`      | Lens            | `0.15` – `15`    | `0.05`   | `1.05`   |
+| `shellR`     | Shell radius    | `0.2` – `20`     | `0.1`    | `3`      |
+| `shellW`     | Shell weight    | `0.005` – `1`    | `0.005`  | `0.12`   |
+| `plane`      | Belt tightness  | `0` – `1`        | `0.005`  | `0.15`   |
+| `turb`       | Warp            | `0` – `4`        | `0.02`   | `0.55`   |
+| `width`      | Belt width      | `0.0005` – `0.4` | `0.0005` | `0.004`  |
+| `pulse`      | Belt breathing  | `0` – `1`        | `0.01`   | `0`      |
+| `surge`      | Belt surge      | `0` – `1`        | `0.01`   | `0`      |
+| `hue`        | Contour hue     | `0` – `60`       | `0.1`    | `25`     |
+| `spread`     | Colour spread   | `0` – `3`        | `0.02`   | `1`      |
+| `envRadius`  | Envelope radius | `0.15` – `20`    | `0.1`    | `3.3`    |
+| `envCore`    | Envelope core   | `0.3` – `1.02`   | `0.01`   | `0.92`   |
+| `fill`       | Body fill       | `0` – `40`       | `0.05`   | `0.1`    |
+| `stepClamp`  | Step clamp      | `5` – `20000`    | `25`     | `1500`   |
+| `scatter`    | Diffusion       | `0` – `0.1`      | `0.0002` | `0.0006` |
+| `exposure`   | Exposure        | `20` – `100000`  | `50`     | `1500`   |
+| `contrast`   | Contrast        | `0.15` – `15`    | `0.05`   | `1.2`    |
+| `saturation` | Saturation      | `0` – `4`        | `0.02`   | `1.25`   |
+| `alphaGain`  | Alpha gain      | `0.05` – `15`    | `0.1`    | `2`      |
+| `edge`       | Edge sharpness  | `0` – `1`        | `0.01`   | `1`      |
+| `edgeFade`   | Halo falloff    | `0.1` – `3`      | `0.015`  | `0.98`   |
+
+Colours are passed through `colors` as hex strings.
+
+| Colour | Label | Default   |
+| ------ | ----- | --------- |
+| `tint` | Tint  | `#ffffff` |
+
+## Credits
+
+Shader by [XorDev](https://x.com/XorDev), ported from [orbkit](https://github.com/zzzzshawn/orbkit) (WebGL/GLSL) to WebGPU/WGSL.

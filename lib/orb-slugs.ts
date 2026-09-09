@@ -1,0 +1,40 @@
+/** Registry slugs of every shipped orb — safe to import from server components. */
+export const ORB_SLUGS = [
+  "orb-01",
+  "orb-02",
+  "orb-03",
+  "orb-04",
+  "orb-05",
+  "orb-06",
+  "orb-07",
+  "orb-08",
+  "orb-09",
+  "orb-10",
+  "orb-11",
+  "orb-12",
+  "orb-13",
+  "orb-14",
+  "orb-15",
+  "orb-16",
+  "orb-17",
+  "orb-18",
+  "orb-19",
+  "orb-20",
+  "orb-21",
+  "orb-22",
+  "orb-23",
+  "orb-24",
+  "orb-25",
+  "orb-26",
+  "orb-27",
+  "orb-28",
+  "orb-29",
+  "orb-30",
+  "orb-31",
+  "orb-32",
+  "orb-33",
+] as const;
+
+export type OrbSlug = (typeof ORB_SLUGS)[number];
+
+export const ORB_STATE_VALUES = ["idle", "thinking", "speaking"] as const;

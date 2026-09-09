@@ -1,5 +1,6 @@
 import { CommandBox } from "@/components/command-box";
 import { HomeCtas } from "@/components/home-ctas";
+import { HomeOrbShowcase } from "@/components/home-orb-showcase";
 import { PageTransition } from "@/components/page-transition";
 import { ROUTES } from "@/constants/routes";
 import { BreadcrumbJsonLd } from "@/seo/json-ld";
@@ -36,6 +37,8 @@ export default function IndexPage() {
             <CommandBox className="mt-4 w-full max-w-xl" />
 
             <HomeCtas className="mt-4" />
+
+            <HomeOrbShowcase className="mt-10 max-w-4xl" />
           </div>
         </section>
       </PageTransition>

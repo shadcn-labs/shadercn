@@ -1,0 +1,134 @@
+---
+title: "ORB-13"
+description: "plasma globe: crawling lightning filaments"
+---
+
+<OrbPreview slug="orb-13" />
+
+## Installation
+
+<CodeTabs>
+
+<TabsList>
+  <TabsTrigger value="cli">Command</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+
+<TabsContent value="cli">
+
+```bash
+npx shadcn@latest add https://shadercn.vercel.app/r/orb-13.json
+```
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+<Steps>
+
+<Step>Install the following dependencies:</Step>
+
+```bash
+pnpm add vgpu
+```
+
+<Step>Copy and paste the following code into your project.</Step>
+
+<ComponentSource
+  src="components/orbs/orb-13.tsx"
+  base="shadercn"
+  title="components/orbs/orb-13.tsx"
+/>
+
+<ComponentSource
+  src="components/orbs/orbkit-core-wgpu.tsx"
+  base="shadercn"
+  title="components/orbs/orbkit-core-wgpu.tsx"
+/>
+
+<ComponentSource
+  src="components/orbs/orbkit-renderer.ts"
+  base="shadercn"
+  title="components/orbs/orbkit-renderer.ts"
+/>
+
+<Step>Update the import paths to match your project setup.</Step>
+
+</Steps>
+
+</TabsContent>
+
+</CodeTabs>
+
+## Usage
+
+```tsx
+import { Orb13 } from "@/components/orbs/orb-13";
+```
+
+```tsx
+<Orb13 size={280} state="idle" />
+```
+
+## Props
+
+### Component Props
+
+| Prop             | Type                                                             | Default  | Description                                  |
+| ---------------- | ---------------------------------------------------------------- | -------- | -------------------------------------------- |
+| `state`          | `"idle" \| "thinking" \| "speaking"`                             | `"idle"` | Drive preset the orb eases toward            |
+| `size`           | `number`                                                         | `280`    | Rendered size in CSS pixels                  |
+| `params`         | `Partial<Record<string, number>>`                                | -        | Shader param overrides, see Shader Props     |
+| `colors`         | `Partial<Record<string, string>>`                                | -        | Shader colour overrides as hex strings       |
+| `statePresets`   | `Partial<Record<OrbState, Record<string, number>>>`              | -        | Replace the built-in per-state param presets |
+| `stateColors`    | `Partial<Record<OrbState, Record<string, string>>>`              | -        | Replace the built-in per-state colours       |
+| `stateVolumes`   | `Partial<Record<OrbState, { input?: number; output?: number }>>` | -        | Pin the drive volumes a state settles on     |
+| `volumes`        | `{ input?: number; output?: number }`                            | -        | Drive the orb directly, bypassing synthesis  |
+| `paused`         | `boolean`                                                        | `false`  | Freeze the frame loop                        |
+| `pauseOffscreen` | `boolean`                                                        | `true`   | Stop rendering while scrolled out of view    |
+| `maxDpr`         | `number`                                                         | `2`      | Upper bound on the device pixel ratio        |
+| `className`      | `string`                                                         | -        | Class on the wrapper element                 |
+| `style`          | `CSSProperties`                                                  | -        | Inline style on the wrapper element          |
+| `ariaLabel`      | `string`                                                         | -        | Accessible name for the canvas               |
+
+### Shader Props
+
+Pass any of these through `params`; each is a single `f32` uniform read by the shader.
+
+| Param        | Label             | Range           | Step    | Default |
+| ------------ | ----------------- | --------------- | ------- | ------- |
+| `speed`      | Anim speed        | `0.015` – `10`  | `0.05`  | `1`     |
+| `spin`       | Spin rate         | `0` – `5`       | `0.03`  | `0.2`   |
+| `camDist`    | Camera distance   | `1` – `50`      | `0.3`   | `7`     |
+| `focal`      | Lens              | `0.15` – `15`   | `0.1`   | `2.25`  |
+| `envRadius`  | Globe radius      | `0.15` – `15`   | `0.1`   | `2.6`   |
+| `swell`      | Input swell       | `0` – `1`       | `0.01`  | `0.15`  |
+| `tilt`       | Axis tilt         | `0` – `4`       | `0.02`  | `0.4`   |
+| `fils`       | Filament density  | `0.5` – `12`    | `0.1`   | `6`     |
+| `writhe`     | Writhe            | `0` – `3`       | `0.02`  | `0.9`   |
+| `writheFreq` | Writhe frequency  | `0.2` – `8`     | `0.05`  | `1.6`   |
+| `sharp`      | Arc sharpness     | `0.5` – `60`    | `0.5`   | `4`     |
+| `soft`       | Arc core softness | `0.002` – `0.5` | `0.002` | `0.06`  |
+| `whiten`     | Core whitening    | `0` – `0.2`     | `0.002` | `0.008` |
+| `coreGain`   | Nucleus glow      | `0` – `5`       | `0.05`  | `1.6`   |
+| `tipGain`    | Glass flare       | `0` – `6`       | `0.05`  | `1.8`   |
+| `fill`       | Body haze         | `0` – `2`       | `0.01`  | `0.02`  |
+| `stepClamp`  | Step clamp        | `0.3` – `300`   | `1.5`   | `40`    |
+| `scatter`    | Diffusion         | `0` – `0.5`     | `0.003` | `0.012` |
+| `exposure`   | Exposure          | `0.1` – `200`   | `0.5`   | `11`    |
+| `contrast`   | Contrast          | `0.15` – `15`   | `0.1`   | `1`     |
+| `saturation` | Saturation        | `0` – `4`       | `0.02`  | `1.2`   |
+| `alphaGain`  | Alpha gain        | `0.05` – `15`   | `0.1`   | `2.5`   |
+| `edge`       | Edge sharpness    | `0` – `1`       | `0.01`  | `1`     |
+
+Colours are passed through `colors` as hex strings.
+
+| Colour  | Label   | Default   |
+| ------- | ------- | --------- |
+| `inner` | Nucleus | `#ff70d8` |
+| `arc`   | Arc     | `#5a5cff` |
+| `tint`  | Tint    | `#ffffff` |
+
+## Credits
+
+Shader by [XorDev](https://x.com/XorDev), ported from [orbkit](https://github.com/zzzzshawn/orbkit) (WebGL/GLSL) to WebGPU/WGSL.
