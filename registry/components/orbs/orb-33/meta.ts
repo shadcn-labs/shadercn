@@ -1,5 +1,5 @@
+import type { OrbVariant } from "@/components/orbs/canvas";
 import { orb33Shader } from "@/components/orbs/orb-33/gpu";
-import type { OrbVariant } from "@/components/orbs/orbkit-core-wgpu";
 
 export const meta = {
   description: "a thermal image, risograph-printed on the ball",

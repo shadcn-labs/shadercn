@@ -1,5 +1,5 @@
+import type { OrbVariant } from "@/components/orbs/canvas";
 import { orb11Shader } from "@/components/orbs/orb-11/gpu";
-import type { OrbVariant } from "@/components/orbs/orbkit-core-wgpu";
 
 export const meta = {
   description: "quantum orbital, rainbow chroma",

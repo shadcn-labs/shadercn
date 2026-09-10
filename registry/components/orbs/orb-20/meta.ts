@@ -1,5 +1,5 @@
+import type { OrbVariant } from "@/components/orbs/canvas";
 import { orb20Shader } from "@/components/orbs/orb-20/gpu";
-import type { OrbVariant } from "@/components/orbs/orbkit-core-wgpu";
 
 export const meta = {
   description: "a water film rushing down the ball, fountain-style",

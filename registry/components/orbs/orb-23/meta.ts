@@ -1,5 +1,5 @@
+import type { OrbVariant } from "@/components/orbs/canvas";
 import { orb23Shader } from "@/components/orbs/orb-23/gpu";
-import type { OrbVariant } from "@/components/orbs/orbkit-core-wgpu";
 
 export const meta = {
   description: "an ASCII glyph matrix in CRT green, wrapped on the ball",

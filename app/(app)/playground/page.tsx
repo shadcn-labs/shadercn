@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 import { OrbPlayground } from "@/components/orb-playground";
-import type { OrbState } from "@/components/orbs/orbkit-core-wgpu";
+import type { OrbState } from "@/components/orbs/canvas";
 import { PageTransition } from "@/components/page-transition";
 import { ROUTES } from "@/constants/routes";
 // `lib/orbs` is a client module (every orb is `"use client"`), so the route

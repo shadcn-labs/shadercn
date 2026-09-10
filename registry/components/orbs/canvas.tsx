@@ -9,8 +9,8 @@ import type {
   OrbParamValues,
   OrbState,
   OrbVariant,
-} from "@/components/orbs/orbkit-renderer";
-import { createOrbRenderer } from "@/components/orbs/orbkit-renderer";
+} from "@/components/orbs/renderer";
+import { createOrbRenderer } from "@/components/orbs/renderer";
 
 export type {
   OrbColorDef,
@@ -20,7 +20,7 @@ export type {
   OrbParamValues,
   OrbState,
   OrbVariant,
-} from "@/components/orbs/orbkit-renderer";
+} from "@/components/orbs/renderer";
 export {
   buildOrbShaderSource,
   defaultValuesFor,
@@ -28,7 +28,7 @@ export {
   ORB_STATES,
   ORB_WGSL_HELPERS,
   orbInitialUniforms,
-} from "@/components/orbs/orbkit-renderer";
+} from "@/components/orbs/renderer";
 
 export interface ShaderOrbProps {
   variant: OrbVariant;

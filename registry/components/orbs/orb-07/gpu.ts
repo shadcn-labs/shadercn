@@ -1,9 +1,9 @@
 import { d, std, tgpu } from "typegpu";
 
 /*
- * Ported from orbkit SHDR-07 (GLSL) to TypeGPU: torsion shells wound
- * about a travelling twist axis.
- * Original: https://github.com/zzzzshawn/orbkit
+ * Shader by XorDev (https://x.com/XorDev), ported for Orbkit with the author's
+ * permission. Non-commercial use only, with attribution to XorDev; keep this
+ * notice with the file. shadercn's runtime (renderer.ts) is MIT-licensed.
  */
 
 const STEPS = 50;

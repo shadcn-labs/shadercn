@@ -1,5 +1,6 @@
 import type { ComponentType } from "react";
 
+import type { OrbVariant, ShaderOrbProps } from "@/components/orbs/canvas";
 import { orb01Orb, Orb01 } from "@/components/orbs/orb-01";
 import { orb02Orb, Orb02 } from "@/components/orbs/orb-02";
 import { orb03Orb, Orb03 } from "@/components/orbs/orb-03";
@@ -33,10 +34,6 @@ import { orb30Orb, Orb30 } from "@/components/orbs/orb-30";
 import { orb31Orb, Orb31 } from "@/components/orbs/orb-31";
 import { orb32Orb, Orb32 } from "@/components/orbs/orb-32";
 import { orb33Orb, Orb33 } from "@/components/orbs/orb-33";
-import type {
-  OrbVariant,
-  ShaderOrbProps,
-} from "@/components/orbs/orbkit-core-wgpu";
 
 export interface OrbEntry {
   Component: ComponentType<Omit<ShaderOrbProps, "variant">>;

@@ -48,6 +48,13 @@ Please do not open public issues for security vulnerabilities. Follow [SECURITY.
 
 [MIT](LICENSE)
 
+## Credits
+
+- [orbkit](https://orbkit.zzzzshawn.cloud/) by [Shawn](https://x.com/zzzzshawn/)
+- Original work by [@XorDev](https://x.com/XorDev). Used with permission.
+
+See [CREDITS.md](CREDITS.md) for the full list.
+
 ## Contributors
 
 [![Contributors](https://contrib.rocks/image?repo=shadcn-labs/shadercn)](https://github.com/shadcn-labs/shadercn/graphs/contributors)

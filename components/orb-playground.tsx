@@ -5,8 +5,8 @@ import { useRouter } from "next/navigation";
 import { useCallback, useMemo, useState } from "react";
 
 import { CopyButton } from "@/components/copy-button";
-import type { OrbState, OrbVariant } from "@/components/orbs/orbkit-core-wgpu";
-import { ORB_STATES } from "@/components/orbs/orbkit-core-wgpu";
+import type { OrbState, OrbVariant } from "@/components/orbs/canvas";
+import { ORB_STATES } from "@/components/orbs/canvas";
 import { Button } from "@/components/ui/button";
 import {
   Select,

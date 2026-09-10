@@ -3,8 +3,8 @@
 import Link from "next/link";
 import { useState } from "react";
 
-import type { OrbState } from "@/components/orbs/orbkit-core-wgpu";
-import { ORB_STATES } from "@/components/orbs/orbkit-core-wgpu";
+import type { OrbState } from "@/components/orbs/canvas";
+import { ORB_STATES } from "@/components/orbs/canvas";
 import { Button } from "@/components/ui/button";
 import {
   Select,

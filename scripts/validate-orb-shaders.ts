@@ -11,11 +11,11 @@ import { join } from "node:path";
 
 import { effect, frame, init, target } from "vgpu/node";
 
-import type { OrbVariant } from "../registry/components/orbs/orbkit-renderer";
+import type { OrbVariant } from "../registry/components/orbs/renderer";
 import {
   buildOrbShaderSource,
   orbInitialUniforms,
-} from "../registry/components/orbs/orbkit-renderer";
+} from "../registry/components/orbs/renderer";
 
 const ORBS_DIR = join(
   import.meta.dirname,
