@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://shadercn.vercel.app/og.png" alt="shadercn banner" />
+  <img src="./.github/assets/gh.png" alt="shadercn banner" />
 </p>
 
 <h1 align="center">shadercn</h1>
