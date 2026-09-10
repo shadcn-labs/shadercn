@@ -54,10 +54,11 @@ export const HomeShowcase = ({ className }: { className?: string }) => {
         className
       )}
     >
-      <div className="flex flex-col gap-3 border-b px-4 py-3 sm:grid sm:grid-cols-[16rem_1fr] sm:items-center sm:gap-0 sm:px-4">
-        <div className="flex items-center gap-3 sm:border-r sm:pr-4">
+      <div className="border-b sm:grid sm:grid-cols-[16rem_1fr] sm:items-stretch sm:gap-0">
+        <div className="flex items-center justify-between gap-3 px-4 py-3 sm:hidden">
+          <span className="text-sm font-medium">Choose orb</span>
           <Select value={slug} onValueChange={setSlug}>
-            <SelectTrigger className="w-full sm:w-auto">
+            <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Choose component" />
             </SelectTrigger>
             <SelectContent>
@@ -68,22 +69,33 @@ export const HomeShowcase = ({ className }: { className?: string }) => {
               ))}
             </SelectContent>
           </Select>
-          <span className="hidden text-sm font-semibold sm:inline">
-            Components
-          </span>
         </div>
-        <div className="flex items-center justify-end">
+
+        <div className="hidden items-center px-4 py-3 sm:flex sm:border-r">
+          <span className="text-sm font-semibold">Components</span>
+        </div>
+        <div className="hidden items-center justify-end px-4 py-3 sm:flex">
           <Button
             variant="outline"
             size="sm"
             onClick={() => copyToClipboard(installCommand)}
           >
             {isCopied ? <Check /> : <Terminal />}
-            <span className="min-w-0 max-w-[160px] truncate sm:max-w-none">
-              {installCommand}
-            </span>
+            <span className="min-w-0 truncate">{installCommand}</span>
           </Button>
         </div>
+      </div>
+
+      <div className="border-b px-4 py-3 sm:hidden">
+        <Button
+          variant="outline"
+          size="sm"
+          className="w-full justify-start"
+          onClick={() => copyToClipboard(installCommand)}
+        >
+          {isCopied ? <Check /> : <Terminal />}
+          <span className="min-w-0 truncate">{installCommand}</span>
+        </Button>
       </div>
 
       <div className="grid sm:grid-cols-[16rem_1fr]">

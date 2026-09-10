@@ -5,6 +5,7 @@ import { isComponentsFolder } from "@/lib/docs";
 import type { PageTreeFolder, PageTreePage } from "@/lib/page-tree";
 import { getAllPagesFromFolder, getPagesFromFolder } from "@/lib/page-tree";
 import { source } from "@/lib/source";
+import { cn } from "@/lib/utils";
 
 const getFolder = (name: string): PageTreeFolder | undefined => {
   for (const node of source.pageTree.children) {
@@ -14,8 +15,19 @@ const getFolder = (name: string): PageTreeFolder | undefined => {
   }
 };
 
-const ComponentGrid = ({ pages }: { pages: PageTreePage[] }) => (
-  <div className="grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-x-8 lg:gap-x-16 lg:gap-y-6 xl:gap-x-20">
+const ComponentGrid = ({
+  pages,
+  className,
+}: {
+  pages: PageTreePage[];
+  className?: string;
+}) => (
+  <div
+    className={cn(
+      "grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-x-8 lg:gap-x-16 lg:gap-y-6 xl:gap-x-20",
+      className
+    )}
+  >
     {pages.map((component) => (
       <Link
         className="inline-flex items-center gap-2 text-lg font-medium underline-offset-4 hover:underline md:text-base"
@@ -31,8 +43,10 @@ const ComponentGrid = ({ pages }: { pages: PageTreePage[] }) => (
 
 export const ComponentsList = ({
   folderName = "Orbs",
+  className,
 }: {
   folderName?: string;
+  className?: string;
 }) => {
   const folder = getFolder(folderName);
   if (!folder) {
@@ -44,7 +58,7 @@ export const ComponentsList = ({
     if (pages.length === 0) {
       return null;
     }
-    return <ComponentGrid pages={pages} />;
+    return <ComponentGrid pages={pages} className={className} />;
   }
 
   const pages = getAllPagesFromFolder(folder).filter(
@@ -54,5 +68,5 @@ export const ComponentsList = ({
     return null;
   }
 
-  return <ComponentGrid pages={pages} />;
+  return <ComponentGrid pages={pages} className={className} />;
 };

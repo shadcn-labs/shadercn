@@ -28,24 +28,14 @@ const PlaygroundPage = async ({
 
   return (
     <PageTransition>
-      <section className="container-wrapper relative">
-        <div className="container flex flex-col gap-6 py-10">
-          <div className="flex flex-col gap-2">
-            <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
-              Playground
-            </h1>
-            <p className="text-muted-foreground max-w-2xl text-sm">
-              Every orb runs its own WebGPU shader. Author a state, then copy
-              the JSX with only the values you changed.
-            </p>
-          </div>
-
+      <div className="container-wrapper 3xl:fixed:px-0 px-6">
+        <div className="3xl:fixed:container h-[calc(100svh-var(--header-height))] pb-4">
           <OrbPlayground
             initialSlug={slug}
             initialState={initialState as OrbState}
           />
         </div>
-      </section>
+      </div>
     </PageTransition>
   );
 };
