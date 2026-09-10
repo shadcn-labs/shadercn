@@ -6,7 +6,7 @@ export interface SiteNavLink {
 
 export const SITE_LATEST = {
   description: "GPU-powered animated orb shaders",
-  href: "https://shadercn.vercel.app",
+  href: "https://shadercn.run",
   name: "shadercn",
 } as const satisfies SiteNavLink;
 

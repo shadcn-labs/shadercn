@@ -1,73 +1,64 @@
 ---
-title: Introduction
-description: A shadcn registry of GPU-powered shader components for React, built on vgpu.
+title: "Introduction"
+description: "GPU-powered shader components for React. Built on vgpu and typegpu, works with the shadcn CLI."
 ---
 
-A **shadcn registry** of GPU-powered shader components for React. Built on [vgpu](https://vgpu.labs.vercel.dev/), the modular cross-runtime WebGPU library.
+**shadercn** provides beautiful, customizable GPU shader effects as React components. Built on [vgpu](https://vgpu.labs.vercel.dev/) and [typegpu](https://typegpu.dev/), and designed to work seamlessly with the [shadcn CLI](https://ui.shadcn.com).
 
-## What Is shadercn?
+## Philosophy
 
-shadercn provides shader effects as React components. Instead of writing WGSL directly, you work with GPU effects as components that you can drop into your app, pass props to, and compose together.
+shadercn follows the shadcn model for shader effects: copy-paste components you can own, with zero lock-in and sensible defaults that work immediately.
 
-- **Fragment shaders as components** — Each shader is a React component with typed props
-- **GPU-accelerated** — Runs on the GPU via WebGPU for smooth 60fps performance
-- **Copy-paste** — Install via `npx shadcn add`, own the code forever
-- **Customizable** — Every visual parameter is exposed as a prop
+Shader effects are often treated as one-off snippets — scattered across forums, hardcoded with magic numbers, and difficult to compose. shadercn takes a different approach. Each shader is a typed React component with exposed props, runs on the GPU via WebGPU, and drops into any React framework.
 
-## Tech Stack
+The goal is simple: make GPU-accelerated visuals feel like the rest of your stack — composable, themeable, and easy to customize.
 
-- [vgpu](https://vgpu.labs.vercel.dev/) — WebGPU shader runtime
-- `Next.js 16` + App Router
-- `React 19`
-- `Tailwind CSS 4`
-- `Fumadocs` for documentation
-- `shadcn/ui` compatible registry
+## Why shadercn?
 
-## How It Works
+Most shader setups are either too low-level or too opinionated. shadercn is built for teams that want to ship quickly without giving up control:
 
-1. Browse the available shader components
-2. Install with the shadcn CLI
-3. Import and use in your React app
+- **Own Your Code:** Copy the components into your project and customize everything.
+- **Start Fast:** Run one command and render your first shader with production-ready defaults.
+- **GPU-Powered:** Runs on the GPU via WebGPU for smooth 60fps performance.
 
-```bash
-npx shadcn@latest add https://shadercn.vercel.app/r/component-name.json
-```
+## Features
 
-## FAQ
+<div className="not-prose grid gap-4 sm:grid-cols-2 mt-4">
+  <FeatureCard
+    icon={ZapIcon}
+    title="Zero Config"
+    description="Works out of the box with sensible defaults and WebGPU runtime."
+  />
+  <FeatureCard
+    icon={PaletteIcon}
+    title="Theme Aware"
+    description="Every visual parameter is exposed as a prop for full customization."
+  />
+  <FeatureCard
+    icon={LayoutGridIcon}
+    title="Composable"
+    description="Build hero sections, backgrounds, and effects from small declarative components."
+  />
+  <FeatureCard
+    icon={Code2Icon}
+    title="TypeScript"
+    description="Full type safety with typed props for every shader parameter."
+  />
+  <FeatureCard
+    icon={ClipboardCopyIcon}
+    title="Copy & Paste"
+    description="Own your shader code. Install it into your project and customize every detail."
+  />
+  <FeatureCard
+    icon={BlocksIcon}
+    title="shadcn Compatible"
+    description="Uses the shadcn registry format — add components with one command."
+  />
+</div>
 
-<Accordion type="multiple">
-
-<AccordionItem value="faq-1">
-<AccordionTrigger>
-What is vgpu?
-</AccordionTrigger>
-<AccordionContent>
-
-[vgpu](https://vgpu.labs.vercel.dev/) is a modular cross-runtime WebGPU library for shaders, 3D scenes, GPU tensors, neural networks, and math viz. It provides typed WGSL imports, a tiny gpu-first API, and the same code running in the browser, headless Node, and test suites.
-
-</AccordionContent>
-</AccordionItem>
-
-<AccordionItem value="faq-2">
-<AccordionTrigger>
-Which frameworks are supported?
-</AccordionTrigger>
-<AccordionContent>
-
-Any React framework: Next.js, Remix, Astro, Gatsby, Vite, etc.
-
-</AccordionContent>
-</AccordionItem>
-
-<AccordionItem value="faq-3">
-<AccordionTrigger>
-Do shaders work without WebGPU?
-</AccordionTrigger>
-<AccordionContent>
-
-vgpu includes a mock adapter (`vgpu/mock`) for testing. For browsers without WebGPU support, you should provide a fallback. Check [vgpu docs](https://vgpu.labs.vercel.dev/docs) for details.
-
-</AccordionContent>
-</AccordionItem>
-
-</Accordion>
+import { ZapIcon } from "lucide-react";
+import { PaletteIcon } from "lucide-react";
+import { LayoutGridIcon } from "lucide-react";
+import { Code2Icon } from "lucide-react";
+import { ClipboardCopyIcon } from "lucide-react";
+import { BlocksIcon } from "lucide-react";

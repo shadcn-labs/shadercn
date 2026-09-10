@@ -8,7 +8,7 @@ import { useHotkeys } from "react-hotkeys-hook";
 
 import * as audio from "@/audio/core";
 
-export const soundEnabledAtom = atomWithStorage("shadercn-sound", true);
+const soundEnabledAtom = atomWithStorage("sound-enabled", false);
 
 export const useSoundEnabled = () => useAtom(soundEnabledAtom);
 
@@ -25,7 +25,7 @@ export const useSoundToggle = () => {
     }
   }, [soundEnabled, setSoundEnabled]);
 
-  useHotkeys("s", () => toggleSound(), { preventDefault: true });
+  useHotkeys("s", () => toggleSound(), { preventDefault: true }, [toggleSound]);
 
-  return { toggleSound };
+  return { soundEnabled, toggleSound };
 };

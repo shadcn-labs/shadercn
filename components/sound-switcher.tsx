@@ -2,6 +2,7 @@
 
 import { Volume2, VolumeX } from "lucide-react";
 
+import { useFeedback } from "@/hooks/use-feedback";
 import { useMounted } from "@/hooks/use-mounted";
 import { useSoundEnabled } from "@/hooks/use-sound-toggle";
 import { cn } from "@/lib/utils";
@@ -14,6 +15,8 @@ const SOUND_OPTIONS = [
 export const SoundSwitcher = () => {
   const [value, setValue] = useSoundEnabled();
   const isMounted = useMounted();
+  const feedbackOn = useFeedback({ sound: "toggleOn" });
+  const feedbackOff = useFeedback({ sound: "toggleOff" });
 
   if (!isMounted) {
     return <div className="flex h-8 w-20" />;
@@ -39,10 +42,15 @@ export const SoundSwitcher = () => {
             )}
             role="radio"
             aria-checked={isActive}
-            aria-label={`Sound ${option.label}`}
+            aria-label={`Switch sound ${option.label}`}
             onClick={() => {
               if (option.value === value) {
                 return;
+              }
+              if (option.value) {
+                feedbackOn();
+              } else {
+                feedbackOff();
               }
               setValue(option.value);
             }}

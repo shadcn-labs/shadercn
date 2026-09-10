@@ -35,7 +35,9 @@ export const useHapticsToggle = () => {
     }
   }, [hapticsEnabled, setHapticsEnabled, soundEnabled, hapticTrigger]);
 
-  useHotkeys("h", () => toggleHaptics(), { preventDefault: true });
+  useHotkeys("h", () => toggleHaptics(), { preventDefault: true }, [
+    toggleHaptics,
+  ]);
 
-  return { toggleHaptics };
+  return { hapticsEnabled, toggleHaptics };
 };

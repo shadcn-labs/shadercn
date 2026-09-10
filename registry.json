@@ -1,7 +1,7 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry.json",
   "name": "shadercn",
-  "homepage": "https://shadercn.vercel.app",
+  "homepage": "https://shadercn.run",
   "items": [
     {
       "name": "orbkit-core-wgpu",

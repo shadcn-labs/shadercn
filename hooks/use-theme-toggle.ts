@@ -29,7 +29,7 @@ export const useThemeToggle = () => {
     setTheme(nextResolved);
   }, [resolvedTheme, setTheme, feedbackOn, feedbackOff]);
 
-  useHotkeys("d", () => toggleTheme(), { preventDefault: true });
+  useHotkeys("d", () => toggleTheme(), { preventDefault: true }, [toggleTheme]);
 
   return { toggleTheme };
 };

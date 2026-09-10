@@ -1,24 +1,26 @@
 "use client";
 
-import { Moon, Sun } from "lucide-react";
+import { MonitorIcon, MoonIcon, SunIcon } from "lucide-react";
 import { useTheme } from "next-themes";
 
+import { useFeedback } from "@/hooks/use-feedback";
 import { useMounted } from "@/hooks/use-mounted";
-import { useThemeToggle } from "@/hooks/use-theme-toggle";
 import { cn } from "@/lib/utils";
 
 const THEME_OPTIONS = [
-  { icon: Sun, label: "light", value: "light" },
-  { icon: Moon, label: "dark", value: "dark" },
+  { icon: MonitorIcon, value: "system" },
+  { icon: SunIcon, value: "light" },
+  { icon: MoonIcon, value: "dark" },
 ] as const;
 
 export const ModeSwitcher = () => {
-  const { toggleTheme } = useThemeToggle();
-  const { resolvedTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
   const isMounted = useMounted();
+  const feedbackOn = useFeedback({ sound: "toggleOn" });
+  const feedbackOff = useFeedback({ sound: "toggleOff" });
 
   if (!isMounted) {
-    return <div className="flex h-8 w-20" />;
+    return <div className="flex h-8 w-24" />;
   }
 
   return (
@@ -29,19 +31,27 @@ export const ModeSwitcher = () => {
     >
       {THEME_OPTIONS.map((option) => {
         const Icon = option.icon;
+        const isActive = theme === option.value;
 
         return (
           <button
-            key={option.label}
+            key={option.value}
             type="button"
+            data-active={isActive}
             className={cn(
               "relative flex size-8 items-center justify-center rounded-full text-muted-foreground transition-[color,box-shadow] hover:text-foreground data-[active=true]:text-foreground data-[active=true]:inset-ring-1 data-[active=true]:inset-ring-border [&_svg]:size-4"
             )}
             role="radio"
-            aria-checked={resolvedTheme === option.value}
-            aria-label={`${option.label} mode`}
-            data-active={resolvedTheme === option.value}
-            onClick={toggleTheme}
+            aria-checked={isActive}
+            aria-label={`Switch to ${option.value} theme`}
+            onClick={() => {
+              if (option.value === "dark") {
+                feedbackOff();
+              } else {
+                feedbackOn();
+              }
+              setTheme(option.value);
+            }}
           >
             <Icon />
           </button>

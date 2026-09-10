@@ -1,0 +1,28 @@
+---
+title: MCP
+description: Learn how to use the shadcn MCP (Model Context Protocol) server with shadercn.
+---
+
+[MCP](https://modelcontextprotocol.io/) is an open protocol that standardizes how applications provide context to LLMs. The shadcn CLI can register an MCP server so your editor can discover registry components — including items you install from **shadercn** via the same CLI.
+
+## Configure MCP
+
+Run:
+
+```bash
+npx shadcn@latest mcp init
+```
+
+Choose your MCP client when prompted, then enable the MCP server in that client to finish setup.
+
+## Usage
+
+With MCP enabled, you can ask your IDE to work with shadercn registry components. Example prompts:
+
+- Add a background shader effect to my hero section.
+- Create an animated orb with custom colors and speed.
+- Build a shader-powered landing page with multiple layered effects.
+- Apply a GPU-accelerated gradient animation to my component.
+- Compose shader effects with custom props for a unique visual style.
+
+Install components from this registry with `npx shadcn@latest add` and the JSON URL from each docs page. Components work with sensible defaults.

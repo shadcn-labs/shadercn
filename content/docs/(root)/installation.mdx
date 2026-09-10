@@ -1,27 +1,39 @@
 ---
 title: Installation
-description: How to install and use shadercn shader components.
+description: Install GPU shader components from the registry.
 ---
 
-## Installing Components
+## Prerequisites
 
-Install any shader component using the shadcn CLI:
+A React project with WebGPU support. shadercn components use [vgpu](https://vgpu.labs.vercel.dev/) as the shader runtime and [typegpu](https://typegpu.dev/) for type-safe GPU compute.
+
+## Installation
+
+Run the following command to add a shader component:
 
 ```bash
-npx shadcn@latest add https://shadercn.vercel.app/r/component-name.json
+npx shadcn@latest add @shadercn/orb-01
 ```
 
-## Using a Component
+Without a registry alias, use the full URL:
 
-After installation, import it from your UI folder:
+```bash
+npx shadcn@latest add https://shadercn.run/r/orb-01.json
+```
+
+The registry installs the matching vgpu runtime and any required dependencies.
+
+## Usage
+
+Import the installed component and use it in your React app:
 
 ```tsx
-import { ShaderBackground } from "@/components/ui/shader-background";
+import { OrbPreview } from "@/components/ui/orb-01";
 
 export function Hero() {
   return (
     <div className="relative h-screen">
-      <ShaderBackground className="absolute inset-0" />
+      <OrbPreview className="absolute inset-0" />
       <div className="relative z-10">
         <h1>Your content here</h1>
       </div>
@@ -35,12 +47,7 @@ export function Hero() {
 Every shader component exposes its visual parameters as props:
 
 ```tsx
-<ShaderBackground
-  speed={0.5}
-  color1="#ff0000"
-  color2="#0000ff"
-  intensity={0.8}
-/>
+<OrbPreview speed={0.5} color1="#ff0000" color2="#0000ff" intensity={0.8} />
 ```
 
 ## Adding to Your Project
@@ -48,22 +55,22 @@ Every shader component exposes its visual parameters as props:
 ### 1. Install dependencies
 
 ```bash
-pnpm add vgpu
+pnpm add vgpu typegpu
 pnpm add -D @webgpu/types
 ```
 
 ### 2. Install the component
 
 ```bash
-npx shadcn@latest add https://shadercn.vercel.app/r/component-name.json
+npx shadcn@latest add @shadercn/orb-01
 ```
 
 ### 3. Use it
 
 ```tsx
-import { ShaderComponent } from "@/components/ui/shader-component";
+import { OrbPreview } from "@/components/ui/orb-01";
 
 export function MyPage() {
-  return <ShaderComponent />;
+  return <OrbPreview />;
 }
 ```

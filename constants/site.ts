@@ -1,4 +1,4 @@
-export const FALLBACK_SITE_ORIGIN = "https://shadercn.vercel.app" as const;
+export const FALLBACK_SITE_ORIGIN = "https://shadercn.run" as const;
 
 const getBaseUrl = () => {
   if (process.env.NODE_ENV !== "production") {
@@ -20,8 +20,8 @@ export const SITE = {
     TWITTER: "@alaymanguy",
   },
   DESCRIPTION: {
-    LONG: "A shadcn registry of GPU-powered shader components for React. Built on vgpu. Copy, paste, and ship.",
-    SHORT: "GPU shader components for React",
+    LONG: "A collection of beautifully designed, accessible, and customizable shader components for React. Built on vgpu and TypeGPU. Works with shadcn/ui.",
+    SHORT: "Beautiful shaders, made simple",
   },
   KEYWORDS: [
     "shadcn",

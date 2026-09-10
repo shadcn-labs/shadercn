@@ -4,7 +4,11 @@ import { formatLabelFromSlug } from "@/lib/utils";
 
 export const DOCS_DIR = `content${ROUTES.DOCS}`;
 
-export const EXCLUDED_SECTIONS = new Set(["installation", "(root)"]);
+export const EXCLUDED_SECTIONS = new Set([
+  "installation",
+  "changelog",
+  "(root)",
+]);
 
 export const isComponentsFolder = (folder: PageTreeFolder) =>
   folder.$id === "components" || folder.name === "Orbs";
@@ -19,3 +23,5 @@ export const formatTitleFromSlug = (slug: string): string =>
 
 export const homeContentRoute = `${ROUTES.LLMS_MD}/content.md`;
 export const docsContentRoute = `${ROUTES.LLMS_MD}${ROUTES.DOCS}`;
+
+export const PAGES_NEW: string[] = [ROUTES.DOCS_CHANGELOG];

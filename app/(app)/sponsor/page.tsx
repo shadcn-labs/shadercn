@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 
 import { ExternalLinkButton } from "@/components/external-link-button";
+import { PageHero } from "@/components/page-hero";
 import { PageTransition } from "@/components/page-transition";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { LINK } from "@/constants/links";
@@ -13,7 +14,7 @@ import { createPageMetadata } from "@/seo/metadata";
 
 export const metadata: Metadata = createPageMetadata({
   description:
-    "Support shadercn — a shadcn registry of GPU-powered shader components for React. Sponsor tiers, stargazers, and how to contribute.",
+    "Support shadercn — beautiful shader components for React. Sponsor tiers, stargazers, and how to contribute.",
   path: ROUTES.SPONSOR,
   title: "Sponsor",
 });
@@ -25,14 +26,19 @@ const SponsorPage = async () => {
     <PageTransition>
       <section className="container-wrapper relative">
         <div className="container max-w-2xl flex flex-col items-center gap-4 py-16 text-center md:py-20 lg:py-24">
-          <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl from-foreground via-foreground to-foreground/65 bg-linear-to-b bg-clip-text text-transparent">
-            Support the project
-          </h1>
-          <p className="text-base text-muted-foreground text-balance">
-            shadercn is a shadcn registry of GPU-powered shader components.
-            Every component is free and that&apos;s not changing.
-          </p>
+          <PageHero
+            description={
+              <>
+                shadercn is a collection of beautifully designed, accessible,
+                and customizable shader components for React. Every component is
+                free and that&apos;s not changing.
+              </>
+            }
+            title="Support the project"
+          />
           <p className="text-sm text-muted-foreground text-balance">
+            I&apos;m not going to paywall features or gate components behind a
+            sponsorship tier. But if shadercn made your project better, or you
             just like that this exists in the open, sponsoring is a nice way to
             say so. It helps me justify spending real time on it instead of
             treating it like a side-of-desk thing.
