@@ -1,5 +1,5 @@
 import type { OrbVariant } from "@/components/orbs/canvas";
-import { orb11Shader } from "@/components/orbs/orb-11/gpu";
+import { orb11Params, orb11Shader } from "@/components/orbs/orb-11/gpu";
 
 export const meta = {
   description: "quantum orbital, rainbow chroma",
@@ -217,4 +217,5 @@ export const orb11Orb: OrbVariant = {
       waveFreq: 4,
     },
   },
+  uniforms: orb11Params,
 };

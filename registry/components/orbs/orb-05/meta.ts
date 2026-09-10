@@ -1,5 +1,5 @@
 import type { OrbVariant } from "@/components/orbs/canvas";
-import { orb05Shader } from "@/components/orbs/orb-05/gpu";
+import { orb05Params, orb05Shader } from "@/components/orbs/orb-05/gpu";
 
 export const meta = {
   description: "rainbow rings travelling through a lattice of lenses",
@@ -215,4 +215,5 @@ export const orb05Orb: OrbVariant = {
       swirl: 0.57,
     },
   },
+  uniforms: orb05Params,
 };

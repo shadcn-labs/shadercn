@@ -1,5 +1,5 @@
 import type { OrbVariant } from "@/components/orbs/canvas";
-import { orb23Shader } from "@/components/orbs/orb-23/gpu";
+import { orb23Params, orb23Shader } from "@/components/orbs/orb-23/gpu";
 
 export const meta = {
   description: "an ASCII glyph matrix in CRT green, wrapped on the ball",
@@ -191,4 +191,5 @@ export const orb23Orb: OrbVariant = {
       spin: 0.04,
     },
   },
+  uniforms: orb23Params,
 };

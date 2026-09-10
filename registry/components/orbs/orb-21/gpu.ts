@@ -10,7 +10,7 @@ const STEPS = 56;
 const LIGHT_STEPS = 4;
 const DENSITY_OCT = 4;
 
-const Params = d.struct({
+export const orb21Params = d.struct({
   anim: d.f32,
   c_light: d.vec3f,
   c_shadow: d.vec3f,
@@ -41,7 +41,7 @@ const Params = d.struct({
 
 const layout = tgpu
   .bindGroupLayout({
-    params: { uniform: Params },
+    params: { uniform: orb21Params },
   })
   .$idx(0);
 

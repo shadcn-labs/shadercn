@@ -1,11 +1,37 @@
-import type { Effect, Gpu, Surface } from "vgpu";
-import { clock, effect, frameLoop, init, surface } from "vgpu";
+import { d } from "typegpu";
+import type { Effect, Gpu } from "vgpu";
+import { clock, effect, frameLoop, init, surface, Uniform } from "vgpu";
 
 /* ---------------------------------- schema --------------------------------- */
 
 export type OrbState = "idle" | "thinking" | "speaking";
 
 export const ORB_STATES = ["idle", "thinking", "speaking"] as const;
+
+/**
+ * Fields every orb struct declares, and the types the scene writes them as. A
+ * variant that omits one — or types it differently — fails to typecheck against
+ * {@link OrbUniformStruct}.
+ */
+export interface OrbBaseUniforms {
+  time: d.F32;
+  anim: d.F32;
+  inputVol: d.F32;
+  outputVol: d.F32;
+  res: d.Vec2f;
+  mouse: d.Vec2f;
+}
+
+/**
+ * The TypeGPU struct a variant binds at `@group(0) @binding(0)` as `params`:
+ * {@link OrbBaseUniforms} plus one `p_<param>: f32` and `c_<colour>: vec3f` per
+ * entry of the variant's `params` / `colors`. Both sides of the wire read it —
+ * the shader through its bind group layout, the scene through
+ * {@link d.memoryLayoutOf} to place each field's bytes.
+ */
+export type OrbUniformStruct = d.WgslStruct<
+  OrbBaseUniforms & Record<string, d.AnyWgslData>
+>;
 
 export interface OrbParamDef {
   key: string;
@@ -28,13 +54,13 @@ export interface OrbVariant {
   key: string;
   label: string;
   note: string;
+  /** Fully resolved WGSL from TypeGPU (`tgpu.resolve`). */
+  shader: string;
   /**
-   * Module-scope WGSL defining `orbMain(fragCoord: vec2f, uv: vec2f) -> vec4f`.
-   * Omit when {@link OrbVariant.shader} is a fully resolved TypeGPU module.
+   * The variant's uniform struct. Param `foo` lives in `p_foo: f32`, colour
+   * `bar` in `c_bar: vec3f`, alongside {@link OrbBaseUniforms}.
    */
-  frag?: string;
-  /** Fully resolved WGSL from TypeGPU (`tgpu.resolve`). Used instead of wrapping `frag`. */
-  shader?: string;
+  uniforms: OrbUniformStruct;
   params: OrbParamDef[];
   colors: OrbColorDef[];
   statePresets?: Partial<Record<OrbState, Record<string, number>>>;
@@ -75,174 +101,68 @@ export const defaultValuesFor = (
   return { colors, params };
 };
 
-export const hexToRgb = (hex: string): [number, number, number] => {
+/** Writes `hex` as three 0..1 floats at `out[at]`, falling back to white. */
+const writeHex = (hex: string, out: Float32Array, at: number) => {
   let h = hex.replace("#", "").trim();
   if (h.length === 3) {
     h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2];
   }
   const n = Number.parseInt(h, 16);
   if (h.length !== 6 || Number.isNaN(n)) {
-    return [1, 1, 1];
+    out[at] = 1;
+    out[at + 1] = 1;
+    out[at + 2] = 1;
+    return;
   }
 
-  return [
-    Math.floor(n / 0x1_00_00) / 255,
-    (Math.floor(n / 0x1_00) % 256) / 255,
-    (n % 256) / 255,
-  ];
+  out[at] = Math.floor(n / 0x1_00_00) / 255;
+  out[at + 1] = (Math.floor(n / 0x1_00) % 256) / 255;
+  out[at + 2] = (n % 256) / 255;
 };
 
-/* -------------------------------- WGSL module ------------------------------- */
+/** Shared decode cell: colour targets are read once per colour per frame. */
+const colorTarget = new Float32Array(3);
 
-/**
- * Noise, fbm, tanh, and screen-space helpers prepended to every orb shader.
- */
-// biome-ignore lint: wgsl tagged template
-export const ORB_WGSL_HELPERS = `
-fn hash(p: vec2f) -> f32 {
-  return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);
-}
+export const hexToRgb = (hex: string): [number, number, number] => {
+  writeHex(hex, colorTarget, 0);
 
-fn noise(p: vec2f) -> f32 {
-  let i = floor(p);
-  let f = fract(p);
-  let ff = f * f * (3.0 - 2.0 * f);
-  return mix(
-    mix(hash(i), hash(i + vec2(1.0, 0.0)), ff.x),
-    mix(hash(i + vec2(0.0, 1.0)), hash(i + vec2(1.0, 1.0)), ff.x),
-    ff.y
-  );
-}
-
-fn fbm(p_in: vec2f) -> f32 {
-  var p = p_in;
-  var v = 0.0;
-  var a = 0.5;
-  for (var i = 0; i < 5; i++) {
-    v += a * noise(p);
-    p = p * 2.03 + vec2(11.7, 7.3);
-    a *= 0.5;
-  }
-  return v;
-}
-
-fn tanh3(x: vec3f) -> vec3f {
-  let clamped = clamp(x, vec3f(-10.0), vec3f(10.0));
-  let e = exp(2.0 * clamped);
-  return (e - 1.0) / (e + 1.0);
-}
-
-fn tanh1(x_in: f32) -> f32 {
-  let x = clamp(x_in, -10.0, 10.0);
-  let e = exp(2.0 * x);
-  return (e - 1.0) / (e + 1.0);
-}
-
-/** Fragment position in device pixels, published by fs_main before orbMain runs. */
-var<private> gFragCoord: vec2f;
-
-fn orbUV() -> vec2f {
-  let res = params.res;
-  return (2.0 * gFragCoord - res) / min(res.x, res.y);
-}
-`;
-
-/**
- * Uniform accessors the orb bodies are written against, mapped onto the generated
- * `Params` fields. WGSL has no value aliases, so every `uX` / `uP_*` / `uC_*`
- * identifier is rewritten to a `params.<field>` member reference.
- */
-const FIXED_UNIFORM_FIELDS: Record<string, string> = {
-  uAnim: "anim",
-  uInput: "inputVol",
-  uMouse: "mouse",
-  uOutput: "outputVol",
-  uRes: "res",
-  uTime: "time",
+  return [colorTarget[0], colorTarget[1], colorTarget[2]];
 };
 
-const BASE_STRUCT_FIELDS = [
-  "time: f32",
-  "anim: f32",
-  "inputVol: f32",
-  "outputVol: f32",
-  "res: vec2f",
-  "mouse: vec2f",
-];
+/* -------------------------------- uniforms -------------------------------- */
+
+const F32_BYTES = 4;
 
 /**
- * Assembles a variant into one WGSL module: the `Params` uniform block, the shared
- * helpers, the variant body, and the fragment entry point. `effect()` generates the
- * fullscreen vertex stage. A TypeGPU `shader` string is already a full module and
- * is returned as-is.
+ * WGSL rounds a struct in the uniform address space up to a 16-byte multiple, so
+ * the buffer must be that large even when the fields stop earlier — a
+ * `d.sizeOf()`-sized buffer trips the pipeline's `minBindingSize`.
  */
-export const buildOrbShaderSource = (variant: OrbVariant): string => {
-  if (variant.shader) {
-    return variant.shader;
-  }
-  if (!variant.frag) {
-    throw new Error(`${variant.key}: OrbVariant needs frag or shader`);
-  }
-  // Param and color keys share one variant namespace but not the struct's:
-  // `p_`/`c_` prefixes keep a param and a color of the same name apart.
-  const fields: Record<string, string> = { ...FIXED_UNIFORM_FIELDS };
-  for (const p of variant.params) {
-    fields[`uP_${p.key}`] = `p_${p.key}`;
-  }
-  for (const c of variant.colors) {
-    fields[`uC_${c.key}`] = `c_${c.key}`;
-  }
+const UNIFORM_ALIGN = 16;
 
-  // Unknown `uX` identifiers are left alone so the WGSL compiler names them.
-  const bindUniforms = (wgsl: string) =>
-    wgsl.replaceAll(/\bu[A-Z][A-Za-z0-9_]*\b/g, (name) => {
-      const field = fields[name];
-      return field ? `params.${field}` : name;
-    });
+/** Bytes to allocate for `schema` bound as a uniform. */
+const uniformBytes = (schema: OrbUniformStruct) =>
+  Math.ceil(d.sizeOf(schema) / UNIFORM_ALIGN) * UNIFORM_ALIGN;
 
-  const structFields = [
-    ...BASE_STRUCT_FIELDS,
-    ...variant.params.map((p) => `p_${p.key}: f32`),
-    ...variant.colors.map((c) => `c_${c.key}: vec3f`),
-  ];
-
-  return `struct Params {
-  ${structFields.join(",\n  ")}
-}
-
-@group(0) @binding(0) var<uniform> params: Params;
-${ORB_WGSL_HELPERS}
-${bindUniforms(variant.frag)}
-
-@fragment
-fn fs_main(@location(0) screenUV: vec2f) -> @location(0) vec4f {
-  gFragCoord = screenUV * params.res;
-  return orbMain(gFragCoord, orbUV());
-}
-`;
-};
-
-/** Initial uniform values for a variant: defaults, resting volumes, and target size. */
-export const orbInitialUniforms = (
-  variant: OrbVariant,
-  res: readonly [number, number]
-): Record<string, unknown> => {
-  const values: Record<string, unknown> = {
-    anim: 0,
-    inputVol: 0,
-    mouse: [0, 0],
-    outputVol: 0.3,
-    res,
-    time: 0,
-  };
-  for (const p of variant.params) {
-    values[`p_${p.key}`] = p.default;
-  }
-  for (const c of variant.colors) {
-    values[`c_${c.key}`] = hexToRgb(c.default);
+/**
+ * Index of a variant-declared field's first float in the struct's byte image.
+ * The `p_`/`c_` fields are named after runtime data, so they are the one part of
+ * the layout the compiler cannot check: assert presence and type here instead.
+ */
+const floatSlot = (
+  schema: OrbUniformStruct,
+  field: string,
+  expected: "f32" | "vec3f",
+  label: string
+): number => {
+  const declared = schema.propTypes[field];
+  if (declared?.type !== expected) {
+    throw new Error(
+      `${label}: uniform struct needs '${field}: ${expected}', found ${declared?.type ?? "nothing"}`
+    );
   }
 
-  return values;
+  return d.memoryLayoutOf(schema, (fields) => fields[field]).offset / F32_BYTES;
 };
 
 /* ---------------------------------- drive ---------------------------------- */
@@ -295,40 +215,73 @@ export interface OrbScene {
   /** Eases one step toward `drive` and writes the frame's uniforms. */
   advance(dt: number, drive: OrbDrive): void;
   resize(res: readonly [number, number]): void;
+  dispose(): void;
 }
 
 /**
  * One orb: its compiled effect plus the eased snapshot of every param and colour.
  * Swapping states retargets the springs, so transitions are continuous.
+ *
+ * The variant's TypeGPU struct is the single source of truth for the uniform
+ * bytes: field offsets are resolved once, then every frame writes floats into one
+ * reused image and uploads it with a single `writeBuffer`.
  */
 export const createOrbScene = (
   gpu: Gpu,
   variant: OrbVariant,
-  output: Surface,
+  res: readonly [number, number],
   drive: OrbDrive
 ): OrbScene => {
-  const shader = effect(gpu, buildOrbShaderSource(variant), {
+  const schema = variant.uniforms;
+  const words = new Float32Array(uniformBytes(schema) / F32_BYTES);
+  const uniform = new Uniform(gpu.device, {
     label: variant.key,
-    set: { params: orbInitialUniforms(variant, output.size) },
+    size: words.byteLength,
+  });
+  const shader = effect(gpu, variant.shader, {
+    label: variant.key,
+    set: { params: uniform },
   });
 
-  const paramCur: Record<string, number> = {};
-  const paramVel: Record<string, number> = {};
-  // Integrated params carry their own phase, seeded apart so instances desync.
-  const paramClocks: Record<string, number> = {};
-  const colorCur: Record<string, [number, number, number]> = {};
-  const colorVel: Record<string, [number, number, number]> = {};
+  // Base fields are part of OrbUniformStruct, so the compiler resolves them.
+  const baseSlot = (field: keyof OrbBaseUniforms) =>
+    d.memoryLayoutOf(schema, (fields) => fields[field]).offset / F32_BYTES;
+  const timeSlot = baseSlot("time");
+  const animSlot = baseSlot("anim");
+  const inputSlot = baseSlot("inputVol");
+  const outputSlot = baseSlot("outputVol");
+  const resSlot = baseSlot("res");
 
-  for (const p of variant.params) {
-    paramCur[p.key] = p.default;
-    paramVel[p.key] = 0;
-    if (p.integrate) {
-      paramClocks[p.key] = Math.random() * 100;
+  const paramSlots = new Int32Array(
+    variant.params.map((p) =>
+      floatSlot(schema, `p_${p.key}`, "f32", variant.key)
+    )
+  );
+  const colorSlots = new Int32Array(
+    variant.colors.map((c) =>
+      floatSlot(schema, `c_${c.key}`, "vec3f", variant.key)
+    )
+  );
+
+  // Colour state lives in `words` itself; only the springs' velocities are aside.
+  const paramCur = new Float32Array(variant.params.length);
+  const paramVel = new Float32Array(variant.params.length);
+  // Integrated params carry their own phase, seeded apart so instances desync.
+  const paramClock = new Float32Array(variant.params.length);
+  const colorVel = new Float32Array(variant.colors.length * 3);
+
+  for (let i = 0; i < variant.params.length; i += 1) {
+    const def = variant.params[i];
+    paramCur[i] = def.default;
+    if (def.integrate) {
+      paramClock[i] = Math.random() * 100;
+      words[paramSlots[i]] = paramClock[i];
+    } else {
+      words[paramSlots[i]] = def.default;
     }
   }
-  for (const c of variant.colors) {
-    colorCur[c.key] = hexToRgb(c.default);
-    colorVel[c.key] = [0, 0, 0];
+  for (let i = 0; i < variant.colors.length; i += 1) {
+    writeHex(variant.colors[i].default, words, colorSlots[i]);
   }
 
   const [restingIn, restingOut] = targetVolumes(drive.state, 0);
@@ -338,8 +291,13 @@ export const createOrbScene = (
   let speed = 0.1;
   let speedVel = 0;
 
-  // Reused across frames: `set()` reads it synchronously.
-  const uniforms: Record<string, unknown> = {};
+  words[inputSlot] = volume.in;
+  words[outputSlot] = volume.out;
+  words[animSlot] = anim;
+  const [initialWidth, initialHeight] = res;
+  words[resSlot] = initialWidth;
+  words[resSlot + 1] = initialHeight;
+  uniform.write(words);
 
   /** Volumes and the shared flow clock: the two signals every shader reads. */
   const stepDrive = (dt: number, live: OrbDrive) => {
@@ -357,32 +315,33 @@ export const createOrbScene = (
     speedVel = springOut.v;
     anim += dt * speed;
 
-    uniforms.time = seconds * 0.5;
-    uniforms.anim = anim;
-    uniforms.inputVol = volume.in;
-    uniforms.outputVol = volume.out;
+    words[timeSlot] = seconds * 0.5;
+    words[animSlot] = anim;
+    words[inputSlot] = volume.in;
+    words[outputSlot] = volume.out;
   };
 
   const stepParams = (dt: number, live: OrbDrive) => {
     const preset =
       live.statePresets?.[live.state] ?? variant.statePresets?.[live.state];
 
-    for (const def of variant.params) {
+    for (let i = 0; i < variant.params.length; i += 1) {
+      const def = variant.params[i];
       const explicit = live.params?.[def.key];
       const target =
         typeof explicit === "number"
           ? explicit
           : (preset?.[def.key] ?? def.default);
 
-      springStep(paramCur[def.key], paramVel[def.key], target, dt);
-      paramCur[def.key] = springOut.x;
-      paramVel[def.key] = springOut.v;
+      springStep(paramCur[i], paramVel[i], target, dt);
+      paramCur[i] = springOut.x;
+      paramVel[i] = springOut.v;
 
       if (def.integrate) {
-        paramClocks[def.key] += dt * speed * springOut.x;
-        uniforms[`p_${def.key}`] = paramClocks[def.key];
+        paramClock[i] += dt * speed * springOut.x;
+        words[paramSlots[i]] = paramClock[i];
       } else {
-        uniforms[`p_${def.key}`] = springOut.x;
+        words[paramSlots[i]] = springOut.x;
       }
     }
   };
@@ -391,18 +350,25 @@ export const createOrbScene = (
     const stateColor =
       live.stateColors?.[live.state] ?? variant.stateColors?.[live.state];
 
-    for (const def of variant.colors) {
-      const target = hexToRgb(
-        live.colors?.[def.key] ?? stateColor?.[def.key] ?? def.default
+    for (let i = 0; i < variant.colors.length; i += 1) {
+      const def = variant.colors[i];
+      const at = colorSlots[i];
+      writeHex(
+        live.colors?.[def.key] ?? stateColor?.[def.key] ?? def.default,
+        colorTarget,
+        0
       );
-      const cur = colorCur[def.key];
-      const vel = colorVel[def.key];
-      for (let i = 0; i < 3; i += 1) {
-        springStep(cur[i], vel[i], target[i], dt);
-        cur[i] = springOut.x;
-        vel[i] = springOut.v;
+      for (let channel = 0; channel < 3; channel += 1) {
+        const velAt = i * 3 + channel;
+        springStep(
+          words[at + channel],
+          colorVel[velAt],
+          colorTarget[channel],
+          dt
+        );
+        words[at + channel] = springOut.x;
+        colorVel[velAt] = springOut.v;
       }
-      uniforms[`c_${def.key}`] = cur;
     }
   };
 
@@ -412,10 +378,16 @@ export const createOrbScene = (
       stepDrive(dt, live);
       stepParams(dt, live);
       stepColors(dt, live);
-      shader.set({ params: uniforms });
+      uniform.write(words);
     },
-    resize(res) {
-      shader.set({ params: { res } });
+    dispose() {
+      uniform.destroy();
+    },
+    resize(next) {
+      const [width, height] = next;
+      words[resSlot] = width;
+      words[resSlot + 1] = height;
+      uniform.write(words);
     },
     shader,
   };
@@ -475,7 +447,7 @@ export const createOrbRenderer = ({
     try {
       const output = surface(gpu, canvas, { dpr: [1, maxDpr] });
       const timeline = clock(gpu);
-      const scene = createOrbScene(gpu, variant, output, drive());
+      const scene = createOrbScene(gpu, variant, output.size, drive());
       unsubscribeResize = output.onResize(() => scene.resize(output.size));
 
       if (pauseOffscreen && typeof IntersectionObserver !== "undefined") {

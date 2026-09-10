@@ -19,15 +19,13 @@ export type {
   OrbParamDef,
   OrbParamValues,
   OrbState,
+  OrbUniformStruct,
   OrbVariant,
 } from "@/components/orbs/renderer";
 export {
-  buildOrbShaderSource,
   defaultValuesFor,
   hexToRgb,
   ORB_STATES,
-  ORB_WGSL_HELPERS,
-  orbInitialUniforms,
 } from "@/components/orbs/renderer";
 
 export interface ShaderOrbProps {

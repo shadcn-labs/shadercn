@@ -1,5 +1,5 @@
 import type { OrbVariant } from "@/components/orbs/canvas";
-import { orb31Shader } from "@/components/orbs/orb-31/gpu";
+import { orb31Params, orb31Shader } from "@/components/orbs/orb-31/gpu";
 
 export const meta = {
   description: "raymarched shell, volumetric godrays",
@@ -214,4 +214,5 @@ export const orb31Orb: OrbVariant = {
       warpSwing: 0,
     },
   },
+  uniforms: orb31Params,
 };

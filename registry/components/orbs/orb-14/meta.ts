@@ -1,5 +1,5 @@
 import type { OrbVariant } from "@/components/orbs/canvas";
-import { orb14Shader } from "@/components/orbs/orb-14/gpu";
+import { orb14Params, orb14Shader } from "@/components/orbs/orb-14/gpu";
 
 export const meta = {
   description: "a lit plasma dome quantized to chunky two-tone pixels",
@@ -138,4 +138,5 @@ export const orb14Orb: OrbVariant = {
       spin: 0.05,
     },
   },
+  uniforms: orb14Params,
 };

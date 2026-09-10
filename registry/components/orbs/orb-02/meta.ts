@@ -1,5 +1,5 @@
 import type { OrbVariant } from "@/components/orbs/canvas";
-import { orb02Shader } from "@/components/orbs/orb-02/gpu";
+import { orb02Params, orb02Shader } from "@/components/orbs/orb-02/gpu";
 
 export const meta = {
   description: "ornate scrollwork on a rolling dome",
@@ -179,4 +179,5 @@ export const orb02Orb: OrbVariant = {
       zoom: 4.6,
     },
   },
+  uniforms: orb02Params,
 };

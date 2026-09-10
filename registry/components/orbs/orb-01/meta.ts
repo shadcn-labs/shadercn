@@ -1,5 +1,5 @@
 import type { OrbVariant } from "@/components/orbs/canvas";
-import { orb01Shader } from "@/components/orbs/orb-01/gpu";
+import { orb01Params, orb01Shader } from "@/components/orbs/orb-01/gpu";
 
 export const meta = {
   description: "cut-glass orb with a dispersive, turbulent interior",
@@ -210,4 +210,5 @@ export const orb01Orb: OrbVariant = {
       turb: 0.35,
     },
   },
+  uniforms: orb01Params,
 };

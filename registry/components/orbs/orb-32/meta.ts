@@ -1,5 +1,5 @@
 import type { OrbVariant } from "@/components/orbs/canvas";
-import { orb32Shader } from "@/components/orbs/orb-32/gpu";
+import { orb32Params, orb32Shader } from "@/components/orbs/orb-32/gpu";
 
 export const meta = {
   description: "a galaxy marched as gas and dust inside the ball",
@@ -387,4 +387,5 @@ export const orb32Orb: OrbVariant = {
       twinkle: 4.5,
     },
   },
+  uniforms: orb32Params,
 };

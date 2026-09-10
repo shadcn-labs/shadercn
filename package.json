@@ -8,7 +8,6 @@
     "start": "next start",
     "typecheck": "tsc --noEmit",
     "registry:build": "node -e \"const r=require('./registry.json');if(!r.items||r.items.length===0)process.exit(0)\" && shadcn build registry.json --output ./public/r",
-    "orbs:validate": "bun --preload ./scripts/preload-typegpu.mjs scripts/validate-orb-shaders.ts",
     "postinstall": "fumadocs-mdx",
     "check": "ultracite check",
     "fix": "ultracite fix",

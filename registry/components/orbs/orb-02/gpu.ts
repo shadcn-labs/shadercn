@@ -9,7 +9,7 @@ import { d, std, tgpu } from "typegpu";
 const LAYERS = 10;
 const WARP = 9;
 
-const Params = d.struct({
+export const orb02Params = d.struct({
   anim: d.f32,
   inputVol: d.f32,
   mouse: d.vec2f,
@@ -35,7 +35,7 @@ const Params = d.struct({
 
 const layout = tgpu
   .bindGroupLayout({
-    params: { uniform: Params },
+    params: { uniform: orb02Params },
   })
   .$idx(0);
 

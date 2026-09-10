@@ -1,5 +1,5 @@
 import type { OrbVariant } from "@/components/orbs/canvas";
-import { orb20Shader } from "@/components/orbs/orb-20/gpu";
+import { orb20Params, orb20Shader } from "@/components/orbs/orb-20/gpu";
 
 export const meta = {
   description: "a water film rushing down the ball, fountain-style",
@@ -205,4 +205,5 @@ export const orb20Orb: OrbVariant = {
       speed: 0.6,
     },
   },
+  uniforms: orb20Params,
 };

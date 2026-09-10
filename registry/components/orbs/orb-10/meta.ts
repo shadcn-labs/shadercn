@@ -1,5 +1,5 @@
 import type { OrbVariant } from "@/components/orbs/canvas";
-import { orb10Shader } from "@/components/orbs/orb-10/gpu";
+import { orb10Params, orb10Shader } from "@/components/orbs/orb-10/gpu";
 
 export const meta = {
   description: "a lattice of light knitted into the ball's own skin",
@@ -239,4 +239,5 @@ export const orb10Orb: OrbVariant = {
       turb: 0.85,
     },
   },
+  uniforms: orb10Params,
 };

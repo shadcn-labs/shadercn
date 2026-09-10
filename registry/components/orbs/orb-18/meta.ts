@@ -1,5 +1,5 @@
 import type { OrbVariant } from "@/components/orbs/canvas";
-import { orb18Shader } from "@/components/orbs/orb-18/gpu";
+import { orb18Params, orb18Shader } from "@/components/orbs/orb-18/gpu";
 
 export const meta = {
   description: "a crystal folded out of one eighth of space, tumbling",
@@ -225,4 +225,5 @@ export const orb18Orb: OrbVariant = {
       wander: 1.08,
     },
   },
+  uniforms: orb18Params,
 };

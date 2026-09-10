@@ -1,5 +1,5 @@
 import type { OrbVariant } from "@/components/orbs/canvas";
-import { orb15Shader } from "@/components/orbs/orb-15/gpu";
+import { orb15Params, orb15Shader } from "@/components/orbs/orb-15/gpu";
 
 export const meta = {
   description: "an iridescent particle-track web worn as the ball's skin",
@@ -198,4 +198,5 @@ export const orb15Orb: OrbVariant = {
       wander: 0.7,
     },
   },
+  uniforms: orb15Params,
 };

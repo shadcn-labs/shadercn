@@ -1,5 +1,5 @@
 import type { OrbVariant } from "@/components/orbs/canvas";
-import { orb08Shader } from "@/components/orbs/orb-08/gpu";
+import { orb08Params, orb08Shader } from "@/components/orbs/orb-08/gpu";
 
 export const meta = {
   description: "mother-of-pearl contour bands, each layer its own hue",
@@ -218,4 +218,5 @@ export const orb08Orb: OrbVariant = {
       warp: 1.56,
     },
   },
+  uniforms: orb08Params,
 };

@@ -6,7 +6,7 @@ import { d, std, tgpu } from "typegpu";
  * notice with the file. shadercn's runtime (renderer.ts) is MIT-licensed.
  */
 
-const Params = d.struct({
+export const orb19Params = d.struct({
   anim: d.f32,
   c_body: d.vec3f,
   c_high: d.vec3f,
@@ -39,7 +39,7 @@ const Params = d.struct({
 
 const layout = tgpu
   .bindGroupLayout({
-    params: { uniform: Params },
+    params: { uniform: orb19Params },
   })
   .$idx(0);
 

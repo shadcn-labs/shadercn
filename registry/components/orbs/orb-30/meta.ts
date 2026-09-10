@@ -1,5 +1,5 @@
 import type { OrbVariant } from "@/components/orbs/canvas";
-import { orb30Shader } from "@/components/orbs/orb-30/gpu";
+import { orb30Params, orb30Shader } from "@/components/orbs/orb-30/gpu";
 
 export const meta = {
   description: "a meadow folding into itself toward a blue vanishing point",
@@ -308,4 +308,5 @@ export const orb30Orb: OrbVariant = {
       saturation: 2,
     },
   },
+  uniforms: orb30Params,
 };

@@ -1,5 +1,5 @@
 import type { OrbVariant } from "@/components/orbs/canvas";
-import { orb22Shader } from "@/components/orbs/orb-22/gpu";
+import { orb22Params, orb22Shader } from "@/components/orbs/orb-22/gpu";
 
 export const meta = {
   description: "field lines swirling around the ball about a wandering axis",
@@ -239,4 +239,5 @@ export const orb22Orb: OrbVariant = {
       wander: 0.6,
     },
   },
+  uniforms: orb22Params,
 };

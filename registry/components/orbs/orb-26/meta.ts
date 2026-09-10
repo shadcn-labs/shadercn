@@ -1,5 +1,5 @@
 import type { OrbVariant } from "@/components/orbs/canvas";
-import { orb26Shader } from "@/components/orbs/orb-26/gpu";
+import { orb26Params, orb26Shader } from "@/components/orbs/orb-26/gpu";
 
 export const meta = {
   description: "a crazed web of coloured threads knotted to a cell grid",
@@ -260,4 +260,5 @@ export const orb26Orb: OrbVariant = {
       swirl: 0.3,
     },
   },
+  uniforms: orb26Params,
 };

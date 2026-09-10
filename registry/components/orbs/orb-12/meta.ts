@@ -1,5 +1,5 @@
 import type { OrbVariant } from "@/components/orbs/canvas";
-import { orb12Shader } from "@/components/orbs/orb-12/gpu";
+import { orb12Params, orb12Shader } from "@/components/orbs/orb-12/gpu";
 
 export const meta = {
   description:
@@ -138,4 +138,5 @@ export const orb12Orb: OrbVariant = {
       tilt: 0.9,
     },
   },
+  uniforms: orb12Params,
 };

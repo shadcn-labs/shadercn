@@ -1,5 +1,5 @@
 import type { OrbVariant } from "@/components/orbs/canvas";
-import { orb07Shader } from "@/components/orbs/orb-07/gpu";
+import { orb07Params, orb07Shader } from "@/components/orbs/orb-07/gpu";
 
 export const meta = {
   description:
@@ -235,4 +235,5 @@ export const orb07Orb: OrbVariant = {
       wave: 0.15,
     },
   },
+  uniforms: orb07Params,
 };

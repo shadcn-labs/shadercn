@@ -8,7 +8,7 @@ import { d, std, tgpu } from "typegpu";
 
 const STEPS = 160;
 
-const Params = d.struct({
+export const orb24Params = d.struct({
   anim: d.f32,
   c_dirt: d.vec3f,
   c_grass: d.vec3f,
@@ -46,7 +46,7 @@ const Params = d.struct({
 
 const layout = tgpu
   .bindGroupLayout({
-    params: { uniform: Params },
+    params: { uniform: orb24Params },
   })
   .$idx(0);
 

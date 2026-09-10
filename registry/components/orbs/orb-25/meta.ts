@@ -1,5 +1,5 @@
 import type { OrbVariant } from "@/components/orbs/canvas";
-import { orb25Shader } from "@/components/orbs/orb-25/gpu";
+import { orb25Params, orb25Shader } from "@/components/orbs/orb-25/gpu";
 
 export const meta = {
   description: "the folds of a warped field, drawn by their own steepness",
@@ -218,4 +218,5 @@ export const orb25Orb: OrbVariant = {
       zoom: 1.12,
     },
   },
+  uniforms: orb25Params,
 };

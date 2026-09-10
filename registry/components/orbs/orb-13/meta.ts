@@ -1,5 +1,5 @@
 import type { OrbVariant } from "@/components/orbs/canvas";
-import { orb13Shader } from "@/components/orbs/orb-13/gpu";
+import { orb13Params, orb13Shader } from "@/components/orbs/orb-13/gpu";
 
 export const meta = {
   description: "plasma globe: crawling lightning filaments",
@@ -244,4 +244,5 @@ export const orb13Orb: OrbVariant = {
       writhe: 1.2,
     },
   },
+  uniforms: orb13Params,
 };

@@ -1,5 +1,5 @@
 import type { OrbVariant } from "@/components/orbs/canvas";
-import { orb04Shader } from "@/components/orbs/orb-04/gpu";
+import { orb04Params, orb04Shader } from "@/components/orbs/orb-04/gpu";
 
 export const meta = {
   description: "a hollow shell of light, faceted by a voxel lattice",
@@ -205,4 +205,5 @@ export const orb04Orb: OrbVariant = {
       width: 0.0012,
     },
   },
+  uniforms: orb04Params,
 };

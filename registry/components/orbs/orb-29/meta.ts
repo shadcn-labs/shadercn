@@ -1,5 +1,5 @@
 import type { OrbVariant } from "@/components/orbs/canvas";
-import { orb29Shader } from "@/components/orbs/orb-29/gpu";
+import { orb29Params, orb29Shader } from "@/components/orbs/orb-29/gpu";
 
 export const meta = {
   description:
@@ -175,4 +175,5 @@ export const orb29Orb: OrbVariant = {
       spin: 0.03,
     },
   },
+  uniforms: orb29Params,
 };

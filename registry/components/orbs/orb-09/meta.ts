@@ -1,5 +1,5 @@
 import type { OrbVariant } from "@/components/orbs/canvas";
-import { orb09Shader } from "@/components/orbs/orb-09/gpu";
+import { orb09Params, orb09Shader } from "@/components/orbs/orb-09/gpu";
 
 export const meta = {
   description: "torn rings of rainbow light worn as the ball's latitudes",
@@ -204,4 +204,5 @@ export const orb09Orb: OrbVariant = {
       warp: 2.54,
     },
   },
+  uniforms: orb09Params,
 };

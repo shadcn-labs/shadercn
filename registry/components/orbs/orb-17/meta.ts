@@ -1,5 +1,5 @@
 import type { OrbVariant } from "@/components/orbs/canvas";
-import { orb17Shader } from "@/components/orbs/orb-17/gpu";
+import { orb17Params, orb17Shader } from "@/components/orbs/orb-17/gpu";
 
 export const meta = {
   description: "a grainy many-coloured storm with band shear and lightning",
@@ -218,4 +218,5 @@ export const orb17Orb: OrbVariant = {
       warp: 3.4,
     },
   },
+  uniforms: orb17Params,
 };

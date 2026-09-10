@@ -1,5 +1,5 @@
 import type { OrbVariant } from "@/components/orbs/canvas";
-import { orb28Shader } from "@/components/orbs/orb-28/gpu";
+import { orb28Params, orb28Shader } from "@/components/orbs/orb-28/gpu";
 
 export const meta = {
   description: "nested binary grids shuttering on a tumbling bit-sphere",
@@ -206,4 +206,5 @@ export const orb28Orb: OrbVariant = {
       spin: 0.81,
     },
   },
+  uniforms: orb28Params,
 };

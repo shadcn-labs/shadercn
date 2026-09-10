@@ -8,7 +8,7 @@ import { d, std, tgpu } from "typegpu";
 
 const LEVELS = 20;
 
-const Params = d.struct({
+export const orb28Params = d.struct({
   anim: d.f32,
   c_base: d.vec3f,
   c_lineA: d.vec3f,
@@ -38,7 +38,7 @@ const Params = d.struct({
 
 const layout = tgpu
   .bindGroupLayout({
-    params: { uniform: Params },
+    params: { uniform: orb28Params },
   })
   .$idx(0);
 

@@ -1,5 +1,5 @@
 import type { OrbVariant } from "@/components/orbs/canvas";
-import { orb16Shader } from "@/components/orbs/orb-16/gpu";
+import { orb16Params, orb16Shader } from "@/components/orbs/orb-16/gpu";
 
 export const meta = {
   description:
@@ -208,4 +208,5 @@ export const orb16Orb: OrbVariant = {
       warp: 1.52,
     },
   },
+  uniforms: orb16Params,
 };
