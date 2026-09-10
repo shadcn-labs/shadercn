@@ -17,9 +17,9 @@
 </p>
 
 <p align="center">
-  <a href="https://shadercn.vercel.app/docs">Get Started</a> ·
-  <a href="https://shadercn.vercel.app/docs/installation">Installation</a> ·
-  <a href="https://shadercn.vercel.app/docs/components">Components</a>
+  <a href="https://shaderscn.vercel.app/docs">Get Started</a> ·
+  <a href="https://shaderscn.vercel.app/docs/installation">Installation</a> ·
+  <a href="https://shaderscn.vercel.app/docs/components">Components</a>
 </p>
 
 ## Features
