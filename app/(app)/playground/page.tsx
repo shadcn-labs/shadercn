@@ -4,8 +4,6 @@ import { OrbPlayground } from "@/components/orb-playground";
 import type { OrbState } from "@/components/orbs/canvas";
 import { PageTransition } from "@/components/page-transition";
 import { ROUTES } from "@/constants/routes";
-// `lib/orbs` is a client module (every orb is `"use client"`), so the route
-// validates its query against the plain slug/state lists instead.
 import { ORB_SLUGS, ORB_STATE_VALUES } from "@/lib/orb-slugs";
 import { createPageMetadata } from "@/seo/metadata";
 
