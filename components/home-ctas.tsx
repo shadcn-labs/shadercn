@@ -79,5 +79,10 @@ export const HomeCtas = ({ className }: { className?: string }) => (
   >
     <GetStartedButton />
     <BrowseComponentsButton />
+    <Button asChild variant="secondary" sound="click" className="px-4">
+      <Link href={ROUTES.CLAIM} transitionTypes={["nav-forward"]}>
+        Claim your orb
+      </Link>
+    </Button>
   </div>
 );

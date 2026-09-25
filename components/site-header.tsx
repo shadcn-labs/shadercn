@@ -17,6 +17,7 @@ const navItems = [
   { href: ROUTES.DOCS, label: "Docs" },
   { href: ROUTES.DOCS_COMPONENTS, label: "Components" },
   { href: ROUTES.PLAYGROUND, label: "Playground" },
+  { href: ROUTES.CLAIM, label: "Claim" },
 ];
 
 export const SiteHeader = () => (
