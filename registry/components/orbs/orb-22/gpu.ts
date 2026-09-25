@@ -1,5 +1,7 @@
 import { d, std, tgpu } from "typegpu";
 
+import { edgeFade } from "@/lib/shader";
+
 /*
  * Shader by XorDev (https://x.com/XorDev), ported for Orbkit with the author's
  * permission. Non-commercial use only, with attribution to XorDev; keep this
@@ -223,7 +225,7 @@ const orb22Fragment = tgpu
     a *= mask;
 
     const r2d = std.length(orbUv);
-    const fade = 1 - std.smoothstep(u.p_edgeFade, 1, r2d);
+    const fade = edgeFade(u.p_edgeFade, r2d);
     col = col.mul(fade);
     a *= fade;
 

@@ -190,7 +190,7 @@ export const orb10Orb: OrbVariant = {
       default: 0.98,
       key: "edgeFade",
       label: "Halo falloff",
-      max: 3,
+      max: 0.985,
       min: 0.1,
       step: 0.015,
     },

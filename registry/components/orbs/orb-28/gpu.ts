@@ -1,5 +1,7 @@
 import { d, std, tgpu } from "typegpu";
 
+import { edgeFade } from "@/lib/shader";
+
 /*
  * Shader by XorDev (https://x.com/XorDev), ported for Orbkit with the author's
  * permission. Non-commercial use only, with attribution to XorDev; keep this
@@ -156,7 +158,7 @@ const orb28Fragment = tgpu
     col = std.pow(std.max(col, d.vec3f()), d.vec3f(u.p_contrast));
 
     // coverage alpha; safety taper fades colour AND alpha, as always
-    const fade = 1 - std.smoothstep(u.p_edgeFade, 1, std.length(orbUv));
+    const fade = edgeFade(u.p_edgeFade, std.length(orbUv));
     const a = mask * fade;
 
     // Surface-lit orb bounded by a mask: alpha IS coverage, so premultiply —
