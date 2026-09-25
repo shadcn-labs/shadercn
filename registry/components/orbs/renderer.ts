@@ -328,10 +328,18 @@ export const createOrbScene = (
     for (let i = 0; i < variant.params.length; i += 1) {
       const def = variant.params[i];
       const explicit = live.params?.[def.key];
-      const target =
-        typeof explicit === "number"
-          ? explicit
-          : (preset?.[def.key] ?? def.default);
+      // A variant's declared [min, max] is what its shader is written against —
+      // several read a param as a divisor or a smoothstep edge — so it binds
+      // presets and caller-supplied values alike, not just the slider UI.
+      const target = Math.min(
+        def.max,
+        Math.max(
+          def.min,
+          typeof explicit === "number"
+            ? explicit
+            : (preset?.[def.key] ?? def.default)
+        )
+      );
 
       springStep(paramCur[i], paramVel[i], target, dt);
       paramCur[i] = springOut.x;
