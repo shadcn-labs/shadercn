@@ -133,15 +133,14 @@ export const hexToRgb = (hex: string): [number, number, number] => {
 const F32_BYTES = 4;
 
 /**
- * WGSL rounds a struct in the uniform address space up to a 16-byte multiple, so
- * the buffer must be that large even when the fields stop earlier — a
- * `d.sizeOf()`-sized buffer trips the pipeline's `minBindingSize`.
+ * Padding for the uniform buffer. `d.sizeOf()` is already the size WebGPU
+ * validates a uniform binding against — measured on Chrome/Dawn, a 120-byte
+ * buffer satisfies a 120-byte struct (`orb-31`, the one variant whose fields
+ * stop short of a 16-byte boundary because it declares no colours). Rounding up
+ * is defensive only: uniform layout is specified in 16-byte rows, so the extra
+ * bytes keep every variant's binding a whole number of rows on any backend.
  */
 const UNIFORM_ALIGN = 16;
-
-/** Bytes to allocate for `schema` bound as a uniform. */
-const uniformBytes = (schema: OrbUniformStruct) =>
-  Math.ceil(d.sizeOf(schema) / UNIFORM_ALIGN) * UNIFORM_ALIGN;
 
 /**
  * Index of a variant-declared field's first float in the struct's byte image.
@@ -232,7 +231,9 @@ export const createOrbScene = (
   drive: OrbDrive
 ): OrbScene => {
   const schema = variant.uniforms;
-  const words = new Float32Array(uniformBytes(schema) / F32_BYTES);
+  const words = new Float32Array(
+    (Math.ceil(d.sizeOf(schema) / UNIFORM_ALIGN) * UNIFORM_ALIGN) / F32_BYTES
+  );
   const uniform = new Uniform(gpu.device, {
     label: variant.key,
     size: words.byteLength,
