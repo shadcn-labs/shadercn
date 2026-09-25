@@ -58,16 +58,6 @@ const hash = tgpu.fn(
   std.fract(std.sin(std.dot(p, d.vec2f(127.1, 311.7))) * 43_758.545_312_3)
 );
 
-const tanh3 = tgpu.fn(
-  [d.vec3f],
-  d.vec3f
-)((x) => {
-  "use gpu";
-  const clamped = std.clamp(x, d.vec3f(-10), d.vec3f(10));
-  const e = std.exp(clamped.mul(2));
-  return e.sub(1).div(e.add(1));
-});
-
 const ionRender = tgpu.fn(
   [d.vec2f, d.f32, d.f32, d.f32, d.f32],
   d.vec3f
@@ -182,7 +172,7 @@ const orb13Fragment = tgpu
 
     const acc = ionRender(fragCoord, ionSharp, ionWrithe, ionCore, ionRadius);
 
-    let col = tanh3(acc.div(std.max(ionExposure, 0.01)));
+    let col = std.tanh(acc.div(std.max(ionExposure, 0.01)));
     col = std.pow(std.clamp(col, d.vec3f(), d.vec3f(1)), d.vec3f(u.p_contrast));
 
     const lum = luma(col);

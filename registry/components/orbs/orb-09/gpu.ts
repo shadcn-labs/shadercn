@@ -46,16 +46,6 @@ const layout = tgpu
   })
   .$idx(0);
 
-const tanh3 = tgpu.fn(
-  [d.vec3f],
-  d.vec3f
-)((x) => {
-  "use gpu";
-  const clamped = std.clamp(x, d.vec3f(-10), d.vec3f(10));
-  const e = std.exp(clamped.mul(2));
-  return e.sub(1).div(e.add(1));
-});
-
 const irisRender = tgpu.fn(
   [d.vec2f, d.f32, d.f32, d.f32],
   d.vec3f
@@ -134,7 +124,7 @@ const irisRender = tgpu.fn(
   }
 
   // the listing's tanh knee, with the divisor exposed
-  let col = tanh3(acc.div(std.max(u.p_exposure, 0.001)));
+  let col = std.tanh(acc.div(std.max(u.p_exposure, 0.001)));
   col = std.pow(std.clamp(col, d.vec3f(), d.vec3f(1)), d.vec3f(u.p_contrast));
 
   // saturation about luminance, then the tint

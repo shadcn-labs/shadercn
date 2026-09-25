@@ -48,16 +48,6 @@ const layout = tgpu
   })
   .$idx(0);
 
-const tanh3 = tgpu.fn(
-  [d.vec3f],
-  d.vec3f
-)((x) => {
-  "use gpu";
-  const clamped = std.clamp(x, d.vec3f(-10), d.vec3f(10));
-  const e = std.exp(clamped.mul(2));
-  return e.sub(1).div(e.add(1));
-});
-
 /*
  * The listing's entire tone map: o = tanh(.2 / tan(x)); o *= o.
  *
@@ -69,7 +59,7 @@ const cotBands = tgpu.fn(
   d.vec3f
 )((x, k) => {
   "use gpu";
-  const b = tanh3(
+  const b = std.tanh(
     std
       .cos(x)
       .mul(k)

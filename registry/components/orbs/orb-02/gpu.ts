@@ -41,16 +41,6 @@ const layout = tgpu
   })
   .$idx(0);
 
-const tanh3 = tgpu.fn(
-  [d.vec3f],
-  d.vec3f
-)((x) => {
-  "use gpu";
-  const clamped = std.clamp(x, d.vec3f(-10), d.vec3f(10));
-  const e = std.exp(clamped.mul(2));
-  return e.sub(1).div(e.add(1));
-});
-
 const orb02Fragment = tgpu
   .fragmentFn({
     in: { uv: d.vec2f },
@@ -114,7 +104,7 @@ const orb02Fragment = tgpu
       );
     }
 
-    let col = tanh3(acc.xyz.mul(acc.xyz).mul(gain));
+    let col = std.tanh(acc.xyz.mul(acc.xyz).mul(gain));
 
     const fresnel = std.pow(1 - z, u.p_rimPow);
     col = col.add(d.vec3f(fresnel).mul(u.p_rim));

@@ -48,16 +48,6 @@ const layout = tgpu
   })
   .$idx(0);
 
-const tanh3 = tgpu.fn(
-  [d.vec3f],
-  d.vec3f
-)((x) => {
-  "use gpu";
-  const clamped = std.clamp(x, d.vec3f(-10), d.vec3f(10));
-  const e = std.exp(clamped.mul(2));
-  return e.sub(1).div(e.add(1));
-});
-
 const fallsRender = tgpu.fn(
   [d.vec2f, d.f32],
   d.vec3f
@@ -180,7 +170,7 @@ const orb20Fragment = tgpu
     const acc = fallsRender(fragCoord, fallsFoam);
 
     // tanh tone map per channel — the golfed /3e1 knee is a tunable here
-    let col = tanh3(acc.div(std.max(fallsExposure, 1)));
+    let col = std.tanh(acc.div(std.max(fallsExposure, 1)));
     col = std.pow(std.clamp(col, d.vec3f(), d.vec3f(1)), d.vec3f(u.p_contrast));
 
     const lum = luma(col);

@@ -44,16 +44,6 @@ const layout = tgpu
   })
   .$idx(0);
 
-const tanh3 = tgpu.fn(
-  [d.vec3f],
-  d.vec3f
-)((x) => {
-  "use gpu";
-  const clamped = std.clamp(x, d.vec3f(-10), d.vec3f(10));
-  const e = std.exp(clamped.mul(2));
-  return e.sub(1).div(e.add(1));
-});
-
 // GLSL ES 1.0 has no round() — it arrived in ES 3.0. The listing quantizes
 // with it, so it ships here. Halves round up rather than to even.
 const roundv = tgpu.fn([d.vec3f], d.vec3f)((x) => std.floor(x.add(0.5)));
@@ -147,7 +137,7 @@ const orb04Fragment = tgpu
     const acc = geodeRender(fragCoord, geodeTurb, geodeWidth);
 
     // tanh tone map per channel — the golfed /2e3 knee is a tunable here
-    let col = tanh3(acc.div(std.max(geodeExposure, 1)));
+    let col = std.tanh(acc.div(std.max(geodeExposure, 1)));
     col = std.pow(std.clamp(col, d.vec3f(), d.vec3f(1)), d.vec3f(u.p_contrast));
 
     // saturation about luminance, then the tint

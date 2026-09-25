@@ -45,16 +45,6 @@ const layout = tgpu
   })
   .$idx(0);
 
-const tanh3 = tgpu.fn(
-  [d.vec3f],
-  d.vec3f
-)((x) => {
-  "use gpu";
-  const clamped = std.clamp(x, d.vec3f(-10), d.vec3f(10));
-  const e = std.exp(clamped.mul(2));
-  return e.sub(1).div(e.add(1));
-});
-
 /*
  * Density inside the sphere.
  *
@@ -215,7 +205,7 @@ const orb21Fragment = tgpu
 
     const acc = nimbusRender(fragCoord, nimbusPower, nimbusDensity);
 
-    const col = tanh3(acc.xyz.mul(u.p_exposure));
+    const col = std.tanh(acc.xyz.mul(u.p_exposure));
     const a = std.clamp(acc.w * u.p_alphaGain, 0, 1);
 
     // Emitted/scattered light, so rgb is already premultiplied — do NOT multiply

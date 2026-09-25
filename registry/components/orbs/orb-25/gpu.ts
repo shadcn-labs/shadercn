@@ -46,16 +46,6 @@ const layout = tgpu
   })
   .$idx(0);
 
-const tanh1 = tgpu.fn(
-  [d.f32],
-  d.f32
-)((xIn) => {
-  "use gpu";
-  const x = std.clamp(xIn, -10, 10);
-  const e = std.exp(2 * x);
-  return (e - 1) / (e + 1);
-});
-
 /*
  * The whole chain for one pixel centre: dome, stereographic wrap, then the
  * eight-octave warp. Called three times per sample so the derivative below
@@ -136,7 +126,7 @@ const creaseRender = tgpu.fn(
     const delta = std
       .abs(std.sin(px.mul(u.p_ripple).add(ph)).sub(v0))
       .add(std.abs(std.sin(py.mul(u.p_ripple).add(ph)).sub(v0)));
-    const m = tanh1(
+    const m = std.tanh(
       (std.length(delta) * creaseGain) / std.max(u.p_exposure, 0.001)
     );
     if (c === 0) {
