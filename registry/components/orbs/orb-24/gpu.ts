@@ -21,7 +21,6 @@ export const orb24Params = d.struct({
   c_stone: d.vec3f,
   c_water: d.vec3f,
   inputVol: d.f32,
-  mouse: d.vec2f,
   outputVol: d.f32,
   p_blocks: d.f32,
   p_cave: d.f32,

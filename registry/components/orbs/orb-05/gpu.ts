@@ -14,7 +14,6 @@ export const orb05Params = d.struct({
   c_sheen: d.vec3f,
   c_tint: d.vec3f,
   inputVol: d.f32,
-  mouse: d.vec2f,
   outputVol: d.f32,
   p_bulge: d.f32,
   p_contrast: d.f32,

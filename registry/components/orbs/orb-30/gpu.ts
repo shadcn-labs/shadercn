@@ -18,7 +18,6 @@ export const orb30Params = d.struct({
   c_sky: d.vec3f,
   c_water: d.vec3f,
   inputVol: d.f32,
-  mouse: d.vec2f,
   outputVol: d.f32,
   p_bulge: d.f32,
   p_cloudCover: d.f32,

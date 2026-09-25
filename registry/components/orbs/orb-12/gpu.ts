@@ -18,7 +18,6 @@ export const orb12Params = d.struct({
   c_brickD: d.vec3f,
   c_brickE: d.vec3f,
   inputVol: d.f32,
-  mouse: d.vec2f,
   outputVol: d.f32,
   p_contrast: d.f32,
   p_gain: d.f32,

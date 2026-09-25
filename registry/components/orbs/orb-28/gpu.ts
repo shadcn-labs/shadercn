@@ -17,7 +17,6 @@ export const orb28Params = d.struct({
   c_lineB: d.vec3f,
   c_rim: d.vec3f,
   inputVol: d.f32,
-  mouse: d.vec2f,
   outputVol: d.f32,
   p_body: d.f32,
   p_contrast: d.f32,

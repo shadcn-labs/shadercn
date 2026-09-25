@@ -20,7 +20,6 @@ export const orb27Params = d.struct({
   c_c6: d.vec3f,
   c_paper: d.vec3f,
   inputVol: d.f32,
-  mouse: d.vec2f,
   outputVol: d.f32,
   p_cells: d.f32,
   p_curve: d.f32,

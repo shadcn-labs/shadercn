@@ -13,7 +13,6 @@ const MAX_STEPS = 256;
 export const orb31Params = d.struct({
   anim: d.f32,
   inputVol: d.f32,
-  mouse: d.vec2f,
   outputVol: d.f32,
   p_alphaGain: d.f32,
   p_ambient: d.f32,

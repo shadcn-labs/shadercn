@@ -9,7 +9,6 @@ import { d, std, tgpu } from "typegpu";
 export const orb11Params = d.struct({
   anim: d.f32,
   inputVol: d.f32,
-  mouse: d.vec2f,
   outputVol: d.f32,
   p_baseVis: d.f32,
   p_chromaSpread: d.f32,

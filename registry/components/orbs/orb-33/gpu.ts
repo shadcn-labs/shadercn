@@ -17,7 +17,6 @@ export const orb33Params = d.struct({
   c_paper: d.vec3f,
   c_warm: d.vec3f,
   inputVol: d.f32,
-  mouse: d.vec2f,
   outputVol: d.f32,
   p_banding: d.f32,
   p_bands: d.f32,

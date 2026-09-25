@@ -20,7 +20,6 @@ export const orb32Params = d.struct({
   c_rim: d.vec3f,
   c_tint: d.vec3f,
   inputVol: d.f32,
-  mouse: d.vec2f,
   outputVol: d.f32,
   p_absorb: d.f32,
   p_alphaGain: d.f32,

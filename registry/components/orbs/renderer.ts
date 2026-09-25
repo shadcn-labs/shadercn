@@ -19,7 +19,6 @@ export interface OrbBaseUniforms {
   inputVol: d.F32;
   outputVol: d.F32;
   res: d.Vec2f;
-  mouse: d.Vec2f;
 }
 
 /**

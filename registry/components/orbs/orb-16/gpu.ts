@@ -12,7 +12,6 @@ export const orb16Params = d.struct({
   c_sheen: d.vec3f,
   c_sun: d.vec3f,
   inputVol: d.f32,
-  mouse: d.vec2f,
   outputVol: d.f32,
   p_contrast: d.f32,
   p_edge: d.f32,

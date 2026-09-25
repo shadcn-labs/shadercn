@@ -15,7 +15,6 @@ export const orb19Params = d.struct({
   c_low: d.vec3f,
   c_sheen: d.vec3f,
   inputVol: d.f32,
-  mouse: d.vec2f,
   outputVol: d.f32,
   p_bead: d.f32,
   p_bulge: d.f32,

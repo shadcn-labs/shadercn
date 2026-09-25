@@ -14,7 +14,6 @@ export const orb17Params = d.struct({
   c_low: d.vec3f,
   c_mid: d.vec3f,
   inputVol: d.f32,
-  mouse: d.vec2f,
   outputVol: d.f32,
   p_bands: d.f32,
   p_churn: d.f32,

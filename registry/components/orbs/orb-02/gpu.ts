@@ -14,7 +14,6 @@ const WARP = 9;
 export const orb02Params = d.struct({
   anim: d.f32,
   inputVol: d.f32,
-  mouse: d.vec2f,
   outputVol: d.f32,
   p_alphaGain: d.f32,
   p_baseVis: d.f32,
