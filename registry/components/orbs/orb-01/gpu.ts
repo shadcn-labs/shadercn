@@ -74,13 +74,17 @@ const dispersionRender = tgpu.fn(
   let z = std.max(u.p_camDist - u.p_envRadius * 1.3, 0);
   const zEnd = u.p_camDist + u.p_envRadius * 1.3;
 
+  // Both rotations are constant for the whole march: build them once.
+  const spinMat = rot2(spinAng);
+  const tiltMat = rot2(u.p_tilt);
+
   for (const it of std.range(STEPS)) {
     const p = ro.add(rd.mul(z));
 
     let q = d.vec3f(p);
-    const spun = std.mul(rot2(spinAng), d.vec2f(q.x, q.z));
+    const spun = std.mul(spinMat, d.vec2f(q.x, q.z));
     q = d.vec3f(spun.x, q.y, spun.y);
-    const tilted = std.mul(rot2(u.p_tilt), d.vec2f(q.y, q.z));
+    const tilted = std.mul(tiltMat, d.vec2f(q.y, q.z));
     q = d.vec3f(q.x, tilted.x, tilted.y);
 
     let a = d.vec3f(q);

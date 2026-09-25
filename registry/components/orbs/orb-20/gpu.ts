@@ -82,11 +82,14 @@ const fallsRender = tgpu.fn(
   let z = std.max(u.p_camDist - u.p_envRadius * 1.3, 0);
   const zEnd = u.p_camDist + u.p_envRadius * 1.3;
 
+  // the tilt is static for the whole march: build the matrix once
+  const tiltMat = rot2(u.p_tilt);
+
   for (const it of std.range(STEPS)) {
     let c = ro.add(rd.mul(z));
 
     // a slight static tilt of the flow axis
-    const cTilt = std.mul(rot2(u.p_tilt), d.vec2f(c.y, c.z));
+    const cTilt = std.mul(tiltMat, d.vec2f(c.y, c.z));
     c = d.vec3f(c.x, cTilt.x, cTilt.y);
 
     /*

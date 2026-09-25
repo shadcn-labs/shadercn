@@ -93,15 +93,19 @@ const ionRender = tgpu.fn(
   let acc = d.vec3f();
   let T = d.f32(1);
 
+  // Both rotations are constant for the whole march: build them once.
+  const spinMat = rot2(spinAng);
+  const tiltMat = rot2(u.p_tilt);
+
   for (const i of std.range(STEPS)) {
     const p = ro.add(rd.mul(zNear + (d.f32(i) + 0.5) * stepLen));
 
     // precess the whole filament array; a static tilt keeps the spin axis
     // off-vertical so the motion reads in 3D
     let pr = d.vec3f(p);
-    const prSpun = std.mul(rot2(spinAng), d.vec2f(pr.x, pr.z));
+    const prSpun = std.mul(spinMat, d.vec2f(pr.x, pr.z));
     pr = d.vec3f(prSpun.x, pr.y, prSpun.y);
-    const prTilt = std.mul(rot2(u.p_tilt), d.vec2f(pr.y, pr.z));
+    const prTilt = std.mul(tiltMat, d.vec2f(pr.y, pr.z));
     pr = d.vec3f(pr.x, prTilt.x, prTilt.y);
 
     const rad = std.length(pr);
