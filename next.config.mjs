@@ -66,9 +66,14 @@ const nextConfig = {
   turbopack: {
     resolveAlias: {
       "@/components/orbs": "./registry/components/orbs",
+      "@/lib/shader": "./registry/lib/shader.ts",
     },
     rules: {
-      "**/orbs/**/gpu.ts": {
+      // Every registry module that can hold `'use gpu'` bodies goes through the
+      // TypeGPU transform — an untransformed `tgpu.fn` body fails at resolve
+      // time with "Missing metadata for tgpu.fn function body". `.ts` only:
+      // shader code never lives in `.tsx`, and `as: "*.js"` would drop JSX.
+      "**/registry/**/*.ts": {
         as: "*.js",
         loaders: [typegpuBabelLoader],
       },
