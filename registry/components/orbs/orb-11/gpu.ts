@@ -111,7 +111,7 @@ const orb11Fragment = tgpu
     const cosT = std.cos(animTime * u.p_rotSpeed);
     const sinT = std.sin(animTime * u.p_rotSpeed);
     const nxy = uv.div(std.max(R, 0.001));
-    const sp = d.vec3f(nxy.x, nxy.y, z).mul(posScale);
+    const sp = d.vec3f(nxy, z).mul(posScale);
     let pos = d.vec3f(
       sp.x * cosT - sp.z * sinT,
       sp.y,
@@ -210,7 +210,7 @@ const orb11Fragment = tgpu
 
     let surfaceColor = std.mix(metalColor, glowColor, glowAmount);
 
-    const normal = d.vec3f(nxy.x, nxy.y, z);
+    const normal = d.vec3f(nxy, z);
     const specular = std.pow(
       std.max(std.dot(normal, std.normalize(d.vec3f(1, 1, 2))), 0),
       32

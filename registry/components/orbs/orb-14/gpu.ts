@@ -83,7 +83,7 @@ const orb14Fragment = tgpu
     const mask = 1 - std.step(1, r2);
 
     const z = std.sqrt(std.max(1 - r2, 0));
-    const n = d.vec3f(puv.x, puv.y, z);
+    const n = d.vec3f(puv, z);
 
     /*
      * Plasma in a ROTATING frame: the dome point spins about Y so wavefronts

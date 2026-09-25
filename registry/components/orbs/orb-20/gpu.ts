@@ -58,7 +58,7 @@ const fallsRender = tgpu.fn(
 
   const uv = fragCoord.mul(2).sub(u.res).div(std.min(u.res.x, u.res.y));
   const ro = d.vec3f(0, 0, u.p_camDist);
-  const rd = std.normalize(d.vec3f(uv.x, uv.y, -u.p_focal));
+  const rd = std.normalize(d.vec3f(uv, -u.p_focal));
 
   const rShell = u.p_envRadius * 0.92;
 
@@ -79,7 +79,7 @@ const fallsRender = tgpu.fn(
 
     // a slight static tilt of the flow axis
     const cTilt = std.mul(tiltMat, d.vec2f(c.y, c.z));
-    c = d.vec3f(c.x, cTilt.x, cTilt.y);
+    c = d.vec3f(c.x, cTilt);
 
     /*
      * The fall grain: squash the vertical axis, then the five octaves with
@@ -182,7 +182,7 @@ const orb20Fragment = tgpu
     let a = std.clamp(peak * u.p_alphaGain, 0, 1);
 
     // Analytic silhouette — identical construction to orb-01
-    const mrd = std.normalize(d.vec3f(orbUv.x, orbUv.y, -u.p_focal));
+    const mrd = std.normalize(d.vec3f(orbUv, -u.p_focal));
     const closest = std.length(std.cross(d.vec3f(0, 0, u.p_camDist), mrd));
     const band = std.mix(0.35, 0.012, std.clamp(u.p_edge, 0, 1));
     const mask =

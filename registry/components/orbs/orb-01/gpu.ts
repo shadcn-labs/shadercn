@@ -56,7 +56,7 @@ const dispersionRender = tgpu.fn(
   const spinAng = u.p_spin;
   const uv = fragCoord.mul(2).sub(u.res).div(std.min(u.res.x, u.res.y));
   const ro = d.vec3f(0, 0, u.p_camDist);
-  const rd = std.normalize(d.vec3f(uv.x, uv.y, -u.p_focal));
+  const rd = std.normalize(d.vec3f(uv, -u.p_focal));
 
   let acc = d.vec3f();
   let T = d.f32(1);
@@ -74,13 +74,13 @@ const dispersionRender = tgpu.fn(
     const spun = std.mul(spinMat, d.vec2f(q.x, q.z));
     q = d.vec3f(spun.x, q.y, spun.y);
     const tilted = std.mul(tiltMat, d.vec2f(q.y, q.z));
-    q = d.vec3f(q.x, tilted.x, tilted.y);
+    q = d.vec3f(q.x, tilted);
 
     let a = d.vec3f(q);
     for (const j of std.range(TURB)) {
       const dj = d.f32(j) + 3;
       const wave = std.sin(a.mul(dj).add(animTime).add(d.f32(it)));
-      a = a.sub(d.vec3f(wave.y, wave.z, wave.x).mul(turb).div(dj));
+      a = a.sub(wave.yzx.mul(turb).div(dj));
     }
 
     const wall = std.abs(std.length(a) - u.p_envRadius);
@@ -140,7 +140,7 @@ const orb01Fragment = tgpu
     let alpha = std.clamp(peak * u.p_alphaGain, 0, 1);
 
     const orbUv = fragCoord.mul(2).sub(u.res).div(std.min(u.res.x, u.res.y));
-    const mrd = std.normalize(d.vec3f(orbUv.x, orbUv.y, -u.p_focal));
+    const mrd = std.normalize(d.vec3f(orbUv, -u.p_focal));
     const closest = std.length(std.cross(d.vec3f(0, 0, u.p_camDist), mrd));
     const band = std.mix(0.35, 0.012, std.clamp(u.p_edge, 0, 1));
     const mask =

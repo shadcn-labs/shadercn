@@ -113,7 +113,7 @@ const nimbusRender = tgpu.fn(
 
   const uv = fragCoord.mul(2).sub(u.res).div(std.min(u.res.x, u.res.y));
   const ro = d.vec3f(0, 0, -u.p_camDist);
-  const rd = std.normalize(d.vec3f(uv.x, uv.y, u.p_focal));
+  const rd = std.normalize(d.vec3f(uv, u.p_focal));
 
   /*
    * Light direction, slowly orbiting so the shading is never static.

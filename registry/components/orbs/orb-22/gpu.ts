@@ -66,7 +66,7 @@ const vectorsRender = tgpu.fn(
 
   const uv = fragCoord.mul(2).sub(u.res).div(std.min(u.res.x, u.res.y));
   const ro = d.vec3f(0, 0, u.p_camDist);
-  const rd = std.normalize(d.vec3f(uv.x, uv.y, -u.p_focal));
+  const rd = std.normalize(d.vec3f(uv, -u.p_focal));
 
   // the wandering rotation axis — unit by construction, which is what
   // makes the 90-degree Rodrigues below exact
@@ -102,14 +102,14 @@ const vectorsRender = tgpu.fn(
     for (const j of std.range(TURB)) {
       const dj = d.f32(j) + 3;
       const wave = std.sin(std.ceil(a.mul(dj)).sub(animTime));
-      a = a.add(d.vec3f(wave.y, wave.z, wave.x).mul(vectorsTurb).div(dj));
+      a = a.add(wave.yzx.mul(vectorsTurb).div(dj));
     }
 
     // the density product — turbulent detail times clean streak surfaces
     let dens =
       u.p_stepScale *
       std.length(std.sin(a.mul(a))) *
-      std.sqrt(std.length(v.mul(std.sin(d.vec3f(v.y, v.z, v.x)))));
+      std.sqrt(std.length(v.mul(std.sin(v.yzx))));
     dens = std.max(dens, 1e-4);
 
     /*
@@ -200,7 +200,7 @@ const orb22Fragment = tgpu
     const peak = std.max(col.x, std.max(col.y, col.z));
     let a = std.clamp(peak * u.p_alphaGain, 0, 1);
 
-    const mrd = std.normalize(d.vec3f(orbUv.x, orbUv.y, -u.p_focal));
+    const mrd = std.normalize(d.vec3f(orbUv, -u.p_focal));
     const closest = std.length(std.cross(d.vec3f(0, 0, u.p_camDist), mrd));
     const band = std.mix(0.35, 0.012, std.clamp(u.p_edge, 0, 1));
     const mask =

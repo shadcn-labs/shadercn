@@ -116,7 +116,7 @@ const causticRender = tgpu.fn(
   col = col.add(u.c_body.mul(u.p_floorLevel));
 
   // dome shading keeps the ball a ball under the lattice
-  const n = d.vec3f(pl.x, pl.y, z);
+  const n = d.vec3f(pl, z);
   const lambert = std.clamp(
     std.dot(n, std.normalize(d.vec3f(-0.45, 0.55, 0.72))),
     0,

@@ -68,7 +68,7 @@ const ionRender = tgpu.fn(
 
   const uv = fragCoord.mul(2).sub(u.res).div(std.min(u.res.x, u.res.y));
   const ro = d.vec3f(0, 0, u.p_camDist);
-  const rd = std.normalize(d.vec3f(uv.x, uv.y, -u.p_focal));
+  const rd = std.normalize(d.vec3f(uv, -u.p_focal));
 
   // exact ray/sphere chord — the march never leaves the globe
   const proj = std.dot(ro.mul(-1), rd);
@@ -95,7 +95,7 @@ const ionRender = tgpu.fn(
     const prSpun = std.mul(spinMat, d.vec2f(pr.x, pr.z));
     pr = d.vec3f(prSpun.x, pr.y, prSpun.y);
     const prTilt = std.mul(tiltMat, d.vec2f(pr.y, pr.z));
-    pr = d.vec3f(pr.x, prTilt.x, prTilt.y);
+    pr = d.vec3f(pr.x, prTilt);
 
     const rad = std.length(pr);
     const dir = pr.div(std.max(rad, 1e-4));
@@ -180,7 +180,7 @@ const orb13Fragment = tgpu
     const peak = std.max(col.x, std.max(col.y, col.z));
     let alpha = std.clamp(peak * u.p_alphaGain, 0, 1);
 
-    const mrd = std.normalize(d.vec3f(orbUv.x, orbUv.y, -u.p_focal));
+    const mrd = std.normalize(d.vec3f(orbUv, -u.p_focal));
     const closest = std.length(std.cross(d.vec3f(0, 0, u.p_camDist), mrd));
     const band = std.mix(0.35, 0.012, std.clamp(u.p_edge, 0, 1));
     const mask =

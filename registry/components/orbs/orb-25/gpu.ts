@@ -133,7 +133,7 @@ const creaseRender = tgpu.fn(
     } else if (c === 1) {
       e = d.vec3f(e.x, m, e.z);
     } else {
-      e = d.vec3f(e.x, e.y, m);
+      e = d.vec3f(e.xy, m);
     }
   }
 
@@ -154,7 +154,7 @@ const creaseRender = tgpu.fn(
     .div(std.min(u.res.x, u.res.y))
     .div(std.max(u.p_radius, 0.001));
   const z = std.sqrt(std.max(1 - std.dot(pl, pl), 0));
-  const n = d.vec3f(pl.x, pl.y, z);
+  const n = d.vec3f(pl, z);
   const lambert = std.clamp(
     std.dot(n, std.normalize(d.vec3f(-0.45, 0.55, 0.72))),
     0,

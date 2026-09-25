@@ -131,7 +131,7 @@ const moireRender = tgpu.fn(
    * ball, so a hard lambert reads as a shadow thrown across the inside of
    * a lamp rather than as a lit surface.
    */
-  const n = d.vec3f(pl.x, pl.y, z);
+  const n = d.vec3f(pl, z);
   const lambert = std.clamp(
     std.dot(n, std.normalize(d.vec3f(-0.45, 0.55, 0.72))),
     0,

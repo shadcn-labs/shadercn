@@ -105,7 +105,7 @@ const orb23Fragment = tgpu
     const mask = 1 - std.step(1, r2);
 
     const z = std.sqrt(std.max(1 - r2, 0));
-    const n = d.vec3f(nuv.x, nuv.y, z);
+    const n = d.vec3f(nuv, z);
 
     // rotating dome, stereographic projection — the weave compresses toward
     // the rim and rolls around the ball as the dome turns

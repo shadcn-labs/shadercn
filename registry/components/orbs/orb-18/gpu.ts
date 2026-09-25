@@ -53,7 +53,7 @@ const octantRender = tgpu.fn(
   const u = layout.$.params;
   const uv = fragCoord.mul(2).sub(u.res).div(std.min(u.res.x, u.res.y));
   const ro = d.vec3f(0, 0, u.p_camDist);
-  const rd = std.normalize(d.vec3f(uv.x, uv.y, -u.p_focal));
+  const rd = std.normalize(d.vec3f(uv, -u.p_focal));
 
   const wander = u.p_wander;
 
@@ -148,7 +148,7 @@ const orb18Fragment = tgpu
     const peak = std.max(col.x, std.max(col.y, col.z));
     let alpha = std.clamp(peak * u.p_alphaGain, 0, 1);
 
-    const mrd = std.normalize(d.vec3f(orbUv.x, orbUv.y, -u.p_focal));
+    const mrd = std.normalize(d.vec3f(orbUv, -u.p_focal));
     const closest = std.length(std.cross(d.vec3f(0, 0, u.p_camDist), mrd));
     const band = std.mix(0.35, 0.012, std.clamp(u.p_edge, 0, 1));
     const mask =

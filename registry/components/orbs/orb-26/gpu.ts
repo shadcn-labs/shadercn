@@ -66,7 +66,7 @@ const latticeRender = tgpu.fn(
   // the dome: the front hemisphere of a unit ball, in screen space
   const pl = uv.div(R);
   const z = std.sqrt(std.max(1 - std.dot(pl, pl), 0));
-  const n = d.vec3f(pl.x, pl.y, z);
+  const n = d.vec3f(pl, z);
 
   const t = u.p_speed;
 

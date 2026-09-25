@@ -74,7 +74,7 @@ const orb28Fragment = tgpu
     // stereographic pole blow-up.
     let sp = d.vec3f(n);
     const tilted = std.mul(rot2(u.p_tilt), d.vec2f(sp.y, sp.z));
-    sp = d.vec3f(sp.x, tilted.x, tilted.y);
+    sp = d.vec3f(sp.x, tilted);
     // integrated clock
     const spun = std.mul(rot2(u.p_spin), d.vec2f(sp.x, sp.z));
     sp = d.vec3f(spun.x, sp.y, spun.y);

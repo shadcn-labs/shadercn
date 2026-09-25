@@ -176,7 +176,7 @@ const ckTreeCell = tgpu.fn(
   } else if (face < 3.5) {
     cp = d.vec3f(auv.x, std.select(-1, 1, face < 2.5), auv.y);
   } else {
-    cp = d.vec3f(auv.x, auv.y, std.select(-1, 1, face < 4.5));
+    cp = d.vec3f(auv, std.select(-1, 1, face < 4.5));
   }
   return TreeCell({
     dir: std.normalize(cp),
@@ -361,16 +361,16 @@ const orb24Fragment = tgpu
     const tiltM = rot2(u.p_tilt);
     const spinM = rot2(-u.p_spin);
     const roYZ = std.mul(tiltM, d.vec2f(ro.y, ro.z));
-    ro = d.vec3f(ro.x, roYZ.x, roYZ.y);
+    ro = d.vec3f(ro.x, roYZ);
     const roXZ = std.mul(spinM, d.vec2f(ro.x, ro.z));
     ro = d.vec3f(roXZ.x, ro.y, roXZ.y);
     const rdYZ = std.mul(tiltM, d.vec2f(rd.y, rd.z));
-    rd = d.vec3f(rd.x, rdYZ.x, rdYZ.y);
+    rd = d.vec3f(rd.x, rdYZ);
     const rdXZ = std.mul(spinM, d.vec2f(rd.x, rd.z));
     rd = d.vec3f(rdXZ.x, rd.y, rdXZ.y);
     let Lo = std.normalize(d.vec3f(-0.5, 0.7, 0.55));
     const loYZ = std.mul(tiltM, d.vec2f(Lo.y, Lo.z));
-    Lo = d.vec3f(Lo.x, loYZ.x, loYZ.y);
+    Lo = d.vec3f(Lo.x, loYZ);
     const loXZ = std.mul(spinM, d.vec2f(Lo.x, Lo.z));
     Lo = d.vec3f(loXZ.x, Lo.y, loXZ.y);
 
@@ -418,8 +418,8 @@ const orb24Fragment = tgpu
         mask = d.vec3f(0, 1, 0);
       } else {
         tCur = tMax.z;
-        tMax = d.vec3f(tMax.x, tMax.y, tMax.z + tDelta.z);
-        vp = d.vec3f(vp.x, vp.y, vp.z + sgn.z);
+        tMax = d.vec3f(tMax.xy, tMax.z + tDelta.z);
+        vp = d.vec3f(vp.xy, vp.z + sgn.z);
         mask = d.vec3f(0, 0, 1);
       }
       if (tCur > tSpan) {
