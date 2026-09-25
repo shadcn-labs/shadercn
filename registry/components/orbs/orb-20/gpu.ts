@@ -1,6 +1,6 @@
 import { d, std, tgpu } from "typegpu";
 
-import { edgeFade } from "@/lib/shader";
+import { edgeFade, luma, rot2 } from "@/lib/shader";
 
 /*
  * Shader by XorDev (https://x.com/XorDev), ported for Orbkit with the author's
@@ -47,16 +47,6 @@ const layout = tgpu
     params: { uniform: orb20Params },
   })
   .$idx(0);
-
-const rot2 = tgpu.fn(
-  [d.f32],
-  d.mat2x2f
-)((angle) => {
-  "use gpu";
-  const c = std.cos(angle);
-  const s = std.sin(angle);
-  return d.mat2x2f(d.vec2f(c, -s), d.vec2f(s, c));
-});
 
 const tanh3 = tgpu.fn(
   [d.vec3f],
@@ -161,7 +151,7 @@ const fallsRender = tgpu.fn(
     w = w.add(u.p_fill).mul(env);
 
     acc = acc.add(w.mul(T));
-    T *= std.exp(-std.dot(w, d.vec3f(0.299, 0.587, 0.114)) * u.p_scatter);
+    T *= std.exp(-luma(w) * u.p_scatter);
 
     if (T < 0.004 || z > zEnd) {
       break;
@@ -190,7 +180,7 @@ const orb20Fragment = tgpu
     let col = tanh3(acc.div(std.max(fallsExposure, 1)));
     col = std.pow(std.clamp(col, d.vec3f(), d.vec3f(1)), d.vec3f(u.p_contrast));
 
-    const lum = std.dot(col, d.vec3f(0.299, 0.587, 0.114));
+    const lum = luma(col);
     col = std.mix(d.vec3f(lum), col, u.p_saturation);
     col = col.mul(u.c_tint);
 

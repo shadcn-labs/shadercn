@@ -1,6 +1,6 @@
 import { d, std, tgpu } from "typegpu";
 
-import { edgeFade } from "@/lib/shader";
+import { edgeFade, luma } from "@/lib/shader";
 
 /*
  * Shader by XorDev (https://x.com/XorDev), ported for Orbkit with the author's
@@ -151,7 +151,7 @@ const orb04Fragment = tgpu
     col = std.pow(std.clamp(col, d.vec3f(), d.vec3f(1)), d.vec3f(u.p_contrast));
 
     // saturation about luminance, then the tint
-    const lum = std.dot(col, d.vec3f(0.299, 0.587, 0.114));
+    const lum = luma(col);
     col = std.mix(d.vec3f(lum), col, u.p_saturation).mul(u.c_tint);
 
     // alpha from the brightest channel, not luminance — a deep blue facet

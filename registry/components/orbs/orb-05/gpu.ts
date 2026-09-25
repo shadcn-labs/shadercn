@@ -1,5 +1,7 @@
 import { d, std, tgpu } from "typegpu";
 
+import { luma, rot2 } from "@/lib/shader";
+
 /*
  * Shader by XorDev (https://x.com/XorDev), ported for Orbkit with the author's
  * permission. Non-commercial use only, with attribution to XorDev; keep this
@@ -39,16 +41,6 @@ const layout = tgpu
     params: { uniform: orb05Params },
   })
   .$idx(0);
-
-const rot2 = tgpu.fn(
-  [d.f32],
-  d.mat2x2f
-)((angle) => {
-  "use gpu";
-  const c = std.cos(angle);
-  const s = std.sin(angle);
-  return d.mat2x2f(d.vec2f(c, -s), d.vec2f(s, c));
-});
 
 /*
  * Softened tangent. Equal to sin/cos wherever cos is not near zero, capped
@@ -117,7 +109,7 @@ const causticRender = tgpu.fn(
 
   col = std.pow(col, d.vec3f(u.p_contrast));
 
-  const lum = std.dot(col, d.vec3f(0.299, 0.587, 0.114));
+  const lum = luma(col);
   col = std.mix(d.vec3f(lum), col, u.p_saturation).mul(u.c_tint);
 
   // a dark body under the bands, so the black half of the cosine reads as

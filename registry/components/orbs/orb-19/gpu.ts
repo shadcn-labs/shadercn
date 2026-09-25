@@ -1,5 +1,7 @@
 import { d, std, tgpu } from "typegpu";
 
+import { luma, rot2 } from "@/lib/shader";
+
 /*
  * Shader by XorDev (https://x.com/XorDev), ported for Orbkit with the author's
  * permission. Non-commercial use only, with attribution to XorDev; keep this
@@ -42,16 +44,6 @@ const layout = tgpu
     params: { uniform: orb19Params },
   })
   .$idx(0);
-
-const rot2 = tgpu.fn(
-  [d.f32],
-  d.mat2x2f
-)((angle) => {
-  "use gpu";
-  const c = std.cos(angle);
-  const s = std.sin(angle);
-  return d.mat2x2f(d.vec2f(c, -s), d.vec2f(s, c));
-});
 
 const hash = tgpu.fn(
   [d.vec2f],
@@ -169,7 +161,7 @@ const foamRender = tgpu.fn(
 
   col = std.pow(std.max(col, d.vec3f()), d.vec3f(u.p_contrast));
 
-  const lum = std.dot(col, d.vec3f(0.299, 0.587, 0.114));
+  const lum = luma(col);
   col = std.mix(d.vec3f(lum), col, u.p_saturation);
 
   // dome shading keeps the ball a ball under the packing

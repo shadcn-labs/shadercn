@@ -1,5 +1,7 @@
 import { d, std, tgpu } from "typegpu";
 
+import { luma, rot2 } from "@/lib/shader";
+
 /*
  * Shader by XorDev (https://x.com/XorDev), ported for Orbkit with the author's
  * permission. Non-commercial use only, with attribution to XorDev; keep this
@@ -88,16 +90,6 @@ const fbm = tgpu.fn(
     a *= 0.5;
   }
   return v;
-});
-
-const rot2 = tgpu.fn(
-  [d.f32],
-  d.mat2x2f
-)((angle) => {
-  "use gpu";
-  const c = std.cos(angle);
-  const s = std.sin(angle);
-  return d.mat2x2f(d.vec2f(c, -s), d.vec2f(s, c));
 });
 
 /*
@@ -272,7 +264,7 @@ const drosteRender = tgpu.fn(
 
   col = std.pow(std.max(col, d.vec3f()), d.vec3f(u.p_contrast)).mul(u.p_gain);
 
-  const lum = std.dot(col, d.vec3f(0.299, 0.587, 0.114));
+  const lum = luma(col);
   col = std.mix(d.vec3f(lum), col, u.p_saturation);
 
   // dome shading, kept light — this is a window, not a lit surface

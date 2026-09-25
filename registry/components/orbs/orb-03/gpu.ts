@@ -1,6 +1,6 @@
 import { d, std, tgpu } from "typegpu";
 
-import { edgeFade } from "@/lib/shader";
+import { edgeFade, luma } from "@/lib/shader";
 
 /*
  * Shader by XorDev (https://x.com/XorDev), ported for Orbkit with the author's
@@ -158,7 +158,7 @@ const eclipticRender = tgpu.fn(
     w = w.add(u.p_fill).mul(env);
 
     acc = acc.add(w.mul(T));
-    T *= std.exp(-std.dot(w, d.vec3f(0.299, 0.587, 0.114)) * u.p_scatter);
+    T *= std.exp(-luma(w) * u.p_scatter);
 
     z += dist;
     if (T < 0.004 || z > zEnd) {
@@ -238,7 +238,7 @@ const orb03Fragment = tgpu
     col = std.pow(std.clamp(col, d.vec3f(), d.vec3f(1)), d.vec3f(u.p_contrast));
 
     // saturation about luminance, then the tint
-    const lum = std.dot(col, d.vec3f(0.299, 0.587, 0.114));
+    const lum = luma(col);
     col = std.mix(d.vec3f(lum), col, u.p_saturation).mul(u.c_tint);
 
     // alpha from the brightest channel, not luminance — a deep blue contour
