@@ -1,0 +1,163 @@
+import type { BackgroundVariant } from "@/components/backgrounds/canvas";
+import { warpParams, warpShader } from "@/components/backgrounds/warp/gpu";
+
+export const meta = {
+  description:
+    "Animated color fields warped by value noise and layered swirls over checks, stripes, or split edge patterns",
+  files: ["index.tsx", "meta.ts", "gpu.ts"],
+  slug: "warp",
+  title: "Warp",
+} as const;
+
+export const warpBackground: BackgroundVariant = {
+  colors: [
+    { default: "#120924", key: "color1", label: "Color 1" },
+    { default: "#3b1d6e", key: "color2", label: "Color 2" },
+    { default: "#ec4899", key: "color3", label: "Color 3" },
+    { default: "#38bdf8", key: "color4", label: "Color 4" },
+  ],
+  key: meta.slug,
+  label: meta.title,
+  note: meta.description,
+  params: [
+    {
+      default: 1.2,
+      integrate: true,
+      key: "speed",
+      label: "Speed",
+      max: 8,
+      min: 0,
+      step: 0.05,
+    },
+    {
+      default: 0.5,
+      key: "proportion",
+      label: "Proportion",
+      max: 1,
+      min: 0,
+      step: 0.01,
+    },
+    {
+      default: 1,
+      key: "softness",
+      label: "Softness",
+      max: 1,
+      min: 0,
+      step: 0.01,
+    },
+    {
+      default: 0,
+      key: "shape",
+      label: "Pattern (0=checks, 1=stripes, 2=edge)",
+      max: 2,
+      min: 0,
+      step: 1,
+    },
+    {
+      default: 0.35,
+      key: "shapeScale",
+      label: "Pattern scale",
+      max: 1,
+      min: 0.02,
+      step: 0.01,
+    },
+    {
+      default: 0.28,
+      key: "distortion",
+      label: "Distortion",
+      max: 1,
+      min: 0,
+      step: 0.01,
+    },
+    {
+      default: 0.65,
+      key: "swirl",
+      label: "Swirl strength",
+      max: 1,
+      min: 0,
+      step: 0.01,
+    },
+    {
+      default: 10,
+      key: "swirlIterations",
+      label: "Swirl iterations",
+      max: 20,
+      min: 2,
+      step: 1,
+    },
+    {
+      default: 1,
+      key: "scale",
+      label: "Scale",
+      max: 4,
+      min: 0.1,
+      step: 0.05,
+    },
+    {
+      default: 0,
+      key: "rotation",
+      label: "Rotation",
+      max: 6.28,
+      min: 0,
+      step: 0.05,
+    },
+  ],
+  presets: {
+    aurora: {
+      colors: {
+        color1: "#041019",
+        color2: "#0d3b4c",
+        color3: "#10b981",
+        color4: "#a7f3d0",
+      },
+      params: {
+        distortion: 0.32,
+        proportion: 0.52,
+        shape: 1,
+        shapeScale: 0.4,
+        softness: 0.95,
+        speed: 1.4,
+        swirl: 0.75,
+        swirlIterations: 12,
+      },
+    },
+    lava: {
+      colors: {
+        color1: "#1a0505",
+        color2: "#7f1d1d",
+        color3: "#f97316",
+        color4: "#fde047",
+      },
+      params: {
+        distortion: 0.45,
+        proportion: 0.48,
+        shape: 0,
+        shapeScale: 0.3,
+        softness: 0.7,
+        speed: 1.1,
+        swirl: 0.85,
+        swirlIterations: 14,
+      },
+    },
+    marble: {
+      colors: {
+        color1: "#0f172a",
+        color2: "#334155",
+        color3: "#94a3b8",
+        color4: "#f8fafc",
+      },
+      params: {
+        distortion: 0.22,
+        proportion: 0.55,
+        shape: 2,
+        shapeScale: 0.5,
+        softness: 0.85,
+        speed: 0.8,
+        swirl: 0.6,
+        swirlIterations: 10,
+      },
+    },
+  },
+  shader: warpShader,
+  uniforms: warpParams,
+};
