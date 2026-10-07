@@ -30,8 +30,13 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
+# wrangler local state (D1 data, email stubs, bundles) — never commit
+.wrangler/
+
 # env files (can opt-in for committing if needed)
 .env*
+!.env.example
+workers/claims/.dev.vars
 
 # vercel
 .vercel

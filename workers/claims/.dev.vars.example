@@ -1,0 +1,11 @@
+# Copy to .dev.vars for `pnpm dlx wrangler dev` (never commit real values).
+# .dev.vars is gitignored; this example contains no secrets.
+CLAIMS_FROM_EMAIL="noreply@example.com"
+CLAIMS_SITE_URL="http://localhost:3000"
+# Cloudflare testing keys report hostname "example.com", so it belongs here
+# for local dev only. Production must list only its real frontend hostnames.
+ALLOWED_HOSTNAMES="localhost,127.0.0.1,example.com"
+TURNSTILE_ACTION="claim"
+# Secret: set via `pnpm dlx wrangler secret put TURNSTILE_SECRET`
+# TURNSTILE_SECRET is intentionally absent here.
+NEXT_PUBLIC_TURNSTILE_SITE_KEY="1x00000000000000000000AA"

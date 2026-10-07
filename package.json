@@ -7,6 +7,8 @@
     "build": "pnpm registry:build && next build",
     "start": "next start",
     "typecheck": "tsc --noEmit",
+    "claims:verify": "node scripts/verify-claims.mjs",
+    "claims:schemas": "node scripts/generate-orb-schemas.mjs",
     "registry:build": "node -e \"const r=require('./registry.json');if(!r.items||r.items.length===0)process.exit(0)\" && shadcn build registry.json --output ./public/r",
     "postinstall": "fumadocs-mdx",
     "check": "ultracite check",
