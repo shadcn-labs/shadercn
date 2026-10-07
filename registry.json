@@ -850,6 +850,79 @@
         }
       ],
       "registryDependencies": ["orb"]
+    },
+    {
+      "name": "background",
+      "type": "registry:ui",
+      "title": "Background Core (WebGPU)",
+      "description": "Core engine for fullscreen GPU-powered background shaders using vgpu",
+      "files": [
+        {
+          "path": "registry/components/backgrounds/renderer.ts",
+          "type": "registry:ui",
+          "target": "components/backgrounds/renderer.ts"
+        },
+        {
+          "path": "registry/lib/shader.ts",
+          "type": "registry:lib",
+          "target": "lib/shader.ts"
+        },
+        {
+          "path": "registry/components/backgrounds/canvas.tsx",
+          "type": "registry:ui",
+          "target": "components/backgrounds/canvas.tsx"
+        }
+      ]
+    },
+    {
+      "name": "warp",
+      "type": "registry:ui",
+      "title": "Warp",
+      "description": "Animated color fields warped by value noise and layered swirls over checks, stripes, or split edge patterns",
+      "dependencies": ["vgpu", "typegpu"],
+      "files": [
+        {
+          "path": "registry/components/backgrounds/warp/index.tsx",
+          "target": "components/backgrounds/warp/index.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "registry/components/backgrounds/warp/meta.ts",
+          "target": "components/backgrounds/warp/meta.ts",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/components/backgrounds/warp/gpu.ts",
+          "target": "components/backgrounds/warp/gpu.ts",
+          "type": "registry:file"
+        }
+      ],
+      "registryDependencies": ["background"]
+    },
+    {
+      "name": "water",
+      "type": "registry:ui",
+      "title": "Water",
+      "description": "Water-like surface distortion with natural dual-layer caustic realism and simplex wave refraction",
+      "dependencies": ["vgpu", "typegpu"],
+      "files": [
+        {
+          "path": "registry/components/backgrounds/water/index.tsx",
+          "target": "components/backgrounds/water/index.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "registry/components/backgrounds/water/meta.ts",
+          "target": "components/backgrounds/water/meta.ts",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/components/backgrounds/water/gpu.ts",
+          "target": "components/backgrounds/water/gpu.ts",
+          "type": "registry:file"
+        }
+      ],
+      "registryDependencies": ["background"]
     }
   ]
 }
