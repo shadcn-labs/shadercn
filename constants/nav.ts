@@ -1,31 +1,37 @@
-export interface SiteNavLink {
+import { ROUTES } from "./routes";
+
+export interface LabsNavLink {
   href: string;
   name: string;
   description?: string;
 }
 
-export const SITE_LATEST = {
-  description: "GPU-powered animated orb shaders",
-  href: "https://shadercn.run",
-  name: "shadercn",
-} as const satisfies SiteNavLink;
+export const LABS_LATEST = {
+  description: "Beautiful markdown UIs, made simple",
+  href: "https://mdxcn.dev",
+  name: "mdxcn",
+} as const satisfies LabsNavLink;
 
-export const SITE_REGISTRIES = [
+export const LABS_REGISTRIES = [
   { href: "https://termcn.dev", name: "termcn" },
+  { href: "https://emailcn.run", name: "emailcn" },
   { href: "https://framecn.dev", name: "framecn" },
   { href: "https://ogimagecn.com", name: "ogimagecn" },
   { href: "https://agentcn.run", name: "agentcn" },
-  { href: "https://emailcn.run", name: "emailcn" },
   { href: "https://mcpcn.dev", name: "mcpcn" },
   { href: "https://pdfcn.dev", name: "pdfcn" },
   { href: "https://editorcn.vercel.app", name: "editorcn" },
-] as const satisfies readonly SiteNavLink[];
+] as const satisfies readonly LabsNavLink[];
 
-export const SITE_TEMPLATES = [
+export const LABS_TEMPLATES = [
   { href: "https://startercn.vercel.app", name: "startercn" },
-] as const satisfies readonly SiteNavLink[];
+] as const satisfies readonly LabsNavLink[];
 
-export const SITE_SKILLS = [
+export const LABS_PORTS = [
+  { href: "https://shadcn-cssinjs.com", name: "shadcn-cssinjs" },
+] as const satisfies readonly LabsNavLink[];
+
+export const LABS_SKILLS = [
   {
     href: "https://skills.sh/shadcn-labs/skills/launch-shadcn-registry",
     name: "launch-shadcn-registry",
@@ -38,10 +44,21 @@ export const SITE_SKILLS = [
     href: "https://skills.sh/shadcn-labs/skills/mastra-file-agents",
     name: "mastra-file-agents",
   },
-] as const satisfies readonly SiteNavLink[];
+] as const satisfies readonly LabsNavLink[];
 
-export const SITE_NAV_SECTIONS = [
-  { id: "registries", items: SITE_REGISTRIES, title: "Registries" },
-  { id: "templates", items: SITE_TEMPLATES, title: "Templates" },
-  { id: "skills", items: SITE_SKILLS, title: "Skills" },
+export const LABS_NAV_SECTIONS = [
+  { id: "registries", items: LABS_REGISTRIES, title: "Registries" },
+  { id: "templates", items: LABS_TEMPLATES, title: "Templates" },
+  { id: "ports", items: LABS_PORTS, title: "Ports" },
+  { id: "skills", items: LABS_SKILLS, title: "Skills" },
 ] as const;
+
+export const TOP_LEVEL_SECTIONS = [
+  { href: ROUTES.DOCS, name: "Introduction" },
+  { href: ROUTES.DOCS_INSTALLATION, name: "Installation" },
+  { href: ROUTES.DOCS_COMPONENTS, name: "Components" },
+  { href: ROUTES.DOCS_MCP, name: "MCP" },
+  { href: ROUTES.DOCS_REGISTRY, name: "Registry" },
+  { href: ROUTES.LLMS, name: "llms.txt" },
+  { href: ROUTES.DOCS_CHANGELOG, name: "Changelog" },
+];
