@@ -37,3 +37,13 @@ All 33 orb shaders are based on original work by [@XorDev](https://x.com/XorDev)
 | `orb-31` | Corona        | [@XorDev](https://x.com/XorDev) |
 | `orb-32` | Galaxy        | [@XorDev](https://x.com/XorDev) |
 | `orb-33` | Abyss         | [@XorDev](https://x.com/XorDev) |
+
+## Background Shaders
+
+Background shaders are adapted from [Paper Shaders](https://github.com/paper-design/shaders) by [Paper Design](https://paper.design), licensed under [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0), and ported to TypeGPU / WebGPU for shadercn.
+
+| Background | Title | Based on | License |
+| ---------- | ----- | -------- | ------- |
+| `warp` | Warp | [Paper Design (`warp.ts`)](https://github.com/paper-design/shaders/blob/main/packages/shaders/src/shaders/warp.ts) | Apache-2.0 |
+| `water` | Water | [Paper Design (`water.ts`)](https://github.com/paper-design/shaders/blob/main/packages/shaders/src/shaders/water.ts) | Apache-2.0 |
+

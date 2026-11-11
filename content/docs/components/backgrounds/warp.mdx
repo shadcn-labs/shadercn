@@ -1,0 +1,100 @@
+---
+title: "Warp"
+description: "Animated color fields warped by value noise and layered swirls over checks, stripes, or split edge patterns"
+---
+
+## Installation
+
+<CodeTabs>
+
+<TabsList>
+  <TabsTrigger value="cli">Command</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+
+<TabsContent value="cli">
+
+```bash
+npx shadcn@latest add @shadercn/warp
+```
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+<Steps>
+
+<Step>Install the following dependencies:</Step>
+
+```bash
+pnpm add vgpu typegpu
+```
+
+<Step>Copy and paste the following code into your project.</Step>
+
+<ComponentSource
+  src="components/backgrounds/warp/index.tsx"
+  base="shadercn"
+  title="components/backgrounds/warp/index.tsx"
+/>
+
+<ComponentSource
+  src="components/backgrounds/warp/meta.ts"
+  base="shadercn"
+  title="components/backgrounds/warp/meta.ts"
+/>
+
+<ComponentSource
+  src="components/backgrounds/warp/gpu.ts"
+  base="shadercn"
+  title="components/backgrounds/warp/gpu.ts"
+/>
+
+<ComponentSource
+  src="components/backgrounds/canvas.tsx"
+  base="shadercn"
+  title="components/backgrounds/canvas.tsx"
+/>
+
+<ComponentSource
+  src="components/backgrounds/renderer.ts"
+  base="shadercn"
+  title="components/backgrounds/renderer.ts"
+/>
+
+<Step>Update the import paths to match your project setup.</Step>
+
+</Steps>
+
+</TabsContent>
+
+</CodeTabs>
+
+## Usage
+
+```tsx
+import { WarpBackground } from "@/components/backgrounds/warp";
+```
+
+```tsx
+<div className="relative h-96 w-full overflow-hidden rounded-xl">
+  <WarpBackground preset="aurora" />
+</div>
+```
+
+## Props
+
+| Prop             | Type                                | Default | Description                                           |
+| ---------------- | ----------------------------------- | ------- | ----------------------------------------------------- |
+| `preset`         | `"aurora" \| "lava" \| "marble"`    | -       | Optional named preset for params and colors           |
+| `params`         | `Partial<Record<string, number>>`   | -       | Shader uniform overrides (`speed`, `swirl`, `shape`)  |
+| `colors`         | `Partial<Record<string, string>>`   | -       | Hex color overrides (`color1`..`color4`)              |
+| `paused`         | `boolean`                           | auto    | Freeze the frame loop (defaults to reduced-motion)    |
+| `pauseOffscreen` | `boolean`                           | `true`  | Pause rendering while scrolled out of view            |
+| `maxDpr`         | `number`                            | `2`     | Maximum device pixel ratio                            |
+| `className`      | `string`                            | -       | Wrapper CSS class                                     |
+| `style`          | `CSSProperties`                     | -       | Wrapper inline styles                                 |
+
+## Credits
+
+Adapted from [Paper Shaders (`warp.ts`)](https://github.com/paper-design/shaders/blob/main/packages/shaders/src/shaders/warp.ts) by [Paper Design](https://paper.design), licensed under Apache-2.0.

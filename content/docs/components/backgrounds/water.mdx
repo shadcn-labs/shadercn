@@ -1,0 +1,100 @@
+---
+title: "Water"
+description: "Water-like surface distortion with natural dual-layer caustic realism and simplex wave refraction"
+---
+
+## Installation
+
+<CodeTabs>
+
+<TabsList>
+  <TabsTrigger value="cli">Command</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+
+<TabsContent value="cli">
+
+```bash
+npx shadcn@latest add @shadercn/water
+```
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+<Steps>
+
+<Step>Install the following dependencies:</Step>
+
+```bash
+pnpm add vgpu typegpu
+```
+
+<Step>Copy and paste the following code into your project.</Step>
+
+<ComponentSource
+  src="components/backgrounds/water/index.tsx"
+  base="shadercn"
+  title="components/backgrounds/water/index.tsx"
+/>
+
+<ComponentSource
+  src="components/backgrounds/water/meta.ts"
+  base="shadercn"
+  title="components/backgrounds/water/meta.ts"
+/>
+
+<ComponentSource
+  src="components/backgrounds/water/gpu.ts"
+  base="shadercn"
+  title="components/backgrounds/water/gpu.ts"
+/>
+
+<ComponentSource
+  src="components/backgrounds/canvas.tsx"
+  base="shadercn"
+  title="components/backgrounds/canvas.tsx"
+/>
+
+<ComponentSource
+  src="components/backgrounds/renderer.ts"
+  base="shadercn"
+  title="components/backgrounds/renderer.ts"
+/>
+
+<Step>Update the import paths to match your project setup.</Step>
+
+</Steps>
+
+</TabsContent>
+
+</CodeTabs>
+
+## Usage
+
+```tsx
+import { WaterBackground } from "@/components/backgrounds/water";
+```
+
+```tsx
+<div className="relative h-96 w-full overflow-hidden rounded-xl">
+  <WaterBackground preset="lagoon" />
+</div>
+```
+
+## Props
+
+| Prop             | Type                                | Default | Description                                                    |
+| ---------------- | ----------------------------------- | ------- | -------------------------------------------------------------- |
+| `preset`         | `"abyssal" \| "lagoon" \| "pool"`   | -       | Optional named preset for params and colors                    |
+| `params`         | `Partial<Record<string, number>>`   | -       | Shader uniform overrides (`speed`, `size`, `caustic`, `waves`) |
+| `colors`         | `Partial<Record<string, string>>`   | -       | Hex color overrides (`colorBack`, `colorMid`, `colorHighlight`)|
+| `paused`         | `boolean`                           | auto    | Freeze the frame loop (defaults to reduced-motion)             |
+| `pauseOffscreen` | `boolean`                           | `true`  | Pause rendering while scrolled out of view                     |
+| `maxDpr`         | `number`                            | `2`     | Maximum device pixel ratio                                     |
+| `className`      | `string`                            | -       | Wrapper CSS class                                              |
+| `style`          | `CSSProperties`                     | -       | Wrapper inline styles                                          |
+
+## Credits
+
+Adapted from [Paper Shaders (`water.ts`)](https://github.com/paper-design/shaders/blob/main/packages/shaders/src/shaders/water.ts) by [Paper Design](https://paper.design), licensed under Apache-2.0.
