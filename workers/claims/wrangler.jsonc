@@ -1,0 +1,36 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "shadercn-claims",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-09-25",
+  // Separate deploy from the main site: route /api/claims/* to this Worker
+  // from the production origin (see app/api/claims proxy + README).
+  "d1_databases": [
+    {
+      "binding": "DB",
+      // Replace with `pnpm dlx wrangler d1 create shadercn-claims` output.
+      // Local dev uses a local D1 database; no production IDs are committed.
+      "database_name": "shadercn-claims",
+      "database_id": "local-dev-placeholder",
+    },
+  ],
+  "send_email": [{ "name": "EMAIL" }],
+  // Edge rate limiting (Workers Rate Limiting binding, wrangler 4.36.0+).
+  // namespace_id is account-scoped: pick an unused integer for your account.
+  // The Worker also keeps a D1 sliding window as a portable fallback.
+  "ratelimits": [
+    {
+      "name": "CLAIM_RATE_LIMIT",
+      "namespace_id": "1001",
+      "simple": { "limit": 30, "period": 60 },
+    },
+  ],
+  "vars": {
+    "CLAIMS_FROM_EMAIL": "noreply@example.com",
+    "CLAIMS_SITE_URL": "http://localhost:3000",
+    "TURNSTILE_ACTION": "claim",
+  },
+  "observability": {
+    "enabled": true,
+  },
+}
